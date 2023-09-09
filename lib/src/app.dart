@@ -43,6 +43,15 @@ class AppRoot extends StatelessWidget {
               '/home': (context) => const Home(),
               '/sign-in': (context) {
                 return SignInScreen(
+                  styles: const {
+                    EmailFormStyle(signInButtonVariant: ButtonVariant.filled)
+                  },
+                  headerBuilder: (context, constraints, shrinkOffset) {
+                    return Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Image.asset('lib/src/icons/app_icon.png'),
+                    );
+                  },
                   actions: [
                     ForgotPasswordAction((context, email) {
                       Navigator.of(context).pushNamed("/forgot-password",
