@@ -22,63 +22,47 @@ class AppRoot extends StatelessWidget {
     return StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return AnimatedBuilder(
-              animation: settingsController,
-              builder: (BuildContext context, Widget? child) {
-                return MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  restorationScopeId: 'app',
-                  localizationsDelegates: const [
-                    AppLocalizations.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                  ],
-                  supportedLocales: const [Locale('en', ''), Locale('tw', '')],
-                  onGenerateTitle: (BuildContext context) =>
-                      AppLocalizations.of(context)!.appTitle,
-                  theme: ThemeData(),
-                  darkTheme: ThemeData.dark(),
-                  themeMode: settingsController.themeMode,
-                  onGenerateRoute: (RouteSettings routeSettings) {
-                    return MaterialPageRoute<void>(
-                      settings: routeSettings,
-                      builder: (BuildContext context) {
-                        switch (routeSettings.name) {
-                          case SettingsView.routeName:
-                            return SettingsView(controller: settingsController);
-                          case ItemDetailsView.routeName:
-                            return const ItemDetailsView();
-                          case ItemListView.routeName:
-                          default:
+          return AnimatedBuilder(
+            animation: settingsController,
+            builder: (BuildContext context, Widget? child) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                restorationScopeId: 'app',
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: const [Locale('en', ''), Locale('tw', '')],
+                onGenerateTitle: (BuildContext context) =>
+                    AppLocalizations.of(context)!.appTitle,
+                theme: ThemeData(),
+                darkTheme: ThemeData.dark(),
+                themeMode: settingsController.themeMode,
+                onGenerateRoute: (RouteSettings routeSettings) {
+                  return MaterialPageRoute<void>(
+                    settings: routeSettings,
+                    builder: (BuildContext context) {
+                      switch (routeSettings.name) {
+                        case SettingsView.routeName:
+                          return SettingsView(controller: settingsController);
+                        case ItemDetailsView.routeName:
+                          return const ItemDetailsView();
+                        case ItemListView.routeName:
+                        default:
+                          if (snapshot.hasData) {
                             return const ItemListView();
-                        }
-                      },
-                    );
-                  },
-                );
-              },
-            );
-          } else {
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(),
-              darkTheme: ThemeData.dark(),
-              title: "auth",
-              onGenerateRoute: (RouteSettings routeSettings) {
-                return MaterialPageRoute<void>(
-                  settings: routeSettings,
-                  builder: (BuildContext context) {
-                    switch (routeSettings.name) {
-                      default:
-                        return const AuthView();
-                    }
-                  },
-                );
-              },
-            );
-          }
+                          } else {
+                            return const AuthView();
+                          }
+                      }
+                    },
+                  );
+                },
+              );
+            },
+          );
         });
   }
 }
