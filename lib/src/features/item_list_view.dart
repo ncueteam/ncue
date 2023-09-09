@@ -1,24 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../settings/settings_view.dart';
 import 'data_item.dart';
 import 'item_details_view.dart';
 
-class ItemListView extends StatelessWidget {
-  const ItemListView({
-    super.key,
-    this.items = const [DataItem(1), DataItem(2), DataItem(3)],
-  });
+class ItemListView extends StatefulWidget {
+  const ItemListView({super.key, required this.items});
 
   static const routeName = '/';
 
   final List<DataItem> items;
 
   @override
+  State<ItemListView> createState() => _ItemListViewState();
+}
+
+class _ItemListViewState extends State<ItemListView> {
+  final user = FirebaseAuth.instance.currentUser;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sample Items'),
+        title: const Text("item list view"),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -30,12 +34,12 @@ class ItemListView extends StatelessWidget {
       ),
       body: ListView.builder(
         restorationId: 'sampleItemListView',
-        itemCount: items.length,
+        itemCount: widget.items.length,
         itemBuilder: (BuildContext context, int index) {
-          final item = items[index];
+          final item = widget.items[index];
 
           return ListTile(
-              title: Text('SampleItem ${item.id}'),
+              title: Text('[${item.id}]   ${item.data}'),
               leading: const CircleAvatar(
                 foregroundImage: AssetImage('assets/images/flutter_logo.png'),
               ),

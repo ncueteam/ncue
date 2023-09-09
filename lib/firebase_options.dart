@@ -44,13 +44,13 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBuB8r-FuZ19Xe4OBscPG5PGb86quaYD_U',
-    appId: '1:117149850724:web:fe1509e27f67036b13d371',
+    apiKey: 'AIzaSyAPzVC7xfFn8fyBBjVzul2Qtx7RJIW69EI',
+    appId: '1:117149850724:web:7993e060bd2f67ee13d371',
     messagingSenderId: '117149850724',
     projectId: 'ncueapp',
     authDomain: 'ncueapp.firebaseapp.com',
     storageBucket: 'ncueapp.appspot.com',
-    measurementId: 'G-2FM98FLP44',
+    measurementId: 'G-6K4L6996SC',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
