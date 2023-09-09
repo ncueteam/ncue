@@ -10,15 +10,27 @@ environment:
   sdk: '>=3.0.6 <4.0.0'
 
 dependencies:
-  firebase_core: ^2.15.1
-  firebase_auth: ^4.9.0
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
   flutter_localizations:
     sdk: flutter
-  google_sign_in: ^6.1.5
+  # firebase
+  firebase_core: ^2.15.1
+  firebase_auth: ^4.9.0
   cloud_firestore: ^4.9.1
+
+  firebase_ui_auth: ^1.8.0
+  firebase_ui_oauth: ^1.4.11
+  firebase_ui_oauth_google: ^1.2.11
+  firebase_ui_oauth_apple: ^1.2.11
+  firebase_ui_oauth_facebook: ^1.2.11
+
+  flutter_facebook_auth: ^6.0.1
+  google_sign_in: ^6.1.5
+  flutter_svg: ^2.0.7
+  http: ^1.1.0
+  firebase_ui_localizations: ^1.6.1
 
 dev_dependencies:
   flutter_test:
