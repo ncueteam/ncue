@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 import '../settings/settings_view.dart';
-import 'sample_item.dart';
-import 'sample_item_details_view.dart';
+import 'data_item.dart';
+import 'item_details_view.dart';
 
-class SampleItemListView extends StatelessWidget {
-  const SampleItemListView({
+class ItemListView extends StatelessWidget {
+  const ItemListView({
     super.key,
-    this.items = const [SampleItem(1), SampleItem(2), SampleItem(3)],
+    this.items = const [DataItem(1), DataItem(2), DataItem(3)],
   });
 
   static const routeName = '/';
 
-  final List<SampleItem> items;
+  final List<DataItem> items;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +41,8 @@ class SampleItemListView extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.restorablePushNamed(
-                  context,
-                  SampleItemDetailsView.routeName,
-                );
+                    context, ItemDetailsView.routeName,
+                    arguments: {'id': item.id});
               });
         },
       ),

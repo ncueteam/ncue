@@ -11,11 +11,13 @@ environment:
 
 dependencies:
   firebase_core: ^2.15.1
+  firebase_auth: ^4.9.0
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.13.1
   flutter_localizations:
     sdk: flutter
+  google_sign_in: ^6.1.5
 
 dev_dependencies:
   flutter_test:
