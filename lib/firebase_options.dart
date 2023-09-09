@@ -67,6 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '117149850724',
     projectId: 'ncueapp',
     storageBucket: 'ncueapp.appspot.com',
+    androidClientId: '117149850724-mjqos8iuusrmp24gtpnob97cajcql7bj.apps.googleusercontent.com',
     iosClientId: '117149850724-d7durmk67ngqa9atv858e4mdfhej6n5n.apps.googleusercontent.com',
     iosBundleId: 'com.example.ncueApp',
   );
@@ -77,6 +78,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '117149850724',
     projectId: 'ncueapp',
     storageBucket: 'ncueapp.appspot.com',
+    androidClientId: '117149850724-mjqos8iuusrmp24gtpnob97cajcql7bj.apps.googleusercontent.com',
     iosClientId: '117149850724-84l02l0ki5eq9mvvnjvsnhcqnt7nlvgd.apps.googleusercontent.com',
     iosBundleId: 'com.example.ncueApp.RunnerTests',
   );

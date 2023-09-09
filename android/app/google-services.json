@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "117149850724-nj1ef7gqbau3pi501d81ff10v5jtlv5o.apps.googleusercontent.com",
+          "client_id": "117149850724-mjqos8iuusrmp24gtpnob97cajcql7bj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ncue_app",
+            "certificate_hash": "856fa08b47a3f8e07154deaa1f117a20d36e3396"
+          }
+        },
+        {
+          "client_id": "117149850724-6c6lir1523514hstqh8c8cikcf06fcc3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +35,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "117149850724-nj1ef7gqbau3pi501d81ff10v5jtlv5o.apps.googleusercontent.com",
+              "client_id": "117149850724-6c6lir1523514hstqh8c8cikcf06fcc3.apps.googleusercontent.com",
               "client_type": 3
             },
             {

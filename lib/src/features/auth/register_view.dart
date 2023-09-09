@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ncue_app/src/features/auth/styled_text_field.dart';
@@ -71,9 +72,9 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   Future addUserDetails(String name, String email, int age) async {
-    // await FirebaseFirestore.instance
-    //     .collection('users')
-    //     .add({'name': name, 'age': age, 'email': email});
+    await FirebaseFirestore.instance
+        .collection('users')
+        .add({'name': name, 'age': age, 'email': email});
   }
 
   wrongMessage(String message) {
