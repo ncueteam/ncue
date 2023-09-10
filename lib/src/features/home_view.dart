@@ -1,21 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../settings/settings_view.dart';
-import 'data_item.dart';
-import 'item_details_view.dart';
+import 'settings/settings_view.dart';
+import 'item_system/data_item.dart';
+import 'item_system/item_details_view.dart';
 
-class ItemListView extends StatefulWidget {
-  const ItemListView({super.key});
+class Home extends StatefulWidget {
+  const Home({super.key});
 
-  static const routeName = '/item_list_view';
+  static const routeName = '/home';
 
   @override
-  State<ItemListView> createState() => _ItemListViewState();
+  State<Home> createState() => _HomeState();
 }
 
-class _ItemListViewState extends State<ItemListView> {
-  final user = FirebaseAuth.instance.currentUser;
+class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
@@ -32,19 +31,25 @@ class _ItemListViewState extends State<ItemListView> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text("item list view"),
+        title: const Text("home page"),
         actions: [
           IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/sign-in');
               },
               icon: const Icon(Icons.login_sharp)),
+          if (FirebaseAuth.instance.currentUser != null)
+            IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/profile');
+                },
+                icon: const Icon(Icons.account_box_sharp)),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.restorablePushNamed(context, SettingsView.routeName);
             },
-          ),
+          )
         ],
       ),
       body: ListView.builder(

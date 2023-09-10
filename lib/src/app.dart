@@ -4,10 +4,10 @@ import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'features/item_details_view.dart';
-import 'features/item_list_view.dart';
-import 'settings/settings_controller.dart';
-import 'settings/settings_view.dart';
+import 'features/home_view.dart';
+import 'features/item_system/item_details_view.dart';
+import 'features/settings/settings_controller.dart';
+import 'features/settings/settings_view.dart';
 
 class AppRoot extends StatelessWidget {
   const AppRoot({
@@ -113,40 +113,8 @@ class AppRoot extends StatelessWidget {
               SettingsView.routeName: (context) =>
                   SettingsView(controller: settingsController),
               ItemDetailsView.routeName: (context) => const ItemDetailsView(),
-              ItemListView.routeName: (context) => const ItemListView()
             });
       },
-    );
-  }
-}
-
-class Home extends StatefulWidget {
-  const Home({super.key});
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("home page"),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/sign-in');
-              },
-              icon: const Icon(Icons.login_sharp)),
-          if (FirebaseAuth.instance.currentUser != null)
-            IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/profile');
-                },
-                icon: const Icon(Icons.account_box_sharp))
-        ],
-      ),
     );
   }
 }

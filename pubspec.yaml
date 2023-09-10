@@ -31,6 +31,12 @@ dependencies:
   flutter_svg: ^2.0.7
   http: ^1.1.0
   firebase_ui_localizations: ^1.6.1
+  webview_flutter: ^4.2.4
+  provider: ^6.0.5
+  encrypt: ^5.0.1
+  shared_preferences: ^2.2.1
+  local_auth: ^2.1.7
+  audioplayers: ^5.1.0
 
 dev_dependencies:
   flutter_test:
