@@ -52,6 +52,17 @@ class AppRoot extends StatelessWidget {
                       child: Image.asset('lib/src/icons/app_icon.png'),
                     );
                   },
+                  subtitleBuilder: (context, action) {
+                    return Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          icon: const Icon(Icons.settings),
+                          onPressed: () {
+                            Navigator.restorablePushNamed(
+                                context, SettingsView.routeName);
+                          },
+                        ));
+                  },
                   actions: [
                     ForgotPasswordAction((context, email) {
                       Navigator.of(context).pushNamed("/forgot-password",
