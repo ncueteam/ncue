@@ -38,6 +38,10 @@ dependencies:
   local_auth: ^2.1.7
   audioplayers: ^5.1.0
 
+  #bluetooth
+  flutter_blue_plus: ^1.11.8
+  permission_handler: ^10.4.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

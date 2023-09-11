@@ -45,11 +45,23 @@ class _HomeState extends State<Home> {
                 },
                 icon: const Icon(Icons.account_box_sharp)),
           IconButton(
-            icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.restorablePushNamed(context, SettingsView.routeName);
             },
-          )
+            icon: const Icon(Icons.settings),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/bluetooth');
+            },
+            icon: const Icon(Icons.compare_arrows),
+          ),
+          IconButton(
+            onPressed: () {
+
+            },
+            icon: const Icon(Icons.chat),
+          ),
         ],
       ),
       body: ListView.builder(
