@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
           ),
           IconButton(
             onPressed: () {
-
+              Navigator.pushNamed(context, '/mqtt');
             },
             icon: const Icon(Icons.chat),
           ),

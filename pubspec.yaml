@@ -42,6 +42,10 @@ dependencies:
   flutter_blue_plus: ^1.11.8
   permission_handler: ^10.4.3
 
+  #mqtt
+  mqtt_client: ^9.8.1
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

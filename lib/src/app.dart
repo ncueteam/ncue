@@ -4,8 +4,10 @@ import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'features/bluetooth/FlutterBlueApp.dart';
 import 'features/home_view.dart';
 import 'features/item_system/item_details_view.dart';
+import 'features/mqtt/mqttapp.dart';
 import 'features/settings/settings_controller.dart';
 import 'features/settings/settings_view.dart';
 
@@ -121,6 +123,8 @@ class AppRoot extends StatelessWidget {
                   action: arguments['action'],
                 );
               },
+              '/bluetooth': (context) => const FlutterBlueApp(),
+              '/mqtt': (context) => const MqttPage(),
               SettingsView.routeName: (context) =>
                   SettingsView(controller: settingsController),
               ItemDetailsView.routeName: (context) => const ItemDetailsView(),
