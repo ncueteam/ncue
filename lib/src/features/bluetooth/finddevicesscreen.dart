@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'FlutterBlueApp.dart';
-import 'BluetoothOffScreen.dart';
-import 'DeviceScreen.dart';
+import 'flutterblueapp.dart';
+import 'bluetoothoffscreen.dart';
+import 'devicescreen.dart';
 import 'widget.dart';
 
 class FindDevicesScreen extends StatefulWidget {

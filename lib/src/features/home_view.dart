@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'settings/settings_view.dart';
 import 'item_system/data_item.dart';
 import 'item_system/item_details_view.dart';
+import 'bluetooth/flutterblueapp.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

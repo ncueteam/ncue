@@ -13,9 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'BluetoothOffScreen.dart';
-import 'FindDevicesScreen.dart';
-import 'DeviceScreen.dart';
+import 'bluetoothoffscreen.dart';
+import 'finddevicesscreen.dart';
+import 'devicescreen.dart';
 import 'widget.dart';
 
 final snackBarKeyA = GlobalKey<ScaffoldMessengerState>();

@@ -7,8 +7,8 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ncue_app/src/features/bluetooth/widget.dart';
-import 'FlutterBlueApp.dart';
-import 'DeviceScreen.dart';
+import 'flutterblueapp.dart';
+import 'devicescreen.dart';
 
 
 class BluetoothOffScreen extends StatelessWidget {
