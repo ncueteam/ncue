@@ -3,9 +3,11 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:ncue_app/src/features/basic/profile_view.dart';
+import 'package:ncue_app/src/features/basic/sign_in_view.dart';
 
 import 'features/bluetooth/FlutterBlueApp.dart';
-import 'features/home_view.dart';
+import 'features/basic/home_view.dart';
 import 'features/item_system/item_details_view.dart';
 import 'features/mqtt/mqttapp.dart';
 import 'features/settings/settings_controller.dart';
@@ -39,61 +41,12 @@ class AppRoot extends StatelessWidget {
             darkTheme: ThemeData.dark(),
             themeMode: settingsController.themeMode,
             initialRoute: FirebaseAuth.instance.currentUser == null
-                ? '/sign-in'
-                : '/home',
+                ? SignInView.routeName
+                : Home.routeName,
             routes: {
-              '/home': (context) => const Home(),
-              '/sign-in': (context) {
-                return SignInScreen(
-                  styles: const {
-                    EmailFormStyle(signInButtonVariant: ButtonVariant.filled)
-                  },
-                  headerBuilder: (context, constraints, shrinkOffset) {
-                    return Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Image.asset('lib/src/icons/app_icon.png'),
-                    );
-                  },
-                  subtitleBuilder: (context, action) {
-                    return Align(
-                        alignment: Alignment.centerRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.settings),
-                          onPressed: () {
-                            Navigator.restorablePushNamed(
-                                context, SettingsView.routeName);
-                          },
-                        ));
-                  },
-                  actions: [
-                    ForgotPasswordAction((context, email) {
-                      Navigator.of(context).pushNamed("/forgot-password",
-                          arguments: {'email': email});
-                    }),
-                    AuthStateChangeAction<SignedIn>((context, state) {
-                      Navigator.pushReplacementNamed(context, '/home');
-                    }),
-                    AuthStateChangeAction<UserCreated>((context, state) {
-                      Navigator.pushReplacementNamed(context, '/home');
-                    }),
-                    VerifyPhoneAction(
-                      (context, action) {
-                        Navigator.pushNamed(context, '/phone');
-                      },
-                    )
-                  ],
-                );
-              },
-              '/profile': (context) => ProfileScreen(
-                    appBar: AppBar(
-                      backgroundColor: Colors.red,
-                    ),
-                    actions: [
-                      SignedOutAction((context) {
-                        Navigator.pushReplacementNamed(context, '/sign-in');
-                      })
-                    ],
-                  ),
+              Home.routeName: (context) => const Home(),
+              SignInView.routeName: (context) => const SignInView(),
+              ProfileView.routeName: (context) => const ProfileView(),
               '/forgot-password': (context) => const ForgotPasswordScreen(),
               '/phone': (context) => PhoneInputScreen(
                     actions: [
@@ -123,8 +76,8 @@ class AppRoot extends StatelessWidget {
                   action: arguments['action'],
                 );
               },
-              '/bluetooth': (context) => const FlutterBlueApp(),
-              '/mqtt': (context) => const MqttPage(),
+              FlutterBlueApp.routeName: (context) => const FlutterBlueApp(),
+              MqttPage.routeName: (context) => const MqttPage(),
               SettingsView.routeName: (context) =>
                   SettingsView(controller: settingsController),
               ItemDetailsView.routeName: (context) => const ItemDetailsView(),

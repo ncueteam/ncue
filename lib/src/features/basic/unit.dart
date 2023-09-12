@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:ncue_app/src/features/item_system/data_item.dart';
+
+import '../item_system/item_details_view.dart';
+
+class Unit extends StatefulWidget {
+  const Unit({super.key, required this.item});
+
+  final DataItem item;
+
+  @override
+  State<Unit> createState() => _UnitState();
+}
+
+class _UnitState extends State<Unit> {
+  @override
+  Widget build(BuildContext context) {
+    final DataItem item = widget.item;
+    switch (item.type) {
+      case "device":
+        {
+          return ListTile(
+            textColor: Colors.blue[100],
+            title: Text(item.name),
+            subtitle: Text(item.data.elementAt(0)),
+            leading: CircleAvatar(
+              foregroundImage: AssetImage(item.iconPath),
+              backgroundColor: Colors.white,
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, ItemDetailsView.routeName,
+                  arguments: {'item': item});
+            },
+          );
+        }
+      case "route":
+        {
+          return ListTile(
+              isThreeLine: true,
+              title: Text("前往頁面 : ${item.name}"),
+              subtitle: Text(item.data.elementAt(0)),
+              leading: Icon(item.data.elementAt(1)),
+              onTap: () {
+                Navigator.pushNamed(context, item.data.elementAt(0));
+              });
+        }
+      case "genric":
+      default:
+        return ListTile(
+            title: Text('[${item.name}]   ${item.data}'),
+            leading: CircleAvatar(
+              foregroundImage: AssetImage(item.iconPath),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, ItemDetailsView.routeName,
+                  arguments: {'item': item});
+            });
+    }
+  }
+}

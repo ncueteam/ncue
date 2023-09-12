@@ -5,7 +5,8 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 class MqttPage extends StatefulWidget {
   const MqttPage({super.key});
 
-  static const routeName = '/mqtt';
+  static const String routeName = '/mqtt';
+  static const IconData routeIcon = Icons.chat;
 
   @override
   MqttPageState createState() => MqttPageState();
@@ -40,7 +41,7 @@ class MqttPageState extends State<MqttPage> {
             ),
             textInputAction: TextInputAction.search,
             onSubmitted: (value) =>
-            {sendMessage('NCUEMQTT', value), messageToSend.clear()})));
+                {sendMessage('NCUEMQTT', value), messageToSend.clear()})));
     widgetList.add(messageComponent("等待接收資料..."));
     super.initState();
   }
@@ -65,7 +66,7 @@ class MqttPageState extends State<MqttPage> {
     client.pongCallback = pong;
 
     final connMessage = MqttConnectMessage()
-    // .authenticateAs('username', 'password')
+        // .authenticateAs('username', 'password')
         .withWillTopic('NCUEMQTT')
         .withWillMessage('MQTT Connect from App')
         .startClean()
@@ -91,9 +92,9 @@ class MqttPageState extends State<MqttPage> {
     client.updates?.listen((List<MqttReceivedMessage<MqttMessage>> messages) {
       for (var message in messages) {
         final MqttPublishMessage payload =
-        message.payload as MqttPublishMessage;
+            message.payload as MqttPublishMessage;
         final String messageText =
-        MqttPublishPayload.bytesToStringAsString(payload.payload.message);
+            MqttPublishPayload.bytesToStringAsString(payload.payload.message);
         setState(() {
           widgetList.add(messageComponent("收到 > $messageText"));
         });

@@ -10,18 +10,16 @@ class ItemDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
-      final int id = arguments['id'];
       final DataItem item = arguments['item'];
 
       return Scaffold(
         appBar: AppBar(
           title: Text(item.name),
         ),
-        body: Center(
+        body: const Center(
             child: Column(
           children: [
-            Text("ID:$id"),
-            const Text('More Information Here'),
+            Text('More Information Here'),
           ],
         )),
       );
