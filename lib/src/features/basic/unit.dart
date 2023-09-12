@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ncue_app/src/features/devices/device_unit.dart';
 import 'package:ncue_app/src/features/item_system/data_item.dart';
 
 import '../item_system/item_details_view.dart';
@@ -19,18 +20,9 @@ class _UnitState extends State<Unit> {
     switch (item.type) {
       case "device":
         {
-          return ListTile(
-            textColor: Colors.blue[100],
-            title: Text(item.name),
-            subtitle: Text(item.data.elementAt(0)),
-            leading: CircleAvatar(
-              foregroundImage: AssetImage(item.iconPath),
-              backgroundColor: Colors.white,
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, ItemDetailsView.routeName,
-                  arguments: {'item': item});
-            },
+          return DeviceUnit(
+            deviceData: item,
+            onChanged: (bool value) {},
           );
         }
       case "route":

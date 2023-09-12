@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ncue_app/src/features/basic/icon_route.dart';
 import 'package:ncue_app/src/features/basic/profile_view.dart';
 import 'package:ncue_app/src/features/basic/unit.dart';
+import 'package:ncue_app/src/features/devices/device_model.dart';
+import 'package:ncue_app/src/features/devices/device_service.dart';
 import 'package:ncue_app/src/features/mqtt/mqttapp.dart';
 import 'package:ncue_app/src/features/web_view/webview.dart';
 
@@ -20,10 +22,25 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<DataItem> items = [];
+
+  void loadDevices() async {
+    List<DeviceModel> lst = await DeviceService().loadDeviceData();
+    debugPrint("=================================================");
+    for (DeviceModel device in lst) {
+      debugPrint("Name:${device.name}");
+      debugPrint("type:${device.type}");
+      debugPrint("uuid:${device.uuid}");
+      debugPrint("=================================================");
+      setState(() {
+        items.add(device.toDataItem());
+        debugPrint("adding ${items.length}");
+      });
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
-    /*=================================================== */
-    List<DataItem> items = [];
+  void initState() {
     items.add(DataItem("device", ["正常的風扇"], "智慧風扇",
         iconPath: 'lib/src/icons/fan.png'));
     items.add(DataItem("device", ["一個電視"], "智慧電視",
@@ -32,19 +49,27 @@ class _HomeState extends State<Home> {
         DataItem("route", [MqttPage.routeName, MqttPage.routeIcon], "MQTT"));
     items.add(
         DataItem("route", [WebView.routeName, WebView.routeIcon], "Web view"));
-    /*=================================================== */
+    loadDevices();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("home page"),
-        actions: const [
-          IconRoute(
+        actions: [
+          const IconRoute(
               routeName: SettingsView.routeName,
               iconData: SettingsView.routeIcon),
-          IconRoute(
+          const IconRoute(
               routeName: FlutterBlueApp.routeName,
               iconData: Icons.compare_arrows),
-          IconRoute(
-              routeName: MqttPage.routeName, iconData: MqttPage.routeIcon),
+          IconButton(
+              onPressed: () {
+                setState(() {});
+              },
+              icon: const Icon(Icons.refresh))
         ],
       ),
       drawer: const Drawer(child: ProfileView()),
