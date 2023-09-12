@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ncue_app/src/features/basic/profile_view.dart';
 import 'package:ncue_app/src/features/basic/sign_in_view.dart';
+import 'package:ncue_app/src/features/web_view/webview.dart';
 
 import 'features/bluetooth/FlutterBlueApp.dart';
 import 'features/basic/home_view.dart';
@@ -81,6 +82,7 @@ class AppRoot extends StatelessWidget {
               SettingsView.routeName: (context) =>
                   SettingsView(controller: settingsController),
               ItemDetailsView.routeName: (context) => const ItemDetailsView(),
+              WebView.routeName: (context) => const WebView()
             });
       },
     );

@@ -5,6 +5,7 @@ class SettingsView extends StatelessWidget {
   const SettingsView({super.key, required this.controller});
 
   static const routeName = '/settings';
+  static const IconData routeIcon = Icons.settings;
 
   final SettingsController controller;
 

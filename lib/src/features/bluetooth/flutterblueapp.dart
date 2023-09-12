@@ -1,28 +1,14 @@
-// Copyright 2023, Charles Weinberger & Paul DeMarco.
-// All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
-// ignore_for_file: unused_import, file_names
-
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'bluetoothoffscreen.dart';
 import 'finddevicesscreen.dart';
-import 'devicescreen.dart';
-import 'widget.dart';
 
 final snackBarKeyA = GlobalKey<ScaffoldMessengerState>();
 final snackBarKeyB = GlobalKey<ScaffoldMessengerState>();
 final snackBarKeyC = GlobalKey<ScaffoldMessengerState>();
 final Map<DeviceIdentifier, ValueNotifier<bool>> isConnectingOrDisconnecting =
-{};
+    {};
 
 TextEditingController wifiNameController = TextEditingController();
 TextEditingController wifiPasswordController = TextEditingController();
@@ -54,9 +40,10 @@ class BluetoothAdapterStateObserver extends NavigatorObserver {
 }
 
 class FlutterBlueApp extends StatelessWidget {
-  const FlutterBlueApp({Key? key}) : super(key: key);
+  const FlutterBlueApp({super.key});
 
-  static const routeName = '/bluetooth';
+  static const String routeName = '/bluetooth';
+  static const IconData routeIcon = Icons.bluetooth;
 
   @override
   Widget build(BuildContext context) {

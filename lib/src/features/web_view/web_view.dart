@@ -3,14 +3,17 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import 'web_login.dart';
 
-class WebViewTest extends StatefulWidget {
-  const WebViewTest({Key? key}) : super(key: key);
+class WebView extends StatefulWidget {
+  const WebView({super.key});
+
+  static const String routeName = '/webview';
+  static const IconData routeIcon = Icons.web;
 
   @override
-  WebViewTestState createState() => WebViewTestState();
+  WebViewState createState() => WebViewState();
 }
 
-class WebViewTestState extends State<WebViewTest> {
+class WebViewState extends State<WebView> {
   late final WebViewController controller;
   bool authenticated = false;
   var currentUrl = "http://frp.4hotel.tw:25580/";
