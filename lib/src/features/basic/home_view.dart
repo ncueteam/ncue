@@ -25,9 +25,7 @@ class _HomeState extends State<Home> {
   List<DataItem> items = [];
 
   void loadDevices() async {
-    List<DeviceModel> lst = await DeviceService().loadDeviceData();
-    for (DeviceModel device in lst) {
-      device.debugData();
+    for (DeviceModel device in await DeviceService().loadDeviceData()) {
       setState(() {
         items.add(device.toDataItem());
       });
@@ -36,10 +34,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    items.add(DataItem("device", ["正常的風扇"], "智慧風扇",
-        iconPath: 'lib/src/icons/fan.png'));
-    items.add(DataItem("device", ["一個電視"], "智慧電視",
-        iconPath: 'lib/src/icons/smart-tv.png'));
     items.add(
         DataItem("route", [MqttPage.routeName, MqttPage.routeIcon], "MQTT"));
     items.add(

@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:ncue_app/src/features/devices/device_detail_view.dart';
+import 'package:ncue_app/src/features/devices/device_model.dart';
 import 'dart:math';
 
-import '../item_system/data_item.dart';
-import '../item_system/item_details_view.dart';
+import 'package:ncue_app/src/features/devices/device_service.dart';
 
 class DeviceUnit extends StatefulWidget {
   const DeviceUnit(
       {super.key, required this.deviceData, required this.onChanged});
 
   final void Function(bool)? onChanged;
-  final DataItem deviceData;
+  final DeviceModel deviceData;
 
   @override
   State<DeviceUnit> createState() => _DeviceUnitState();
 }
 
 class _DeviceUnitState extends State<DeviceUnit> {
-  late DataItem device;
-  bool powerOn = false;
+  late DeviceModel device;
 
   @override
   void initState() {
@@ -31,7 +31,7 @@ class _DeviceUnitState extends State<DeviceUnit> {
       isThreeLine: true,
       textColor: Colors.blue[100],
       title: Text(device.name),
-      subtitle: Text(device.data.elementAt(0)),
+      subtitle: const Text("副標頭的部分"),
       leading: CircleAvatar(
         foregroundImage: AssetImage(device.iconPath),
         backgroundColor: Colors.white,
@@ -39,18 +39,19 @@ class _DeviceUnitState extends State<DeviceUnit> {
       trailing: Transform.rotate(
           angle: pi / 2,
           child: Switch(
-            value: powerOn,
+            value: device.powerOn,
             onChanged: (bool value) => {
               setState(
                 () {
-                  powerOn = value;
+                  device.powerOn = value;
+                  DeviceService().updateDeviceData(device);
                 },
               )
             },
           )),
       onTap: () {
-        Navigator.pushNamed(context, ItemDetailsView.routeName,
-            arguments: {'item': device});
+        Navigator.pushNamed(context, DeviceDetailsView.routeName,
+            arguments: {'data': device});
       },
     );
   }

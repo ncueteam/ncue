@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ncue_app/src/features/devices/device_model.dart';
 import 'package:ncue_app/src/features/devices/device_unit.dart';
 import 'package:ncue_app/src/features/item_system/data_item.dart';
 
@@ -20,10 +21,16 @@ class _UnitState extends State<Unit> {
     switch (item.type) {
       case "device":
         {
-          return DeviceUnit(
-            deviceData: item,
-            onChanged: (bool value) {},
-          );
+          if (item.origin is DeviceModel) {
+            return DeviceUnit(
+              deviceData: item.origin,
+              onChanged: (bool value) {},
+            );
+          } else {
+            return const ListTile(
+              title: Text("裝置載入錯誤"),
+            );
+          }
         }
       case "route":
         {

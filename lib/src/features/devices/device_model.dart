@@ -9,7 +9,7 @@ class DeviceModel {
       isisBioAuthcanted = false});
 
   final String name;
-  final bool powerOn;
+  bool powerOn;
   bool isBioAuthcanted = false;
   String uuid = const Uuid().v1();
   String type = 'switch';
@@ -27,6 +27,6 @@ class DeviceModel {
   }
 
   DataItem toDataItem() {
-    return DataItem(type, [uuid], name, iconPath: iconPath);
+    return DataItem(type, [uuid], name, iconPath: iconPath, origin: this);
   }
 }
