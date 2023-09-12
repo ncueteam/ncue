@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ncue_app/src/features/item_system/data_item.dart';
 
 class ItemDetailsView extends StatelessWidget {
   const ItemDetailsView({super.key});
@@ -10,9 +11,11 @@ class ItemDetailsView extends StatelessWidget {
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
       final int id = arguments['id'];
+      final DataItem item = arguments['item'];
+
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Item Details'),
+          title: Text(item.name),
         ),
         body: Center(
             child: Column(
