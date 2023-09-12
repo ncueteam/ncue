@@ -26,15 +26,10 @@ class _HomeState extends State<Home> {
 
   void loadDevices() async {
     List<DeviceModel> lst = await DeviceService().loadDeviceData();
-    debugPrint("=================================================");
     for (DeviceModel device in lst) {
-      debugPrint("Name:${device.name}");
-      debugPrint("type:${device.type}");
-      debugPrint("uuid:${device.uuid}");
-      debugPrint("=================================================");
+      device.debugData();
       setState(() {
         items.add(device.toDataItem());
-        debugPrint("adding ${items.length}");
       });
     }
   }
@@ -69,7 +64,7 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 setState(() {});
               },
-              icon: const Icon(Icons.refresh))
+              icon: const Icon(Icons.refresh)),
         ],
       ),
       drawer: const Drawer(child: ProfileView()),

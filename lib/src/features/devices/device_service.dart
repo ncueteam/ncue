@@ -14,7 +14,7 @@ class DeviceService {
       Map<String, dynamic> result = document.data() as Map<String, dynamic>;
       DeviceModel temp = DeviceModel(
           result['device_name'], result['powerOn'], result['uuid'],
-          iconPath: result['iconPath']);
+          iconPath: result['iconPath'], type: result['type']);
       data.add(temp);
     }
     return data;
