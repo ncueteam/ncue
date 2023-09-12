@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
-import '../models/index.dart';
 //import 'package:enhanced_http/enhanced_http.dart' as http;
 import 'package:http/http.dart' as http;
+
+import '../models/index.dart';
 
 abstract class ApiDataSource {
   /// Create new user.

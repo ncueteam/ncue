@@ -5,11 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:encrypt/encrypt.dart';
 
-import '../../models/user.dart';
-import '../../services/api_manager.dart';
-import '../../services/globals.dart';
-import '../../services/local_auth_service.dart';
-import '../../services/states.dart';
+import 'services/api_manager.dart';
+import 'services/globals.dart';
+import '../basic/services/local_auth_service.dart';
+import 'services/states.dart';
+import 'models/user.dart';
 
 class LoginRoute extends StatefulWidget {
   const LoginRoute({super.key});
