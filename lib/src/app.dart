@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ncue_app/src/features/basic/profile_view.dart';
 import 'package:ncue_app/src/features/basic/sign_in_view.dart';
+import 'package:ncue_app/src/features/devices/device_detail_view.dart';
 import 'package:ncue_app/src/features/web_view/webview.dart';
 
 import 'features/bluetooth/FlutterBlueApp.dart';
@@ -48,6 +49,8 @@ class AppRoot extends StatelessWidget {
               Home.routeName: (context) => const Home(),
               SignInView.routeName: (context) => const SignInView(),
               ProfileView.routeName: (context) => const ProfileView(),
+              DeviceDetailsView.routeName: (context) =>
+                  const DeviceDetailsView(),
               '/forgot-password': (context) => const ForgotPasswordScreen(),
               '/phone': (context) => PhoneInputScreen(
                     actions: [
