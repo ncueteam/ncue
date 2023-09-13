@@ -8,8 +8,8 @@ import 'package:ncue_app/src/features/basic/sign_in_view.dart';
 import 'package:ncue_app/src/features/devices/device_detail_view.dart';
 import 'package:ncue_app/src/features/web_view/webview.dart';
 
-import 'features/bluetooth/FlutterBlueApp.dart';
 import 'features/basic/home_view.dart';
+import 'features/bluetooth/flutterblueapp.dart';
 import 'features/item_system/item_details_view.dart';
 import 'features/mqtt/mqttapp.dart';
 import 'features/settings/settings_controller.dart';

@@ -7,7 +7,8 @@ import 'package:ncue_app/src/features/devices/device_service.dart';
 import 'package:ncue_app/src/features/mqtt/mqttapp.dart';
 import 'package:ncue_app/src/features/web_view/webview.dart';
 
-import '../bluetooth/FlutterBlueApp.dart';
+
+import '../bluetooth/flutterblueapp.dart';
 import '../settings/settings_view.dart';
 import '../item_system/data_item.dart';
 
@@ -53,7 +54,7 @@ class _HomeState extends State<Home> {
               iconData: SettingsView.routeIcon),
           const IconRoute(
               routeName: FlutterBlueApp.routeName,
-              iconData: Icons.compare_arrows),
+              iconData: Icons.bluetooth_connected),
           IconButton(
               onPressed: () {
                 setState(() {});

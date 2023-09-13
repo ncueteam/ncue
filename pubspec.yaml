@@ -41,8 +41,6 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
 
-  # blue tooth
-
 
   # webview
   webview_flutter: ^4.2.4
@@ -54,6 +52,7 @@ dependencies:
   #bluetooth
   flutter_blue_plus: ^1.11.8
   permission_handler: ^10.4.3
+  cupertino_icons: ^1.0.2
 
   #mqtt
   mqtt_client: ^9.8.1
