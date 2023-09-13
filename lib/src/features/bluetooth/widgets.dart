@@ -182,26 +182,26 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
         final List<int>? value = snapshot.data;
         if (widget.characteristic.characteristicUuid.toString().toUpperCase() ==
             CHARACTERISTIC_UUID) {
-          return ExpansionTile(
-            title: ListTile(
-              title: Column(
+          return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Text('Characteristic'),
-                  Text(
-                    '0x${widget.characteristic.characteristicUuid.toString().toUpperCase()}',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).textTheme.bodySmall?.color),
-                  ),
+                  // const Text('Characteristic'),
+                  // Text(
+                  //   '0x${widget.characteristic.characteristicUuid.toString().toUpperCase()}',
+                  //   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  //       color: Theme.of(context).textTheme.bodySmall?.color),
+                  // ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       if (widget.characteristic.properties.write)
-                        TextButton(
+                        ElevatedButton(
                             child: Text(widget.characteristic.properties
                                     .writeWithoutResponse
                                 ? "WriteNoResp"
-                                : "Write"),
+                                : "Submit"),
                             onPressed: () async {
                               await widget.onWritePressed!();
                               setState(() {});
@@ -209,11 +209,6 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
                     ],
                   )
                 ],
-              ),
-              subtitle: Text(value.toString()),
-              contentPadding: const EdgeInsets.all(0.0),
-            ),
-            children: widget.descriptorTiles,
           );
         } else {
           return SizedBox.shrink();
