@@ -57,12 +57,12 @@ dependencies:
 
   #mqtt
   mqtt_client: ^9.8.1
+  intl: any
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^2.0.0
 
 flutter_icons:
@@ -72,12 +72,8 @@ flutter_icons:
 
 flutter:
   uses-material-design: true
-
-  # Enable generation of localized Strings from arb files.
   generate: true
-
   assets:
-    # Add assets from the images directory to the application.
     - assets/images/
     - lib/src/icons/
     - lib/src/sounds/

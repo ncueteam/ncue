@@ -16,6 +16,7 @@ import 'features/item_system/item_details_view.dart';
 import 'features/mqtt/mqttapp.dart';
 import 'features/settings/settings_controller.dart';
 import 'features/settings/settings_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppRoot extends StatelessWidget {
   const AppRoot({
@@ -34,8 +35,13 @@ class AppRoot extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             restorationScopeId: 'app',
             locale: const Locale('en'),
+            supportedLocales: const [
+              Locale('en'),
+              Locale('zh_tw'),
+            ],
             localizationsDelegates: [
               FirebaseUILocalizations.withDefaultOverrides(LabelOverrides()),
+              AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,

@@ -1,6 +1,6 @@
 {
-  "appTitle": "ncue_app",
+  "appTitle": "彰師大物聯網系統",
   "@appTitle": {
-    "description": "The title of the application"
+    "description": "APP的名稱"
   }
 }
