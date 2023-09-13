@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:ncue_app/src/features/basic/password_reset_view.dart';
+import 'package:ncue_app/src/features/basic/phone_input_view.dart';
 import 'package:ncue_app/src/features/basic/profile_view.dart';
 import 'package:ncue_app/src/features/basic/sign_in_view.dart';
+import 'package:ncue_app/src/features/basic/sms_view.dart';
 import 'package:ncue_app/src/features/devices/device_detail_view.dart';
 import 'package:ncue_app/src/features/web_view/webview.dart';
 
@@ -14,6 +16,7 @@ import 'features/item_system/item_details_view.dart';
 import 'features/mqtt/mqttapp.dart';
 import 'features/settings/settings_controller.dart';
 import 'features/settings/settings_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppRoot extends StatelessWidget {
   const AppRoot({
@@ -32,8 +35,13 @@ class AppRoot extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             restorationScopeId: 'app',
             locale: const Locale('en'),
+            supportedLocales: const [
+              Locale('en'),
+              Locale('zh_tw'),
+            ],
             localizationsDelegates: [
               FirebaseUILocalizations.withDefaultOverrides(LabelOverrides()),
+              AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
@@ -51,35 +59,10 @@ class AppRoot extends StatelessWidget {
               ProfileView.routeName: (context) => const ProfileView(),
               DeviceDetailsView.routeName: (context) =>
                   const DeviceDetailsView(),
-              '/forgot-password': (context) => const ForgotPasswordScreen(),
-              '/phone': (context) => PhoneInputScreen(
-                    actions: [
-                      SMSCodeRequestedAction(
-                          (context, action, flowKey, phoneNumber) {
-                        Navigator.of(context)
-                            .pushReplacementNamed('/sms', arguments: {
-                          'action': action,
-                          'flowkey': flowKey,
-                          'phone': phoneNumber,
-                        });
-                      })
-                    ],
-                  ),
-              '/sms': (context) {
-                final arguments = ModalRoute.of(context)?.settings.arguments
-                    as Map<String, dynamic>;
-                return SMSCodeInputScreen(
-                  actions: [
-                    AuthStateChangeAction<SignedIn>(
-                      (context, state) {
-                        Navigator.of(context).pushReplacementNamed('/home');
-                      },
-                    )
-                  ],
-                  flowKey: arguments['flowkey'],
-                  action: arguments['action'],
-                );
-              },
+              PasswordResetView.routeName: (context) =>
+                  const PasswordResetView(),
+              PhoneView.routeName: (context) => const PhoneView(),
+              SmsView.routeName: (context) => const SmsView(),
               FlutterBlueApp.routeName: (context) => const FlutterBlueApp(),
               MqttPage.routeName: (context) => const MqttPage(),
               SettingsView.routeName: (context) =>

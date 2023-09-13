@@ -11,6 +11,7 @@ import 'package:ncue_app/src/features/web_view/webview.dart';
 import '../bluetooth/flutterblueapp.dart';
 import '../settings/settings_view.dart';
 import '../item_system/data_item.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -47,7 +48,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("home page"),
+        title: Text(AppLocalizations.of(context)!.appTitle),
         actions: [
           const IconRoute(
               routeName: SettingsView.routeName,
