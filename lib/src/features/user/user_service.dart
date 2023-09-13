@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ncue_app/src/features/mqtt/mqttapp.dart';
 import 'package:ncue_app/src/features/user/user_model.dart';
 
 class UserService {
@@ -43,10 +44,15 @@ class UserService {
     if (user != null) {
       UserModel model =
           UserModel(user.displayName ?? user.email ?? user.uid, user.uid);
+      List<Map<String, dynamic>> favoritePages = [
+        {"page_name": MqttPage.routeName, "page_icon": MqttPage.routeIcon},
+        {"page_name": MqttPage.routeName, "page_icon": MqttPage.routeIcon},
+      ];
       database.collection('users').add({
         'name': model.name,
         "type": model.type,
         "uuid": model.uuid,
+        "favorite": favoritePages,
       });
       return model;
     } else {
