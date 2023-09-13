@@ -21,6 +21,9 @@ final snackBarKeyB = GlobalKey<ScaffoldMessengerState>();
 final snackBarKeyC = GlobalKey<ScaffoldMessengerState>();
 final Map<DeviceIdentifier, ValueNotifier<bool>> isConnectingOrDisconnecting = {};
 
+TextEditingController wifiNameController = TextEditingController();
+TextEditingController wifiPasswordController = TextEditingController();
+
 class BluetoothAdapterStateObserver extends NavigatorObserver {
   StreamSubscription<BluetoothAdapterState>? _btStateSubscription;
 
