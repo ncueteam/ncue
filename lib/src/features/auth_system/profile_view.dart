@@ -3,7 +3,7 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ncue_app/src/features/basic/icon_route.dart';
 import 'package:ncue_app/src/features/basic/route_view.dart';
-import 'package:ncue_app/src/features/basic/sign_in_view.dart';
+import 'package:ncue_app/src/features/auth_system/sign_in_view.dart';
 import 'package:ncue_app/src/features/settings/settings_view.dart';
 import 'package:ncue_app/src/features/user/user_model.dart';
 import 'package:ncue_app/src/features/user/user_service.dart';
