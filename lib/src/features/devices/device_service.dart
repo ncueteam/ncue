@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ncue_app/src/features/devices/device_model.dart';
-import 'package:uuid/uuid.dart';
 
 class DeviceService {
   FirebaseFirestore database = FirebaseFirestore.instance;
@@ -47,11 +46,11 @@ class DeviceService {
     }
   }
 
-  Future<void> addDevice(
-      String type, String deviceName, String iconPath, bool powerOn) async {
+  Future<void> addDevice(String uuid, String type, String deviceName,
+      String iconPath, bool powerOn) async {
     database.collection('devices').add({
       "type": type,
-      "uuid": const Uuid().v1().toString(),
+      "uuid": uuid,
       "device_name": deviceName,
       "iconPath": iconPath,
       "powerOn": powerOn,

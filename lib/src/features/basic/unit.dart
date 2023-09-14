@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ncue_app/src/features/basic/route_view.dart';
 import 'package:ncue_app/src/features/devices/device_model.dart';
 import 'package:ncue_app/src/features/devices/device_unit.dart';
 import 'package:ncue_app/src/features/item_system/data_item.dart';
+import 'package:ncue_app/src/features/user/user_model.dart';
 
 import '../item_system/item_details_view.dart';
 
@@ -19,6 +21,7 @@ class _UnitState extends State<Unit> {
   Widget build(BuildContext context) {
     final DataItem item = widget.item;
     switch (item.type) {
+      case "bio_device":
       case "device":
         {
           if (item.origin is DeviceModel) {
@@ -34,14 +37,35 @@ class _UnitState extends State<Unit> {
         }
       case "route":
         {
-          return ListTile(
-              isThreeLine: true,
-              title: Text("前往頁面 : ${item.name}"),
-              subtitle: Text(item.data.elementAt(0)),
-              leading: Icon(item.data.elementAt(1)),
-              onTap: () {
-                Navigator.pushNamed(context, item.data.elementAt(0));
-              });
+          if (item.data.elementAt(0) is RouteView) {
+            RouteView view = item.data.elementAt(0);
+            return ListTile(
+                isThreeLine: true,
+                title: Text("前往頁面 : ${item.name}"),
+                subtitle: Text(view.routeName),
+                leading: Icon(view.routeIcon),
+                onTap: () {
+                  Navigator.pushNamed(context, view.routeName);
+                });
+          }
+          return Container();
+        }
+      case "addDevice":
+        {
+          if (item.data.elementAt(0) is RouteView &&
+              item.data.elementAt(1) is UserModel) {
+            RouteView view = item.data.elementAt(0);
+            return ListTile(
+                isThreeLine: true,
+                title: Text("前往頁面 : ${item.name}"),
+                subtitle: Text(view.routeName),
+                leading: Icon(view.routeIcon),
+                onTap: () {
+                  Navigator.pushNamed(context, view.routeName,
+                      arguments: {"user": item.data.elementAt(1)});
+                });
+          }
+          return Container();
         }
       case "genric":
       default:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ncue_app/src/features/devices/add_device_view.dart';
 import 'package:ncue_app/src/features/settings/settings_controller.dart';
 
 import '../auth_system/password_reset_view.dart';
@@ -50,5 +51,6 @@ abstract class RouteView extends StatefulWidget {
     const SettingsView(),
     const ItemDetailsView(),
     const WebView(),
+    const AddDeviceView(),
   ];
 }

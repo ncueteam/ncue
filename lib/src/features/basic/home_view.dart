@@ -1,10 +1,15 @@
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ncue_app/src/features/auth_system/profile_view.dart';
 import 'package:ncue_app/src/features/basic/route_view.dart';
 import 'package:ncue_app/src/features/basic/unit.dart';
+import 'package:ncue_app/src/features/devices/add_device_view.dart';
 import 'package:ncue_app/src/features/devices/device_model.dart';
 import 'package:ncue_app/src/features/devices/device_service.dart';
 import 'package:ncue_app/src/features/mqtt/mqttapp.dart';
+import 'package:ncue_app/src/features/user/user_model.dart';
+import 'package:ncue_app/src/features/user/user_service.dart';
 import 'package:ncue_app/src/features/web_view/webview.dart';
 
 import '../bluetooth/flutterblueapp.dart';
@@ -21,23 +26,39 @@ class Home extends RouteView {
 
 class _HomeState extends State<Home> {
   List<DataItem> items = [];
+  UserModel model = UserModel("error", "error");
 
-  void loadDevices() async {
+  Future<void> loadDevices() async {
+    items.clear();
+    items.add(DataItem("addDevice", [const AddDeviceView(), model], "註冊裝置"));
+    items.add(DataItem("route", [const MqttPage()], "MQTT測試"));
+    items.add(DataItem("route", [const WebView()], "網站版"));
     for (DeviceModel device in await DeviceService().loadDeviceData()) {
-      setState(() {
-        items.add(device.toDataItem());
-      });
+      if (model.devices.contains(device.uuid)) {
+        setState(() {
+          items.add(device.toDataItem());
+        });
+      }
+    }
+  }
+
+  Future<void> loadAccount() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      model = await UserService().loadUserData(user);
     }
   }
 
   @override
   void initState() {
-    items.add(DataItem("route",
-        [const MqttPage().routeName, const MqttPage().routeIcon], "MQTT"));
-    items.add(DataItem("route",
-        [const WebView().routeName, const WebView().routeIcon], "Web view"));
-    loadDevices();
+    reload();
     super.initState();
+  }
+
+  Future<void> reload() async {
+    await loadAccount();
+    await loadDevices();
+    setState(() {});
   }
 
   @override
@@ -48,22 +69,20 @@ class _HomeState extends State<Home> {
         actions: [
           const SettingsView().getIconButton(context),
           const BluetoothView().getIconButton(context),
-          IconButton(
-              onPressed: () {
-                setState(() {});
-              },
-              icon: const Icon(Icons.refresh)),
         ],
       ),
       drawer: const Drawer(child: ProfileView()),
-      body: ListView.builder(
-        restorationId: 'sampleItemListView',
-        addAutomaticKeepAlives: true,
-        itemCount: items.length,
-        itemBuilder: (BuildContext context, int index) {
-          DataItem item = items[index];
-          return Unit(item: item);
-        },
+      body: RefreshIndicator(
+        onRefresh: () => reload(),
+        child: ListView.builder(
+          restorationId: 'sampleItemListView',
+          addAutomaticKeepAlives: true,
+          itemCount: items.length,
+          itemBuilder: (BuildContext context, int index) {
+            DataItem item = items[index];
+            return Unit(item: item);
+          },
+        ),
       ),
     );
   }
