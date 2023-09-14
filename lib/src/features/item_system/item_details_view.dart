@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:ncue_app/src/features/basic/route_view.dart';
 import 'package:ncue_app/src/features/item_system/data_item.dart';
 
-class ItemDetailsView extends StatelessWidget {
-  const ItemDetailsView({super.key});
+class ItemDetailsView extends RouteView {
+  const ItemDetailsView({super.key})
+      : super(routeName: '/data_item', routeIcon: Icons.details);
 
-  static const routeName = '/data_item';
+  @override
+  State<ItemDetailsView> createState() => _ItemDetailsViewState();
+}
 
+class _ItemDetailsViewState extends State<ItemDetailsView> {
   @override
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)?.settings.arguments;

@@ -2,15 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ncue_app/src/features/basic/icon_route.dart';
+import 'package:ncue_app/src/features/basic/route_view.dart';
 import 'package:ncue_app/src/features/basic/sign_in_view.dart';
 import 'package:ncue_app/src/features/settings/settings_view.dart';
 import 'package:ncue_app/src/features/user/user_model.dart';
 import 'package:ncue_app/src/features/user/user_service.dart';
 
-class ProfileView extends StatefulWidget {
-  const ProfileView({super.key});
-
-  static const routeName = '/profile';
+class ProfileView extends RouteView {
+  const ProfileView({super.key})
+      : super(routeName: '/profile', routeIcon: Icons.account_circle);
 
   @override
   State<ProfileView> createState() => _ProfileViewState();
@@ -45,15 +45,13 @@ class _ProfileViewState extends State<ProfileView> {
       ),
       actions: [
         SignedOutAction((context) {
-          Navigator.pushReplacementNamed(context, SignInView.routeName);
+          Navigator.pushReplacementNamed(context, const SignInView().routeName);
         })
       ],
       children: [
         const Align(
           alignment: Alignment.centerRight,
-          child: IconRoute(
-              routeName: SettingsView.routeName,
-              iconData: SettingsView.routeIcon),
+          child: IconRoute(routeView: SettingsView()),
         ),
         Text("name: $name"),
         Text("uuid: $uuid"),

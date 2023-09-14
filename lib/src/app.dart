@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ncue_app/src/features/basic/password_reset_view.dart';
 import 'package:ncue_app/src/features/basic/phone_input_view.dart';
 import 'package:ncue_app/src/features/basic/profile_view.dart';
+import 'package:ncue_app/src/features/basic/route_view.dart';
 import 'package:ncue_app/src/features/basic/sign_in_view.dart';
 import 'package:ncue_app/src/features/basic/sms_view.dart';
 import 'package:ncue_app/src/features/devices/device_detail_view.dart';
@@ -14,22 +15,16 @@ import 'features/basic/home_view.dart';
 import 'features/bluetooth/flutterblueapp.dart';
 import 'features/item_system/item_details_view.dart';
 import 'features/mqtt/mqttapp.dart';
-import 'features/settings/settings_controller.dart';
 import 'features/settings/settings_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppRoot extends StatelessWidget {
-  const AppRoot({
-    super.key,
-    required this.settingsController,
-  });
-
-  final SettingsController settingsController;
+  const AppRoot({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: settingsController,
+      animation: RouteView.settingsController,
       builder: (BuildContext context, Widget? child) {
         return MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -49,26 +44,27 @@ class AppRoot extends StatelessWidget {
             ],
             theme: ThemeData(),
             darkTheme: ThemeData.dark(),
-            themeMode: settingsController.themeMode,
+            themeMode: RouteView.settingsController.themeMode,
             initialRoute: FirebaseAuth.instance.currentUser == null
-                ? SignInView.routeName
-                : Home.routeName,
+                ? const SignInView().routeName
+                : const Home().routeName,
             routes: {
-              Home.routeName: (context) => const Home(),
-              SignInView.routeName: (context) => const SignInView(),
-              ProfileView.routeName: (context) => const ProfileView(),
+              const Home().routeName: (context) => const Home(),
+              const SignInView().routeName: (context) => const SignInView(),
+              const ProfileView().routeName: (context) => const ProfileView(),
               DeviceDetailsView.routeName: (context) =>
                   const DeviceDetailsView(),
-              PasswordResetView.routeName: (context) =>
+              const PasswordResetView().routeName: (context) =>
                   const PasswordResetView(),
-              PhoneView.routeName: (context) => const PhoneView(),
-              SmsView.routeName: (context) => const SmsView(),
-              FlutterBlueApp.routeName: (context) => const FlutterBlueApp(),
-              MqttPage.routeName: (context) => const MqttPage(),
-              SettingsView.routeName: (context) =>
-                  SettingsView(controller: settingsController),
-              ItemDetailsView.routeName: (context) => const ItemDetailsView(),
-              WebView.routeName: (context) => const WebView()
+              const PhoneView().routeName: (context) => const PhoneView(),
+              const SmsView().routeName: (context) => const SmsView(),
+              const FlutterBlueApp().routeName: (context) =>
+                  const FlutterBlueApp(),
+              const MqttPage().routeName: (context) => const MqttPage(),
+              const SettingsView().routeName: (context) => const SettingsView(),
+              const ItemDetailsView().routeName: (context) =>
+                  const ItemDetailsView(),
+              const WebView().routeName: (context) => const WebView(),
             });
       },
     );

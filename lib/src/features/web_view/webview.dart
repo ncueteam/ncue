@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ncue_app/src/features/basic/route_view.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'web_login.dart';
 
-class WebView extends StatefulWidget {
-  const WebView({super.key});
-
-  static const String routeName = '/webview';
-  static const IconData routeIcon = Icons.web;
+class WebView extends RouteView {
+  const WebView({super.key})
+      : super(routeName: '/webview', routeIcon: Icons.web);
 
   @override
   WebViewState createState() => WebViewState();

@@ -45,8 +45,14 @@ class UserService {
       UserModel model =
           UserModel(user.displayName ?? user.email ?? user.uid, user.uid);
       List<Map<String, dynamic>> favoritePages = [
-        {"page_name": MqttPage.routeName, "page_icon": MqttPage.routeIcon},
-        {"page_name": MqttPage.routeName, "page_icon": MqttPage.routeIcon},
+        {
+          "page_name": const MqttPage().routeName,
+          "page_icon": const MqttPage().routeIcon
+        },
+        {
+          "page_name": const MqttPage().routeName,
+          "page_icon": const MqttPage().routeIcon
+        },
       ];
       database.collection('users').add({
         'name': model.name,

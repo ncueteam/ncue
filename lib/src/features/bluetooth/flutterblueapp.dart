@@ -9,6 +9,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:ncue_app/src/features/basic/route_view.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'bluetoothoffscreen.dart';
@@ -19,7 +20,8 @@ import 'widgets.dart';
 final snackBarKeyA = GlobalKey<ScaffoldMessengerState>();
 final snackBarKeyB = GlobalKey<ScaffoldMessengerState>();
 final snackBarKeyC = GlobalKey<ScaffoldMessengerState>();
-final Map<DeviceIdentifier, ValueNotifier<bool>> isConnectingOrDisconnecting = {};
+final Map<DeviceIdentifier, ValueNotifier<bool>> isConnectingOrDisconnecting =
+    {};
 
 TextEditingController wifiNameController = TextEditingController();
 TextEditingController wifiPasswordController = TextEditingController();
@@ -50,12 +52,15 @@ class BluetoothAdapterStateObserver extends NavigatorObserver {
   }
 }
 
-class FlutterBlueApp extends StatelessWidget {
-  const FlutterBlueApp({Key? key}) : super(key: key);
+class FlutterBlueApp extends RouteView {
+  const FlutterBlueApp({super.key})
+      : super(routeName: '/bluetooth', routeIcon: Icons.bluetooth);
 
-  static const String routeName = '/bluetooth';
-  static const IconData routeIcon = Icons.bluetooth;
+  @override
+  State<FlutterBlueApp> createState() => _FlutterBlueAppState();
+}
 
+class _FlutterBlueAppState extends State<FlutterBlueApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -76,5 +81,3 @@ class FlutterBlueApp extends StatelessWidget {
     );
   }
 }
-
-

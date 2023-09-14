@@ -1,12 +1,11 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:ncue_app/src/features/basic/route_view.dart';
 import '../settings/settings_view.dart';
 
-class SignInView extends StatefulWidget {
-  const SignInView({super.key});
-
-  static const routeName = '/sign-in';
+class SignInView extends RouteView {
+  const SignInView({super.key})
+      : super(routeName: '/sign-in', routeIcon: Icons.login);
 
   @override
   State<SignInView> createState() => _SignInViewState();
@@ -29,7 +28,8 @@ class _SignInViewState extends State<SignInView> {
             child: IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {
-                Navigator.restorablePushNamed(context, SettingsView.routeName);
+                Navigator.restorablePushNamed(
+                    context, const SettingsView().routeName);
               },
             ));
       },

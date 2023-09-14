@@ -1,11 +1,10 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue_app/src/features/basic/route_view.dart';
 
-class PhoneView extends StatefulWidget {
-  const PhoneView({super.key});
-
-  static const routeName = '/phone';
-  static const routeIcon = Icons.abc;
+class PhoneView extends RouteView {
+  const PhoneView({super.key})
+      : super(routeName: '/phone', routeIcon: Icons.abc);
 
   @override
   State<PhoneView> createState() => _PhoneInputViewState();

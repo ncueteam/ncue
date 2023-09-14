@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:ncue_app/src/features/basic/route_view.dart';
 
-class MqttPage extends StatefulWidget {
-  const MqttPage({super.key});
-
-  static const String routeName = '/mqtt';
-  static const IconData routeIcon = Icons.chat;
+class MqttPage extends RouteView {
+  const MqttPage({super.key})
+      : super(routeName: '/mqtt', routeIcon: Icons.chat);
 
   @override
   MqttPageState createState() => MqttPageState();

@@ -51,7 +51,7 @@ class _UnitState extends State<Unit> {
               foregroundImage: AssetImage(item.iconPath),
             ),
             onTap: () {
-              Navigator.pushNamed(context, ItemDetailsView.routeName,
+              Navigator.pushNamed(context, const ItemDetailsView().routeName,
                   arguments: {'item': item});
             });
     }

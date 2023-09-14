@@ -1,12 +1,10 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue_app/src/features/basic/route_view.dart';
 
-class SmsView extends StatefulWidget {
-  const SmsView({super.key});
-
-  static const routeName = '/sms';
-  static const routeIcon = Icons.message;
-
+class SmsView extends RouteView {
+  const SmsView({super.key})
+      : super(routeName: '/sms', routeIcon: Icons.message);
   @override
   State<SmsView> createState() => _PhoneInputViewState();
 }

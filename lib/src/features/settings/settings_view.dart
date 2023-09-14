@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'settings_controller.dart';
+import 'package:ncue_app/src/features/basic/route_view.dart';
 
-class SettingsView extends StatelessWidget {
-  const SettingsView({super.key, required this.controller});
+class SettingsView extends RouteView {
+  const SettingsView({super.key})
+      : super(routeName: '/settings', routeIcon: Icons.settings);
 
-  static const routeName = '/settings';
-  static const IconData routeIcon = Icons.settings;
+  @override
+  State<SettingsView> createState() => _SettingsViewState();
+}
 
-  final SettingsController controller;
-
+class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,26 +18,27 @@ class SettingsView extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
+          DropdownButton<ThemeMode>(
             padding: const EdgeInsets.all(16),
-            child: DropdownButton<ThemeMode>(
-              value: controller.themeMode,
-              onChanged: controller.updateThemeMode,
-              items: const [
-                DropdownMenuItem(
-                  value: ThemeMode.system,
-                  child: Text('System Theme'),
-                ),
-                DropdownMenuItem(
-                  value: ThemeMode.light,
-                  child: Text('Light Theme'),
-                ),
-                DropdownMenuItem(
-                  value: ThemeMode.dark,
-                  child: Text('Dark Theme'),
-                )
-              ],
-            ),
+            value: RouteView.settingsController.themeMode,
+            onChanged: (themeMode) async {
+              await RouteView.settingsController.updateThemeMode(themeMode);
+              setState(() {});
+            },
+            items: const [
+              DropdownMenuItem(
+                value: ThemeMode.system,
+                child: Text('System Theme'),
+              ),
+              DropdownMenuItem(
+                value: ThemeMode.light,
+                child: Text('Light Theme'),
+              ),
+              DropdownMenuItem(
+                value: ThemeMode.dark,
+                child: Text('Dark Theme'),
+              )
+            ],
           ),
           Padding(
             padding: const EdgeInsets.all(16),
