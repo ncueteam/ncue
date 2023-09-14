@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -170,7 +172,8 @@ class DeviceScreen extends StatelessWidget {
                       isConnectingOrDisconnecting[device.remoteId]!.value =
                           true;
                       try {
-                        await device.connect(timeout: Duration(seconds: 35));
+                        await device.connect(
+                            timeout: const Duration(seconds: 35));
                         final snackBar = snackBarGood("Connect: Success");
                         snackBarKeyC.currentState?.removeCurrentSnackBar();
                         snackBarKeyC.currentState?.showSnackBar(snackBar);
@@ -202,8 +205,8 @@ class DeviceScreen extends StatelessWidget {
                       if (isConnectingOrDisconnecting[device.remoteId]!.value ==
                           true) {
                         // Show spinner when connecting or disconnecting
-                        return Padding(
-                          padding: const EdgeInsets.all(14.0),
+                        return const Padding(
+                          padding: EdgeInsets.all(14.0),
                           child: AspectRatio(
                             aspectRatio: 1.0,
                             child: CircularProgressIndicator(
@@ -309,11 +312,11 @@ class DeviceScreen extends StatelessWidget {
                           ),
                           const IconButton(
                             icon: SizedBox(
+                              width: 18.0,
+                              height: 18.0,
                               child: CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation(Colors.grey),
                               ),
-                              width: 18.0,
-                              height: 18.0,
                             ),
                             onPressed: null,
                           )
@@ -340,8 +343,7 @@ class DeviceScreen extends StatelessWidget {
   }
 
   Stream<int> rssiStream(
-      {Duration frequency = const Duration(seconds: 5),
-      int? maxItems = null}) async* {
+      {Duration frequency = const Duration(seconds: 5), int? maxItems}) async* {
     var isConnected = true;
     final subscription = device.connectionState.listen((v) {
       isConnected = v == BluetoothConnectionState.connected;
@@ -351,7 +353,7 @@ class DeviceScreen extends StatelessWidget {
       try {
         yield await device.readRssi();
       } catch (e) {
-        print("Error reading RSSI: $e");
+        debugPrint("Error reading RSSI: $e");
         break;
       }
       await Future.delayed(frequency);

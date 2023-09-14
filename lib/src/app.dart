@@ -2,20 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:ncue_app/src/features/auth_system/password_reset_view.dart';
-import 'package:ncue_app/src/features/auth_system/phone_input_view.dart';
-import 'package:ncue_app/src/features/auth_system/profile_view.dart';
-import 'package:ncue_app/src/features/auth_system/route_view.dart';
+import 'package:ncue_app/src/features/basic/route_view.dart';
 import 'package:ncue_app/src/features/auth_system/sign_in_view.dart';
-import 'package:ncue_app/src/features/auth_system/sms_view.dart';
-import 'package:ncue_app/src/features/devices/device_detail_view.dart';
-import 'package:ncue_app/src/features/web_view/webview.dart';
 
 import 'features/basic/home_view.dart';
-import 'features/bluetooth/flutterblueapp.dart';
-import 'features/item_system/item_details_view.dart';
-import 'features/mqtt/mqttapp.dart';
-import 'features/settings/settings_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppRoot extends StatelessWidget {
@@ -48,24 +38,10 @@ class AppRoot extends StatelessWidget {
             initialRoute: FirebaseAuth.instance.currentUser == null
                 ? const SignInView().routeName
                 : const Home().routeName,
-            routes: {
-              const Home().routeName: (context) => const Home(),
-              const SignInView().routeName: (context) => const SignInView(),
-              const ProfileView().routeName: (context) => const ProfileView(),
-              DeviceDetailsView.routeName: (context) =>
-                  const DeviceDetailsView(),
-              const PasswordResetView().routeName: (context) =>
-                  const PasswordResetView(),
-              const PhoneView().routeName: (context) => const PhoneView(),
-              const SmsView().routeName: (context) => const SmsView(),
-              const BluetoothView().routeName: (context) =>
-                  const BluetoothView(),
-              const MqttPage().routeName: (context) => const MqttPage(),
-              const SettingsView().routeName: (context) => const SettingsView(),
-              const ItemDetailsView().routeName: (context) =>
-                  const ItemDetailsView(),
-              const WebView().routeName: (context) => const WebView(),
-            });
+            routes: RouteView.pages.fold({}, (map, routeView) {
+              map[routeView.routeName] = (context) => routeView;
+              return map;
+            }));
       },
     );
   }

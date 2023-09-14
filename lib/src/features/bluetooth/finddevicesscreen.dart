@@ -30,7 +30,7 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                   androidUsesFineLocation: false);
             }
             return Future.delayed(
-                Duration(milliseconds: 500)); // show refresh icon breifly
+                const Duration(milliseconds: 500)); // show refresh icon breifly
           },
           child: SingleChildScrollView(
             child: Column(
@@ -57,7 +57,7 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                                           .push(MaterialPageRoute(
                                               builder: (context) =>
                                                   DeviceScreen(device: d),
-                                              settings: RouteSettings(
+                                              settings: const RouteSettings(
                                                   name: '/deviceScreen'))),
                                     );
                                   }
@@ -77,8 +77,10 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                                                         .value = true;
                                                     d
                                                         .connect(
-                                                            timeout: Duration(
-                                                                seconds: 35))
+                                                            timeout:
+                                                                const Duration(
+                                                                    seconds:
+                                                                        35))
                                                         .catchError((e) {
                                                       final snackBar =
                                                           snackBarFail(
@@ -101,7 +103,7 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                                                     return DeviceScreen(
                                                         device: d);
                                                   },
-                                                  settings: RouteSettings(
+                                                  settings: const RouteSettings(
                                                       name: '/deviceScreen')));
                                         });
                                   }
@@ -133,7 +135,8 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                                           .value = true;
                                       r.device
                                           .connect(
-                                              timeout: Duration(seconds: 35))
+                                              timeout:
+                                                  const Duration(seconds: 35))
                                           .catchError((e) {
                                         final snackBar = snackBarFail(
                                             prettyException(
@@ -151,8 +154,8 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                                       });
                                       return DeviceScreen(device: r.device);
                                     },
-                                    settings:
-                                        RouteSettings(name: '/deviceScreen'))),
+                                    settings: const RouteSettings(
+                                        name: '/deviceScreen'))),
                           ),
                         )
                         .toList(),
@@ -168,7 +171,6 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
           builder: (c, snapshot) {
             if (snapshot.data ?? false) {
               return FloatingActionButton(
-                child: const Icon(Icons.stop),
                 onPressed: () async {
                   try {
                     FlutterBluePlus.stopScan();
@@ -180,6 +182,7 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
                   }
                 },
                 backgroundColor: Colors.red,
+                child: const Icon(Icons.stop),
               );
             } else {
               return FloatingActionButton(

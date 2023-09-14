@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:ncue_app/src/features/basic/route_view.dart';
 import 'package:ncue_app/src/features/devices/device_model.dart';
 
-class DeviceDetailsView extends StatelessWidget {
-  const DeviceDetailsView({super.key});
+class DeviceDetailsView extends RouteView {
+  const DeviceDetailsView({super.key})
+      : super(
+            routeName: '/device_detail_view',
+            routeIcon: Icons.medical_information);
 
-  static const routeName = '/device_detail_view';
+  @override
+  State<DeviceDetailsView> createState() => _DeviceDetailsViewState();
+}
 
+class _DeviceDetailsViewState extends State<DeviceDetailsView> {
   @override
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)?.settings.arguments;

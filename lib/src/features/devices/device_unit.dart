@@ -50,7 +50,7 @@ class _DeviceUnitState extends State<DeviceUnit> {
             },
           )),
       onTap: () {
-        Navigator.pushNamed(context, DeviceDetailsView.routeName,
+        Navigator.pushNamed(context, const DeviceDetailsView().routeName,
             arguments: {'data': device});
       },
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/auth_system/route_view.dart';
+import 'package:ncue_app/src/features/basic/route_view.dart';
 import 'package:ncue_app/src/features/item_system/data_item.dart';
 
 class ItemDetailsView extends RouteView {
