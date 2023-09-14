@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/basic/icon_route.dart';
 import 'package:ncue_app/src/features/basic/route_view.dart';
 import 'package:ncue_app/src/features/auth_system/sign_in_view.dart';
 import 'package:ncue_app/src/features/settings/settings_view.dart';
@@ -49,9 +48,9 @@ class _ProfileViewState extends State<ProfileView> {
         })
       ],
       children: [
-        const Align(
+        Align(
           alignment: Alignment.centerRight,
-          child: IconRoute(routeView: SettingsView()),
+          child: const SettingsView().getIconButton(context),
         ),
         Text("name: $name"),
         Text("uuid: $uuid"),

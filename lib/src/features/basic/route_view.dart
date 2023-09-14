@@ -20,6 +20,17 @@ abstract class RouteView extends StatefulWidget {
   final IconData routeIcon;
   const RouteView({Key? key, required this.routeName, required this.routeIcon})
       : super(key: key);
+
+  IconButton getIconButton(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        Navigator.pushNamed(context, routeName,
+            arguments: const Home().routeName);
+      },
+      icon: Icon(routeIcon),
+    );
+  }
+
   static final SettingsController settingsController =
       SettingsController(SettingsService());
   static Future<void> loadRouteViewSettings() async {

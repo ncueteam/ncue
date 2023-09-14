@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/basic/icon_route.dart';
 import 'package:ncue_app/src/features/auth_system/profile_view.dart';
 import 'package:ncue_app/src/features/basic/route_view.dart';
 import 'package:ncue_app/src/features/basic/unit.dart';
@@ -47,8 +46,8 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.appTitle),
         actions: [
-          const IconRoute(routeView: SettingsView()),
-          const IconRoute(routeView: BluetoothView()),
+          const SettingsView().getIconButton(context),
+          const BluetoothView().getIconButton(context),
           IconButton(
               onPressed: () {
                 setState(() {});

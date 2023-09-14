@@ -49,7 +49,6 @@ class AppRoot extends StatelessWidget {
 
 class LabelOverrides extends DefaultLocalizations {
   LabelOverrides();
-
   @override
   String get registerHintText => '還沒註冊帳號?';
   @override
