@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
         title: Text(AppLocalizations.of(context)!.appTitle),
         actions: [
           const IconRoute(routeView: SettingsView()),
-          const IconRoute(routeView: FlutterBlueApp()),
+          const IconRoute(routeView: BluetoothView()),
           IconButton(
               onPressed: () {
                 setState(() {});

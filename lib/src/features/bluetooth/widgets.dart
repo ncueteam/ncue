@@ -1,12 +1,8 @@
-// Copyright 2023, Charles Weinberger & Paul DeMarco.
-// All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
-final String SERVICE_UUID = "00009011-0000-1000-8000-00805F9B34FB";
-final String CHARACTERISTIC_UUID = "00009012-0000-1000-8000-00805F9B34FB";
+const String serviceuuid = "00009011-0000-1000-8000-00805F9B34FB";
+const String characteristicuuid = "00009012-0000-1000-8000-00805F9B34FB";
 
 class ScanResultTile extends StatelessWidget {
   const ScanResultTile({Key? key, required this.result, this.onTap})
@@ -132,7 +128,7 @@ class ServiceTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (service.serviceUuid.toString().toUpperCase() == SERVICE_UUID) {
+    if (service.serviceUuid.toString().toUpperCase() == serviceuuid) {
       return ExpansionTile(
         title: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -179,36 +175,36 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
       stream: widget.characteristic.onValueReceived,
       initialData: widget.characteristic.lastValue,
       builder: (context, snapshot) {
-        final List<int>? value = snapshot.data;
+        // final List<int>? value = snapshot.data;
         if (widget.characteristic.characteristicUuid.toString().toUpperCase() ==
-            CHARACTERISTIC_UUID) {
+            characteristicuuid) {
           return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // const Text('Characteristic'),
+              // Text(
+              //   '0x${widget.characteristic.characteristicUuid.toString().toUpperCase()}',
+              //   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              //       color: Theme.of(context).textTheme.bodySmall?.color),
+              // ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // const Text('Characteristic'),
-                  // Text(
-                  //   '0x${widget.characteristic.characteristicUuid.toString().toUpperCase()}',
-                  //   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  //       color: Theme.of(context).textTheme.bodySmall?.color),
-                  // ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      if (widget.characteristic.properties.write)
-                        ElevatedButton(
-                            child: Text(widget.characteristic.properties
-                                    .writeWithoutResponse
-                                ? "WriteNoResp"
-                                : "Submit"),
-                            onPressed: () async {
-                              await widget.onWritePressed!();
-                              setState(() {});
-                            }),
-                    ],
-                  )
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  if (widget.characteristic.properties.write)
+                    ElevatedButton(
+                        child: Text(widget
+                                .characteristic.properties.writeWithoutResponse
+                            ? "WriteNoResp"
+                            : "Submit"),
+                        onPressed: () async {
+                          await widget.onWritePressed!();
+                          setState(() {});
+                        }),
                 ],
+              )
+            ],
           );
         } else {
           return SizedBox.shrink();

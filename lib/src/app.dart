@@ -58,8 +58,8 @@ class AppRoot extends StatelessWidget {
                   const PasswordResetView(),
               const PhoneView().routeName: (context) => const PhoneView(),
               const SmsView().routeName: (context) => const SmsView(),
-              const FlutterBlueApp().routeName: (context) =>
-                  const FlutterBlueApp(),
+              const BluetoothView().routeName: (context) =>
+                  const BluetoothView(),
               const MqttPage().routeName: (context) => const MqttPage(),
               const SettingsView().routeName: (context) => const SettingsView(),
               const ItemDetailsView().routeName: (context) =>

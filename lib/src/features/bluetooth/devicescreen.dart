@@ -1,20 +1,9 @@
-// Copyright 2023, Charles Weinberger & Paul DeMarco.
-// All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 import 'flutterblueapp.dart';
-import 'bluetoothoffscreen.dart';
-import 'finddevicesscreen.dart';
 import 'widgets.dart';
 
 class DeviceScreen extends StatelessWidget {

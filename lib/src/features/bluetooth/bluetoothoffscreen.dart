@@ -1,16 +1,6 @@
-// Copyright 2023, Charles Weinberger & Paul DeMarco.
-// All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
-import 'dart:async';
 import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 import 'flutterblueapp.dart';
 import 'devicescreen.dart';
 import 'widgets.dart';
@@ -37,7 +27,10 @@ class BluetoothOffScreen extends StatelessWidget {
               ),
               Text(
                 'Bluetooth Adapter is ${adapterState != null ? adapterState.toString().split(".").last : 'not available'}.',
-                style: Theme.of(context).primaryTextTheme.titleSmall?.copyWith(color: Colors.white),
+                style: Theme.of(context)
+                    .primaryTextTheme
+                    .titleSmall
+                    ?.copyWith(color: Colors.white),
               ),
               if (Platform.isAndroid)
                 ElevatedButton(
@@ -48,7 +41,8 @@ class BluetoothOffScreen extends StatelessWidget {
                         await FlutterBluePlus.turnOn();
                       }
                     } catch (e) {
-                      final snackBar = snackBarFail(prettyException("Error Turning On:", e));
+                      final snackBar =
+                          snackBarFail(prettyException("Error Turning On:", e));
                       snackBarKeyA.currentState?.removeCurrentSnackBar();
                       snackBarKeyA.currentState?.showSnackBar(snackBar);
                     }
