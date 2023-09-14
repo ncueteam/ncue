@@ -2,12 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:ncue_app/src/features/basic/password_reset_view.dart';
-import 'package:ncue_app/src/features/basic/phone_input_view.dart';
-import 'package:ncue_app/src/features/basic/profile_view.dart';
-import 'package:ncue_app/src/features/basic/route_view.dart';
-import 'package:ncue_app/src/features/basic/sign_in_view.dart';
-import 'package:ncue_app/src/features/basic/sms_view.dart';
+import 'package:ncue_app/src/features/auth_system/password_reset_view.dart';
+import 'package:ncue_app/src/features/auth_system/phone_input_view.dart';
+import 'package:ncue_app/src/features/auth_system/profile_view.dart';
+import 'package:ncue_app/src/features/auth_system/route_view.dart';
+import 'package:ncue_app/src/features/auth_system/sign_in_view.dart';
+import 'package:ncue_app/src/features/auth_system/sms_view.dart';
 import 'package:ncue_app/src/features/devices/device_detail_view.dart';
 import 'package:ncue_app/src/features/web_view/webview.dart';
 

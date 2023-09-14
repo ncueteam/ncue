@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ncue_app/src/features/basic/icon_route.dart';
-import 'package:ncue_app/src/features/basic/profile_view.dart';
-import 'package:ncue_app/src/features/basic/route_view.dart';
+import 'package:ncue_app/src/features/auth_system/profile_view.dart';
+import 'package:ncue_app/src/features/auth_system/route_view.dart';
 import 'package:ncue_app/src/features/basic/unit.dart';
 import 'package:ncue_app/src/features/devices/device_model.dart';
 import 'package:ncue_app/src/features/devices/device_service.dart';
