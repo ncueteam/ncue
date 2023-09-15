@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/devices/device_detail_view.dart';
-import 'package:ncue_app/src/features/devices/device_model.dart';
 import 'dart:math';
 
-import 'package:ncue_app/src/features/devices/device_service.dart';
+import 'package:flutter/material.dart';
+import 'device_detail_view.dart';
+import 'device_model.dart';
+import 'device_service.dart';
 
 class DeviceUnit extends StatefulWidget {
   const DeviceUnit(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/basic/route_view.dart';
-import 'package:ncue_app/src/features/devices/device_model.dart';
-import 'package:ncue_app/src/features/devices/device_unit.dart';
-import 'package:ncue_app/src/features/item_system/data_item.dart';
-import 'package:ncue_app/src/features/user/user_model.dart';
 
+import '../devices/device_model.dart';
+import '../devices/device_unit.dart';
+import '../item_system/data_item.dart';
 import '../item_system/item_details_view.dart';
+import '../user/user_model.dart';
+import 'route_view.dart';
 
 class Unit extends StatefulWidget {
   const Unit({super.key, required this.item});

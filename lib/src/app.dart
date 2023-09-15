@@ -2,11 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:ncue_app/src/features/basic/route_view.dart';
-import 'package:ncue_app/src/features/auth_system/sign_in_view.dart';
 
+import 'features/auth_system/sign_in_view.dart';
 import 'features/basic/home_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'features/basic/route_view.dart';
 
 class AppRoot extends StatelessWidget {
   const AppRoot({super.key});

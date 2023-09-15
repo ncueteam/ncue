@@ -1,5 +1,5 @@
-name: ncue_app
-description: A new Flutter project.
+name: ncue.aiot_app
+description: NCUE team
 publish_to: 'none'
 
 version: 7.0.0+13
@@ -55,7 +55,6 @@ dependencies:
   #mqtt
   mqtt_client: ^9.8.1
   intl: any
-
 
 dev_dependencies:
   flutter_test:

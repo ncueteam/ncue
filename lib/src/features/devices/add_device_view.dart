@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/basic/home_view.dart';
-import 'package:ncue_app/src/features/basic/route_view.dart';
-import 'package:ncue_app/src/features/devices/device_service.dart';
-import 'package:ncue_app/src/features/user/user_model.dart';
 import 'package:uuid/uuid.dart';
-
+import '../basic/home_view.dart';
+import '../basic/route_view.dart';
+import '../user/user_model.dart';
 import '../user/user_service.dart';
+import 'device_service.dart';
 
 class AddDeviceView extends RouteView {
   const AddDeviceView({super.key})

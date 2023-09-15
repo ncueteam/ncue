@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/basic/route_view.dart';
-import 'package:ncue_app/src/features/item_system/data_item.dart';
+import '../basic/route_view.dart';
+import 'data_item.dart';
 
 class ItemDetailsView extends RouteView {
   const ItemDetailsView({super.key})

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/item_system/data_item.dart';
 import 'package:uuid/uuid.dart';
+
+import '../item_system/data_item.dart';
 
 class DeviceModel {
   DeviceModel(this.name, this.powerOn, this.uuid,

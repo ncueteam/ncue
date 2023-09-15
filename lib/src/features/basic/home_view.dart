@@ -1,21 +1,22 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/auth_system/profile_view.dart';
-import 'package:ncue_app/src/features/basic/route_view.dart';
-import 'package:ncue_app/src/features/basic/unit.dart';
-import 'package:ncue_app/src/features/devices/add_device_view.dart';
-import 'package:ncue_app/src/features/devices/device_model.dart';
-import 'package:ncue_app/src/features/devices/device_service.dart';
-import 'package:ncue_app/src/features/mqtt/mqttapp.dart';
-import 'package:ncue_app/src/features/user/user_model.dart';
-import 'package:ncue_app/src/features/user/user_service.dart';
-import 'package:ncue_app/src/features/web_view/webview.dart';
 
+import '../auth_system/profile_view.dart';
 import '../bluetooth/flutterblueapp.dart';
+import '../devices/add_device_view.dart';
+import '../devices/device_model.dart';
+import '../devices/device_service.dart';
+import '../mqtt/mqttapp.dart';
 import '../settings/settings_view.dart';
 import '../item_system/data_item.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../user/user_model.dart';
+import '../user/user_service.dart';
+import '../web_view/webview.dart';
+import 'route_view.dart';
+import 'unit.dart';
 
 class Home extends RouteView {
   const Home({super.key}) : super(routeName: '/home', routeIcon: Icons.home);

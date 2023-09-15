@@ -45,27 +45,30 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyAPzVC7xfFn8fyBBjVzul2Qtx7RJIW69EI',
-    appId: '1:117149850724:web:7993e060bd2f67ee13d371',
+    appId: '1:117149850724:web:5441362d38bcfec813d371',
     messagingSenderId: '117149850724',
     projectId: 'ncueapp',
     authDomain: 'ncueapp.firebaseapp.com',
+    databaseURL: 'https://ncueapp-default-rtdb.firebaseio.com',
     storageBucket: 'ncueapp.appspot.com',
-    measurementId: 'G-6K4L6996SC',
+    measurementId: 'G-R3SRFJ3MGG',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBoy6rA6aun794_rhtAM0g1MFK3KXCMhfo',
-    appId: '1:117149850724:android:5bec7a6b6aa3bc5d13d371',
+    appId: '1:117149850724:android:fae1f79cb7a6361013d371',
     messagingSenderId: '117149850724',
     projectId: 'ncueapp',
+    databaseURL: 'https://ncueapp-default-rtdb.firebaseio.com',
     storageBucket: 'ncueapp.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAVBc0bQry4i0EqRs0JxbnTaCV8EaEJj9g',
-    appId: '1:117149850724:ios:1ed0b0ae0085758313d371',
+    appId: '1:117149850724:ios:55671c505341727113d371',
     messagingSenderId: '117149850724',
     projectId: 'ncueapp',
+    databaseURL: 'https://ncueapp-default-rtdb.firebaseio.com',
     storageBucket: 'ncueapp.appspot.com',
     androidClientId: '117149850724-mjqos8iuusrmp24gtpnob97cajcql7bj.apps.googleusercontent.com',
     iosClientId: '117149850724-d7durmk67ngqa9atv858e4mdfhej6n5n.apps.googleusercontent.com',
@@ -74,9 +77,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAVBc0bQry4i0EqRs0JxbnTaCV8EaEJj9g',
-    appId: '1:117149850724:ios:7db61c3a21864ea213d371',
+    appId: '1:117149850724:ios:d65d9b5e3149fddb13d371',
     messagingSenderId: '117149850724',
     projectId: 'ncueapp',
+    databaseURL: 'https://ncueapp-default-rtdb.firebaseio.com',
     storageBucket: 'ncueapp.appspot.com',
     androidClientId: '117149850724-mjqos8iuusrmp24gtpnob97cajcql7bj.apps.googleusercontent.com',
     iosClientId: '117149850724-84l02l0ki5eq9mvvnjvsnhcqnt7nlvgd.apps.googleusercontent.com',

@@ -1,6 +1,7 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/basic/route_view.dart';
+
+import '../basic/route_view.dart';
 
 class PasswordResetView extends RouteView {
   const PasswordResetView({super.key})

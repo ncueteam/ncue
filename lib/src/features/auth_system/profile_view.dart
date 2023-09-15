@@ -1,8 +1,9 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/basic/route_view.dart';
-import 'package:ncue_app/src/features/auth_system/sign_in_view.dart';
-import 'package:ncue_app/src/features/settings/settings_view.dart';
+
+import '../basic/route_view.dart';
+import '../settings/settings_view.dart';
+import 'sign_in_view.dart';
 
 class ProfileView extends RouteView {
   const ProfileView({super.key})

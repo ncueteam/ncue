@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/devices/add_device_view.dart';
-import 'package:ncue_app/src/features/settings/settings_controller.dart';
 
 import '../auth_system/password_reset_view.dart';
 import '../auth_system/phone_input_view.dart';
@@ -8,9 +6,11 @@ import '../auth_system/profile_view.dart';
 import '../auth_system/sign_in_view.dart';
 import '../auth_system/sms_view.dart';
 import '../bluetooth/flutterblueapp.dart';
+import '../devices/add_device_view.dart';
 import '../devices/device_detail_view.dart';
 import '../item_system/item_details_view.dart';
 import '../mqtt/mqttapp.dart';
+import '../settings/settings_controller.dart';
 import '../settings/settings_service.dart';
 import '../settings/settings_view.dart';
 import '../web_view/webview.dart';

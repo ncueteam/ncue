@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ncue_app/src/features/devices/device_model.dart';
+
+import 'device_model.dart';
 
 class DeviceService {
   FirebaseFirestore database = FirebaseFirestore.instance;

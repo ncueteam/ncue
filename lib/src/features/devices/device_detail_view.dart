@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/basic/route_view.dart';
-import 'package:ncue_app/src/features/devices/device_model.dart';
+
+import '../basic/route_view.dart';
+import 'device_model.dart';
 
 class DeviceDetailsView extends RouteView {
   const DeviceDetailsView({super.key})

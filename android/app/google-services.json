@@ -1,26 +1,19 @@
 {
   "project_info": {
     "project_number": "117149850724",
+    "firebase_url": "https://ncueapp-default-rtdb.firebaseio.com",
     "project_id": "ncueapp",
     "storage_bucket": "ncueapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:117149850724:android:5bec7a6b6aa3bc5d13d371",
+        "mobilesdk_app_id": "1:117149850724:android:fae1f79cb7a6361013d371",
         "android_client_info": {
           "package_name": "ncue.aiot_app"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "117149850724-mjqos8iuusrmp24gtpnob97cajcql7bj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "ncue.aiot_app",
-            "certificate_hash": "856fa08b47a3f8e07154deaa1f117a20d36e3396"
-          }
-        },
         {
           "client_id": "117149850724-6c6lir1523514hstqh8c8cikcf06fcc3.apps.googleusercontent.com",
           "client_type": 3

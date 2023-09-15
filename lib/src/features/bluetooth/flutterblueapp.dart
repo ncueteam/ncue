@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:ncue_app/src/features/basic/route_view.dart';
 
+import '../basic/route_view.dart';
 import 'bluetoothoffscreen.dart';
 import 'finddevicesscreen.dart';
 

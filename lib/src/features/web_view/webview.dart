@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ncue_app/src/features/basic/route_view.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../basic/route_view.dart';
 import 'web_login.dart';
 
 class WebView extends RouteView {
