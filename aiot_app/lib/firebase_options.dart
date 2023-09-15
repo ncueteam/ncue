@@ -45,13 +45,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyAPzVC7xfFn8fyBBjVzul2Qtx7RJIW69EI',
-    appId: '1:117149850724:web:5441362d38bcfec813d371',
+    appId: '1:117149850724:web:d3ae9dd00c670de513d371',
     messagingSenderId: '117149850724',
     projectId: 'ncueapp',
     authDomain: 'ncueapp.firebaseapp.com',
     databaseURL: 'https://ncueapp-default-rtdb.firebaseio.com',
     storageBucket: 'ncueapp.appspot.com',
-    measurementId: 'G-R3SRFJ3MGG',
+    measurementId: 'G-PX9R2LDGW5',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -65,25 +65,25 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAVBc0bQry4i0EqRs0JxbnTaCV8EaEJj9g',
-    appId: '1:117149850724:ios:55671c505341727113d371',
+    appId: '1:117149850724:ios:e9024e2e66190e9513d371',
     messagingSenderId: '117149850724',
     projectId: 'ncueapp',
     databaseURL: 'https://ncueapp-default-rtdb.firebaseio.com',
     storageBucket: 'ncueapp.appspot.com',
-    androidClientId: '117149850724-mjqos8iuusrmp24gtpnob97cajcql7bj.apps.googleusercontent.com',
-    iosClientId: '117149850724-d7durmk67ngqa9atv858e4mdfhej6n5n.apps.googleusercontent.com',
+    androidClientId: '117149850724-d0apk5n93oebga46tr81751p60ekl8c1.apps.googleusercontent.com',
+    iosClientId: '117149850724-tasscf51vbi1j91t0ti23cdkt1d5gq4n.apps.googleusercontent.com',
     iosBundleId: 'com.example.ncueApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAVBc0bQry4i0EqRs0JxbnTaCV8EaEJj9g',
-    appId: '1:117149850724:ios:d65d9b5e3149fddb13d371',
+    appId: '1:117149850724:ios:b49125bf4010497613d371',
     messagingSenderId: '117149850724',
     projectId: 'ncueapp',
     databaseURL: 'https://ncueapp-default-rtdb.firebaseio.com',
     storageBucket: 'ncueapp.appspot.com',
-    androidClientId: '117149850724-mjqos8iuusrmp24gtpnob97cajcql7bj.apps.googleusercontent.com',
-    iosClientId: '117149850724-84l02l0ki5eq9mvvnjvsnhcqnt7nlvgd.apps.googleusercontent.com',
+    androidClientId: '117149850724-d0apk5n93oebga46tr81751p60ekl8c1.apps.googleusercontent.com',
+    iosClientId: '117149850724-rjd76oj6sfk7n1dk9uptikmiorm99vkb.apps.googleusercontent.com',
     iosBundleId: 'com.example.ncueApp.RunnerTests',
   );
 }

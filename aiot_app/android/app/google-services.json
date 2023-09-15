@@ -15,8 +15,12 @@
       },
       "oauth_client": [
         {
-          "client_id": "117149850724-6c6lir1523514hstqh8c8cikcf06fcc3.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "117149850724-d0apk5n93oebga46tr81751p60ekl8c1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ncue.aiot_app",
+            "certificate_hash": "4d2c01a998424a9e6dfe80829d491fc9dc1c6738"
+          }
         }
       ],
       "api_key": [
@@ -26,19 +30,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "117149850724-6c6lir1523514hstqh8c8cikcf06fcc3.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "117149850724-84l02l0ki5eq9mvvnjvsnhcqnt7nlvgd.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.ncueApp.RunnerTests"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
