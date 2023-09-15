@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"name": "ncue_core",
+			"path": "."
+		},
+		{
+			"name": "serial:/COM8",
+			"uri": "serial://com8/"
+		}
+	]
+}
