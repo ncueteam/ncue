@@ -10,6 +10,6 @@
 
 ### 應用程式的部分
 
-## aiot_app
+## aiot_hardware
 
 ### 硬體的部分
