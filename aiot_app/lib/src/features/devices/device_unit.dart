@@ -31,7 +31,6 @@ class _DeviceUnitState extends State<DeviceUnit> {
   Widget build(BuildContext context) {
     return ListTile(
       isThreeLine: true,
-      textColor: Colors.blue[100],
       title: Text(device.name),
       subtitle: Text("裝置類型: ${device.type == "device" ? "一般裝置" : "生物解鎖裝置"}"),
       leading: CircleAvatar(

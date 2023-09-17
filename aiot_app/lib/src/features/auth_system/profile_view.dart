@@ -22,9 +22,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return ProfileScreen(
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-      ),
+      appBar: AppBar(),
       actions: [
         SignedOutAction((context) {
           Navigator.pushReplacementNamed(context, const SignInView().routeName);

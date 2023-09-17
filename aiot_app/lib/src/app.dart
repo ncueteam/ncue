@@ -33,7 +33,9 @@ class AppRoot extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
               FirebaseUILocalizations.delegate,
             ],
-            theme: ThemeData(),
+            theme: ThemeData(
+              primarySwatch: Colors.brown,
+            ),
             darkTheme: ThemeData.dark(),
             themeMode: RouteView.settingsController.themeMode,
             initialRoute: FirebaseAuth.instance.currentUser == null
