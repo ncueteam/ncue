@@ -20,7 +20,7 @@ class AppRoot extends StatelessWidget {
         return MaterialApp(
             debugShowCheckedModeBanner: false,
             restorationScopeId: 'app',
-            locale: const Locale('en'),
+            locale: const Locale('tw'),
             supportedLocales: const [
               Locale('en'),
               Locale('zh_tw'),

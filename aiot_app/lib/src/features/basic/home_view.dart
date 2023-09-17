@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -66,7 +67,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.appTitle),
+        title: Text(
+            " ${AppLocalizations.of(context)!.appTitle} + ${window.locale.languageCode}"),
         actions: [
           const SettingsView().getIconButton(context),
           const BluetoothView().getIconButton(context),

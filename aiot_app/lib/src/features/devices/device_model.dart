@@ -5,13 +5,10 @@ import '../item_system/data_item.dart';
 
 class DeviceModel {
   DeviceModel(this.name, this.powerOn, this.uuid,
-      {this.type = 'switch',
-      this.iconPath = 'assets/images/flutter_logo.png',
-      isisBioAuthcanted = false});
+      {this.type = 'switch', this.iconPath = 'assets/images/flutter_logo.png'});
 
   final String name;
   bool powerOn;
-  bool isBioAuthcanted = false;
   String uuid = const Uuid().v1();
   String type = 'switch';
   String iconPath = 'assets/images/flutter_logo.png';
@@ -23,7 +20,6 @@ class DeviceModel {
     debugPrint("type: $type");
     debugPrint("uuid: $uuid");
     debugPrint("iconPath: $iconPath");
-    debugPrint("isBioAuthcanted: $isBioAuthcanted");
     debugPrint("=================================================");
   }
 

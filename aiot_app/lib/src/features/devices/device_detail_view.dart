@@ -22,7 +22,12 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
 
       return Scaffold(
         appBar: AppBar(
-          title: Text(item.name),
+          title: Row(children: [
+            CircleAvatar(
+                foregroundImage: AssetImage(item.iconPath),
+                backgroundColor: Colors.white),
+            Text("    ${item.name}", style: const TextStyle(fontSize: 30))
+          ]),
         ),
         body: Align(
             alignment: Alignment.center,
@@ -32,11 +37,7 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "裝置名稱: ${item.name}",
-                    style: const TextStyle(fontSize: 30),
-                  ),
-                  Text(
-                    "裝置狀態: ${item.powerOn}",
+                    "裝置狀態: ${item.powerOn ? "開啟" : "關閉"}",
                     style: const TextStyle(fontSize: 20),
                   ),
                   Text(
@@ -44,17 +45,9 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
                     style: const TextStyle(fontSize: 20),
                   ),
                   Text(
-                    "裝置類型: ${item.type}",
+                    "裝置類型: ${item.type == "device" ? "一般裝置" : "生物解鎖裝置"}",
                     style: const TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    "裝置圖像位置: ${item.iconPath}",
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    "裝置生物驗證: ${item.isBioAuthcanted}",
-                    style: const TextStyle(fontSize: 20),
-                  ),
+                  )
                 ],
               ),
             )),

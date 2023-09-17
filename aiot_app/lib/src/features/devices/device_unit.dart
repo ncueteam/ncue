@@ -1,9 +1,10 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/services/local_auth_service.dart';
 import 'device_detail_view.dart';
 import 'device_model.dart';
 import 'device_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeviceUnit extends StatefulWidget {
   const DeviceUnit(
@@ -18,6 +19,7 @@ class DeviceUnit extends StatefulWidget {
 
 class _DeviceUnitState extends State<DeviceUnit> {
   late DeviceModel device;
+  bool authenticated = false;
 
   @override
   void initState() {
@@ -31,27 +33,60 @@ class _DeviceUnitState extends State<DeviceUnit> {
       isThreeLine: true,
       textColor: Colors.blue[100],
       title: Text(device.name),
-      subtitle: const Text("副標頭的部分"),
+      subtitle: Text("裝置類型: ${device.type == "device" ? "一般裝置" : "生物解鎖裝置"}"),
       leading: CircleAvatar(
         foregroundImage: AssetImage(device.iconPath),
         backgroundColor: Colors.white,
       ),
-      trailing: Transform.rotate(
-          angle: pi / 2,
-          child: Switch(
-            value: device.powerOn,
-            onChanged: (bool value) => {
-              setState(
-                () {
-                  device.powerOn = value;
-                  DeviceService().updateDeviceData(device);
+      trailing: device.type == "bio_device" && !authenticated
+          ? IconButton(
+              onPressed: () async {
+                final authenticate = await LocalAuth.authenticate();
+                setState(() {
+                  authenticated = authenticate;
+                });
+              },
+              icon: const Icon(Icons.fingerprint))
+          : Transform.rotate(
+              angle: pi / 2,
+              child: Switch(
+                value: device.powerOn,
+                onChanged: (bool value) => {
+                  setState(
+                    () {
+                      device.powerOn = value;
+                      DeviceService().updateDeviceData(device);
+                    },
+                  )
                 },
-              )
-            },
-          )),
+              )),
       onTap: () {
-        Navigator.pushNamed(context, const DeviceDetailsView().routeName,
-            arguments: {'data': device});
+        if (device.type == "bio_device") {
+          if (authenticated) {
+            Navigator.pushNamed(context, const DeviceDetailsView().routeName,
+                arguments: {'data': device});
+          } else {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text(AppLocalizations.of(context)!.appTitle),
+                    content: const Text("請先通過生物認證!"),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('關閉'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                });
+          }
+        } else if (device.type == "device") {
+          Navigator.pushNamed(context, const DeviceDetailsView().routeName,
+              arguments: {'data': device});
+        }
       },
     );
   }
