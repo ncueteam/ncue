@@ -2,9 +2,8 @@
 
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../models/index.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Global {
   static late SharedPreferences _prefs;
