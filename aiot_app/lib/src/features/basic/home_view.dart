@@ -37,13 +37,17 @@ class _HomeState extends State<Home> {
     items.add(DataItem("route", [const MqttPage()], "MQTT測試"));
     items.add(DataItem("route", [const SensorsPage()], "感應器資料版"));
     items.add(DataItem("route", [const WebViewTest()], "網站版"));
+    List x = [];
     for (DeviceModel device in await DeviceService().loadDeviceData()) {
       if (model.devices.contains(device.uuid)) {
         setState(() {
-          items.add(device.toDataItem());
+          x.add(device);
+          // items.add(device.toDataItem());
         });
       }
     }
+
+    items.add(DataItem("extend", x, "集合"));
   }
 
   Future<void> loadAccount() async {

@@ -23,12 +23,22 @@ class SensorsPageState extends State<SensorsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
+                margin: const EdgeInsets.symmetric(vertical: 20),
                 height: 150,
                 width: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.2),
+                      spreadRadius: 6,
+                      blurRadius: 0,
+                      offset: const Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
                 child: Center(
-                    child: Container(
-                        child: Column(
+                    child: Column(
                   children: <Widget>[
                     Lottie.asset(
                       'assets/lottie/LightRain.json',
@@ -36,13 +46,18 @@ class SensorsPageState extends State<SensorsPage> {
                       height: 100,
                       fit: BoxFit.fill,
                     ),
-                    Text("62.00%",
+                    const Text("62.00%",
                         style: TextStyle(
                           fontSize: 25,
                         )),
-                    Text('humidity')
+                    const Text('humidity')
                   ],
-                ))),
+                )),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 20),
+                height: 150,
+                width: 150,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
@@ -50,18 +65,12 @@ class SensorsPageState extends State<SensorsPage> {
                       color: Colors.blue.withOpacity(0.2),
                       spreadRadius: 6,
                       blurRadius: 0,
-                      offset: Offset(0, 3), // changes position of shadow
+                      offset: const Offset(0, 3), // changes position of shadow
                     ),
                   ],
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                height: 150,
-                width: 150,
                 child: Center(
-                    child: Container(
-                        child: Column(
+                    child: Column(
                   children: <Widget>[
                     Lottie.asset(
                       'assets/lottie/day.json',
@@ -69,24 +78,13 @@ class SensorsPageState extends State<SensorsPage> {
                       height: 100,
                       fit: BoxFit.fill,
                     ),
-                    Text("32.50°C",
+                    const Text("32.50°C",
                         style: TextStyle(
                           fontSize: 25,
                         )),
-                    Text('Temperature')
+                    const Text('Temperature')
                   ],
-                ))),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.blue.withOpacity(0.2),
-                      spreadRadius: 6,
-                      blurRadius: 0,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
+                )),
               ),
             ],
           ),

@@ -67,6 +67,18 @@ class _UnitState extends State<Unit> {
           }
           return Container();
         }
+      case "extend":
+        {
+          return ExpansionTile(
+            title: const Text("家電"),
+            children: item.data
+                .map((e) => DeviceUnit(
+                      deviceData: e,
+                      onChanged: (value) {},
+                    ))
+                .toList(),
+          );
+        }
       case "genric":
       default:
         return ListTile(
