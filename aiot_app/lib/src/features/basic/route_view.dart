@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/web_view/webview.dart';
 
 import '../auth_system/password_reset_view.dart';
 import '../auth_system/phone_input_view.dart';
@@ -13,7 +14,6 @@ import '../mqtt/mqttapp.dart';
 import '../settings/settings_controller.dart';
 import '../settings/settings_service.dart';
 import '../settings/settings_view.dart';
-import '../web_view/webview.dart';
 import 'home_view.dart';
 
 abstract class RouteView extends StatefulWidget {
@@ -51,5 +51,6 @@ abstract class RouteView extends StatefulWidget {
     const SettingsView(),
     const ItemDetailsView(),
     const AddDeviceView(),
+    const WebViewTest()
   ];
 }
