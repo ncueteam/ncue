@@ -89,3 +89,5 @@ flutter:
     - lib/src/icons/
     - lib/src/sounds/
     - assets/
+    - assets/lottie/day.json
+    - assets/lottie/LightRain.json
