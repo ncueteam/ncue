@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/basic/route_view.dart';
+import '../basic/route_view.dart';
+import 'web_register.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'services/globals.dart';
 import 'drawer.dart';
@@ -7,7 +8,8 @@ import 'web_login.dart';
 
 class WebViewTest extends RouteView {
   const WebViewTest({super.key})
-      : super(routeName: "/webview", routeIcon: Icons.web_asset);
+      : super(routeName: '/webview', routeIcon: Icons.web);
+  //const WebViewTest({Key? key}) : super(key: key);
 
   @override
   WebViewTestState createState() => WebViewTestState();
