@@ -14,12 +14,12 @@ class DeviceDetailsView extends RouteView {
 }
 
 class _DeviceDetailsViewState extends State<DeviceDetailsView> {
+  double valueDouble = 28;
   @override
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
       final DeviceModel item = arguments['data'];
-
       return Scaffold(
         appBar: AppBar(
           title: Row(children: [
@@ -47,7 +47,16 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
                   Text(
                     "裝置類型: ${item.type == "device" ? "一般裝置" : "生物解鎖裝置"}",
                     style: const TextStyle(fontSize: 20),
-                  )
+                  ),
+                  Slider(
+                      value: valueDouble,
+                      min: 16.0,
+                      max: 30.0,
+                      onChanged: (value) {
+                        setState(() {
+                          valueDouble = value;
+                        });
+                      }),
                 ],
               ),
             )),
