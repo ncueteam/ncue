@@ -1,15 +1,14 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:encrypt/encrypt.dart';
-
-import 'services/api_manager.dart';
-import 'services/globals.dart';
 import '../basic/services/local_auth_service.dart';
+import 'services/globals.dart';
 import 'services/states.dart';
-import 'models/user.dart';
+import 'package:encrypt/encrypt.dart';
+import 'services/api_manager.dart';
+import 'models/index.dart';
+import 'drawer.dart';
+//ignore_for_file:use_build_context_synchronously
 
 class LoginRoute extends StatefulWidget {
   const LoginRoute({super.key});
@@ -25,7 +24,7 @@ class LoginRouteState extends State<LoginRoute> {
   final GlobalKey _formKey = GlobalKey<FormState>();
   late bool _nameAutoFocus = true;
   bool authenticated = false;
-  String loginMessage = "";
+  String loginMessage="";
 
   @override
   void initState() {
@@ -39,7 +38,6 @@ class LoginRouteState extends State<LoginRoute> {
 
   @override
   Widget build(BuildContext context) {
-    //var gm = GmLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(title: const Text("登入")),
       body: Padding(
@@ -59,14 +57,12 @@ class LoginRouteState extends State<LoginRoute> {
                   ),
                   // 校验用户名（不能为空）
                   validator: (v) {
-                    String regexEmail =
-                        "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$";
-                    if ((v == null || v.trim().isNotEmpty) == false) {
+                    String regexEmail = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$";
+                    if((v==null||v.trim().isNotEmpty)== false){
                       return "電子信箱不能為空";
-                    } else if (RegExp(regexEmail).hasMatch(v!.trim()) ==
-                        false) {
+                    }else if(RegExp(regexEmail).hasMatch(v!.trim())== false){
                       return "格式錯誤";
-                    } else {
+                    }else{
                       return null;
                     }
                   }),
@@ -89,7 +85,7 @@ class LoginRouteState extends State<LoginRoute> {
                 obscureText: !pwdShow,
                 //校验密码（不能为空）
                 validator: (v) {
-                  return v == null || v.trim().isNotEmpty ? null : "密碼不能為空";
+                  return v==null||v.trim().isNotEmpty ? null : "密碼不能為空";
                 },
               ),
               Padding(
@@ -97,9 +93,7 @@ class LoginRouteState extends State<LoginRoute> {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints.expand(height: 55.0),
                   child: ElevatedButton(
-                    // color: Theme.of(context).primaryColor,
                     onPressed: _onLogin,
-                    // textColor: Colors.white,
                     child: const Text("登入"),
                   ),
                 ),
@@ -109,6 +103,7 @@ class LoginRouteState extends State<LoginRoute> {
           ),
         ),
       ),
+      drawer: const MyDrawer(), //抽屉菜单
       floatingActionButton: _fingerPrinter(),
     );
   }
@@ -120,7 +115,7 @@ class LoginRouteState extends State<LoginRoute> {
         setState(() {
           authenticated = authenticate;
         });
-        if (authenticated) {
+        if(authenticated){
           const snackBar = SnackBar(
             content: Text('You are authenticated.'),
           );
@@ -131,9 +126,8 @@ class LoginRouteState extends State<LoginRoute> {
     );
   }
 
-  Future<String> encodeString(String content) async {
-    final publicKeyStr =
-        await rootBundle.loadString('assets/rsa_public_key.txt');
+  Future<String> encodeString(String content) async{
+    final publicKeyStr = await rootBundle.loadString('assets/rsa_public_key.txt');
     debugPrint(publicKeyStr.toString());
     dynamic publicKey = RSAKeyParser().parse(publicKeyStr);
     final encode = Encrypter(RSA(publicKey: publicKey));
@@ -143,51 +137,35 @@ class LoginRouteState extends State<LoginRoute> {
   void _onLogin() async {
     final UserRepository userRepository = UserRepository();
     if ((_formKey.currentState as FormState).validate()) {
-      debugPrint(_pwdController.text);
-      String pwdTemp = "";
-      await encodeString(_pwdController.text).then((value) {
-        pwdTemp = value;
+      String pwdTemp="";
+      await encodeString(_pwdController.text).then((value){
+        pwdTemp=value;
       });
       debugPrint(pwdTemp);
-      var response = await userRepository.createUser(User()
-        ..email = _unameController.text
-        ..password = pwdTemp);
-      if (response == "401") {
+      User tempUser=User()..email = _unameController.text
+        ..password = pwdTemp;
+      var response=await userRepository.createUser(
+          User()..email = _unameController.text
+            ..password = pwdTemp
+      );
+      debugPrint(response);
+      //Provider.of<UserModel>(context, listen: false).setUser(_unameController.text);
+      Provider.of<UserModel>(context, listen: false).setUser(tempUser);
+      debugPrint(Global.profile.user?.email);
+      if(response=="400"){
         setState(() {
-          loginMessage = "帳號密碼錯誤";
+          loginMessage="帳號密碼錯誤";
         });
-      } else {
+      }else{
         setState(() {
-          loginMessage = "登入成功";
+          loginMessage="登入成功";
         });
-        Provider.of<UserModel>(context, listen: false).user.email =
-            _unameController.text;
+        String tempToken=response.split(" ")[1];
+        debugPrint(tempToken);
+        Provider.of<UserModel>(context, listen: false).setToken(tempToken);
+        debugPrint("continue");
+        Navigator.pushReplacementNamed(context, '/webview');
       }
     }
   }
 }
-    // 先验证各个表单字段是否合法
-    /*if ((_formKey.currentState as FormState).validate()) {
-      showLoading(context);
-      User? user;
-      try {
-        user = await Git(context)
-            .login(_unameController.text, _pwdController.text);
-        // 因为登录页返回后，首页会build，所以我们传入false，这样更新user后便不触发更新。
-        Provider.of<UserModel>(context, listen: false).user = user;
-      } on DioError catch( e) {
-        //登录失败则提示
-        if (e.response?.statusCode == 401) {
-          showToast(GmLocalizations.of(context).userNameOrPasswordWrong);
-        } else {
-          showToast(e.toString());
-        }
-      } finally {
-        // 隐藏loading框
-        Navigator.of(context).pop();
-      }
-      //登录成功则返回
-      if (user != null) {
-        Navigator.of(context).pop();
-      }
-    }*/

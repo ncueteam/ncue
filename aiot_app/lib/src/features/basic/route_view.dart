@@ -50,7 +50,6 @@ abstract class RouteView extends StatefulWidget {
     const MqttPage(),
     const SettingsView(),
     const ItemDetailsView(),
-    const WebView(),
     const AddDeviceView(),
   ];
 }
