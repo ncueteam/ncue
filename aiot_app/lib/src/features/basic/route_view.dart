@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/sensors/sensorsapp.dart';
 import 'package:ncue.aiot_app/src/features/web_view/webview.dart';
 
 import '../auth_system/password_reset_view.dart';
@@ -48,6 +49,7 @@ abstract class RouteView extends StatefulWidget {
     const SmsView(),
     const BluetoothView(),
     const MqttPage(),
+    const SensorsPage(),
     const SettingsView(),
     const ItemDetailsView(),
     const AddDeviceView(),

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/sensors/sensorsapp.dart';
 
 import '../auth_system/profile_view.dart';
 import '../bluetooth/flutterblueapp.dart';
@@ -34,6 +35,7 @@ class _HomeState extends State<Home> {
     items.clear();
     items.add(DataItem("addDevice", [const AddDeviceView(), model], "註冊裝置"));
     items.add(DataItem("route", [const MqttPage()], "MQTT測試"));
+    items.add(DataItem("route", [const SensorsPage()], "感應器資料版"));
     items.add(DataItem("route", [const WebViewTest()], "網站版"));
     for (DeviceModel device in await DeviceService().loadDeviceData()) {
       if (model.devices.contains(device.uuid)) {
