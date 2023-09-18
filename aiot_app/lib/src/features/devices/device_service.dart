@@ -14,7 +14,9 @@ class DeviceService {
       Map<String, dynamic> result = document.data() as Map<String, dynamic>;
       DeviceModel temp = DeviceModel(
           result['device_name'], result['powerOn'], result['uuid'],
-          iconPath: result['iconPath'], type: result['type']);
+          iconPath: result['iconPath'],
+          type: result['type'],
+          temperature: result['temperature'] ?? 28);
       data.add(temp);
     }
     return data;
@@ -35,6 +37,7 @@ class DeviceService {
         'device_name': device.name,
         'iconPath': device.iconPath,
         'powerOn': device.powerOn,
+        "temperature": device.temperature,
       };
       await documentReference.update(updatedData);
     } else {
@@ -43,18 +46,20 @@ class DeviceService {
         'device_name': device.name,
         'iconPath': device.iconPath,
         'powerOn': device.powerOn,
+        "temperature": device.temperature,
       });
     }
   }
 
   Future<void> addDevice(String uuid, String type, String deviceName,
-      String iconPath, bool powerOn) async {
+      String iconPath, bool powerOn, double temperature) async {
     database.collection('devices').add({
       "type": type,
       "uuid": uuid,
       "device_name": deviceName,
       "iconPath": iconPath,
       "powerOn": powerOn,
+      "temperature": temperature,
     });
   }
 }

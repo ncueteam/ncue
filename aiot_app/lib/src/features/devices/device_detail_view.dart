@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/devices/device_service.dart';
 
 import '../basic/route_view.dart';
 import 'device_model.dart';
@@ -14,7 +15,6 @@ class DeviceDetailsView extends RouteView {
 }
 
 class _DeviceDetailsViewState extends State<DeviceDetailsView> {
-  double valueDouble = 28;
   @override
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)?.settings.arguments;
@@ -26,7 +26,11 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
             CircleAvatar(
                 foregroundImage: AssetImage(item.iconPath),
                 backgroundColor: Colors.white),
-            Text("    ${item.name}", style: const TextStyle(fontSize: 30))
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text("    ${item.name}",
+                  style: const TextStyle(fontSize: 30)),
+            )
           ]),
         ),
         body: Align(
@@ -49,12 +53,13 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
                     style: const TextStyle(fontSize: 20),
                   ),
                   Slider(
-                      value: valueDouble,
+                      value: item.temperature,
                       min: 16.0,
                       max: 30.0,
                       onChanged: (value) {
                         setState(() {
-                          valueDouble = value;
+                          item.temperature = value;
+                          DeviceService().updateDeviceData(item);
                         });
                       }),
                 ],
@@ -63,15 +68,8 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
       );
     } else {
       return Scaffold(
-        appBar: AppBar(
-          title: const Text('裝置內容'),
-        ),
-        body: const Center(
-            child: Column(
-          children: [
-            Text('無法載入 / 載入錯誤'),
-          ],
-        )),
+        appBar: AppBar(title: const Text('裝置內容')),
+        body: const Center(child: Column(children: [Text('無法載入 / 載入錯誤')])),
       );
     }
   }
