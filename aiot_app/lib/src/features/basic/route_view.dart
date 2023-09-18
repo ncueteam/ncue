@@ -38,19 +38,19 @@ abstract class RouteView extends StatefulWidget {
     await settingsController.loadSettings();
   }
 
-  static List<RouteView> pages = [
-    const Home(),
-    const SignInView(),
-    const ProfileView(),
-    const DeviceDetailsView(),
-    const PasswordResetView(),
-    const PhoneView(),
-    const SmsView(),
-    const BluetoothView(),
-    const MqttPage(),
-    const SettingsView(),
-    const ItemDetailsView(),
-    const AddDeviceView(),
-    const WebViewTest()
+  static const List<RouteView> pages = [
+    Home(),
+    SignInView(),
+    ProfileView(),
+    DeviceDetailsView(),
+    PasswordResetView(),
+    PhoneView(),
+    SmsView(),
+    BluetoothView(),
+    MqttPage(),
+    SettingsView(),
+    ItemDetailsView(),
+    AddDeviceView(),
+    WebViewTest()
   ];
 }

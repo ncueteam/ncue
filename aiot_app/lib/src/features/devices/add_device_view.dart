@@ -22,6 +22,13 @@ class AddDeviceViewState extends State<AddDeviceView> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> deviceIcons = [
+      "lib/src/icons/light-bulb.png",
+      "lib/src/icons/fan.png",
+      "lib/src/icons/smart-tv.png",
+      "lib/src/icons/air-conditioner.png",
+    ];
+
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
       final UserModel user = arguments['user'];
@@ -70,6 +77,10 @@ class AddDeviceViewState extends State<AddDeviceView> {
                       value: "bio_device",
                       child: Text("生物鎖裝置"),
                     ),
+                    DropdownMenuItem(
+                      value: "slide_device",
+                      child: Text("調控裝置"),
+                    ),
                   ],
                 ),
               ],
@@ -91,38 +102,29 @@ class AddDeviceViewState extends State<AddDeviceView> {
                   ),
                 ),
                 DropdownButton<String>(
-                  onChanged: (value) {
-                    setState(() {
-                      deviceIconPath = value!;
-                    });
-                  },
-                  value: deviceIconPath,
-                  items: const [
-                    DropdownMenuItem(
-                      value: "lib/src/icons/light-bulb.png",
-                      child: Text("電燈"),
-                    ),
-                    DropdownMenuItem(
-                      value: "lib/src/icons/fan.png",
-                      child: Text("電扇"),
-                    ),
-                    DropdownMenuItem(
-                      value: "lib/src/icons/smart-tv.png",
-                      child: Text("智慧電視"),
-                    ),
-                    DropdownMenuItem(
-                      value: "lib/src/icons/air-conditioner.png",
-                      child: Text("冷氣"),
-                    ),
-                  ],
-                ),
+                    onChanged: (value) {
+                      setState(() {
+                        deviceIconPath = value!;
+                      });
+                    },
+                    value: deviceIconPath,
+                    items: deviceIcons.map((iconPath) {
+                      return DropdownMenuItem(
+                        value: iconPath,
+                        child: CircleAvatar(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.white,
+                          foregroundImage: AssetImage(iconPath),
+                        ),
+                      );
+                    }).toList()),
               ],
             ),
             IconButton(
                 onPressed: () async {
                   UserService().addDevice(user, deviceUUID);
                   DeviceService().addDevice(deviceUUID, deviceType,
-                      deviceName.text, deviceIconPath, false);
+                      deviceName.text, deviceIconPath, false, 28.0);
                   Navigator.pop(context, true);
                 },
                 icon: const Icon(Icons.add)),
