@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../basic/route_view.dart';
-import 'web_register.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'services/globals.dart';
 import 'drawer.dart';

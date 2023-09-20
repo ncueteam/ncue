@@ -138,11 +138,11 @@ class SensorsPageState extends State<SensorsPage> {
                       height: 100,
                       fit: BoxFit.fill,
                     ),
-                    Text("62.00%",
+                    const Text("62.00%",
                         style: TextStyle(
                           fontSize: 25,
                         )),
-                    Text('humidity')
+                    const Text('humidity')
                   ],
                 )),
               ),
@@ -174,7 +174,7 @@ class SensorsPageState extends State<SensorsPage> {
                         style: TextStyle(
                           fontSize: 25,
                         )),
-                    Text('Temperature')
+                    const Text('Temperature')
                   ],
                 )),
               ),

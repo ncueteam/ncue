@@ -14,4 +14,16 @@ class SoundPlayer {
       debugPrint("Error playing local audio: $e");
     }
   }
+
+  Future<void> play(String name) async {
+    try {
+      final AudioPlayer player = AudioPlayer();
+      final ByteData data = await rootBundle.load("lib/src/sounds/$name.mp3");
+      final Uint8List bytes = data.buffer.asUint8List();
+      await player.setSourceBytes(bytes);
+      await player.resume();
+    } catch (e) {
+      debugPrint("Error playing local audio: $e");
+    }
+  }
 }
