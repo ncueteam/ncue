@@ -15,6 +15,7 @@ class SensorsPage extends RouteView {
 class SensorsPageState extends State<SensorsPage> {
   late MqttServerClient client;
   String messageText = "initial";
+  String receivedText = "initial";
 
   Widget messageComponent(String msg) {
     return Container(
@@ -76,8 +77,13 @@ class SensorsPageState extends State<SensorsPage> {
             message.payload as MqttPublishMessage;
         messageText =
             MqttPublishPayload.bytesToStringAsString(payload.payload.message);
+        setReceivedText(messageText);
       }
     });
+  }
+
+  void setReceivedText(String text) {
+    receivedText = text;
   }
 
   void onSubscribed(String topic) {}
@@ -161,8 +167,8 @@ class SensorsPageState extends State<SensorsPage> {
                       height: 100,
                       fit: BoxFit.fill,
                     ),
-                    Text(messageText,
-                        style: const TextStyle(
+                    Text(receivedText,
+                        style: TextStyle(
                           fontSize: 25,
                         )),
                     const Text('Temperature')
