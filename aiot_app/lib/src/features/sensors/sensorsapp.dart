@@ -74,7 +74,8 @@ class SensorsPageState extends State<SensorsPage> {
       for (var message in messages) {
         final MqttPublishMessage payload =
             message.payload as MqttPublishMessage;
-        messageText = MqttPublishPayload.bytesToStringAsString(payload.payload.message);
+        messageText =
+            MqttPublishPayload.bytesToStringAsString(payload.payload.message);
       }
     });
   }
@@ -128,11 +129,11 @@ class SensorsPageState extends State<SensorsPage> {
                       height: 100,
                       fit: BoxFit.fill,
                     ),
-                    Text("62.00%",
+                    const Text("62.00%",
                         style: TextStyle(
                           fontSize: 25,
                         )),
-                    Text('humidity')
+                    const Text('humidity')
                   ],
                 )),
               ),
@@ -161,10 +162,10 @@ class SensorsPageState extends State<SensorsPage> {
                       fit: BoxFit.fill,
                     ),
                     Text(messageText,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 25,
                         )),
-                    Text('Temperature')
+                    const Text('Temperature')
                   ],
                 )),
               ),

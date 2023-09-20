@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/sensors/sensorsapp.dart';
@@ -37,6 +36,7 @@ class _HomeState extends State<Home> {
     items.add(DataItem("route", [const MqttPage()], "MQTT測試"));
     items.add(DataItem("route", [const SensorsPage()], "感應器資料版"));
     items.add(DataItem("route", [const WebViewTest()], "網站版"));
+    items.add(DataItem("mqtt", [], "mqtt"));
     List x = [];
     for (DeviceModel device in await DeviceService().loadDeviceData()) {
       if (model.devices.contains(device.uuid)) {
@@ -74,7 +74,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            " ${AppLocalizations.of(context)!.appTitle} + ${window.locale.languageCode}"),
+            "${AppLocalizations.of(context)!.appTitle} ${AppLocalizations.of(context)?.localeName.toString() ?? "sss"}"),
         actions: [
           const SettingsView().getIconButton(context),
           const BluetoothView().getIconButton(context),
@@ -85,11 +85,19 @@ class _HomeState extends State<Home> {
         onRefresh: () => reload(),
         child: ListView.builder(
           restorationId: 'sampleItemListView',
-          addAutomaticKeepAlives: true,
           itemCount: items.length,
           itemBuilder: (BuildContext context, int index) {
             DataItem item = items[index];
-            return Unit(item: item);
+            return
+                // Dismissible(
+                //   key: ValueKey(item),
+                //   direction: DismissDirection.endToStart,
+                //   onDismissed: (direction) async {
+                //     SoundPlayer().play("crystal");
+                //   },
+                //   child:
+                Unit(item: item);
+            // );
           },
         ),
       ),

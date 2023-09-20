@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/services/mqtt_service.dart';
 
 import '../devices/device_model.dart';
 import '../devices/device_unit.dart';
@@ -26,20 +27,27 @@ class _UnitState extends State<Unit> {
         {
           if (item.origin is DeviceModel) {
             return DeviceUnit(
+              key: ValueKey(item),
               deviceData: item.origin,
               onChanged: (bool value) {},
             );
           } else {
-            return const ListTile(
-              title: Text("裝置載入錯誤"),
+            return ListTile(
+              key: ValueKey(item),
+              title: const Text("裝置載入錯誤"),
             );
           }
+        }
+      case "mqtt":
+        {
+          return const MqttService();
         }
       case "route":
         {
           if (item.data.elementAt(0) is RouteView) {
             RouteView view = item.data.elementAt(0);
             return ListTile(
+                key: ValueKey(item),
                 isThreeLine: true,
                 title: Text("前往頁面 : ${item.name}"),
                 subtitle: Text(view.routeName),
@@ -56,6 +64,7 @@ class _UnitState extends State<Unit> {
               item.data.elementAt(1) is UserModel) {
             RouteView view = item.data.elementAt(0);
             return ListTile(
+                key: ValueKey(item),
                 isThreeLine: true,
                 title: Text("前往頁面 : ${item.name}"),
                 subtitle: Text(view.routeName),
@@ -70,6 +79,7 @@ class _UnitState extends State<Unit> {
       case "extend":
         {
           return ExpansionTile(
+            key: ValueKey(item),
             title: const Text("家電"),
             children: item.data
                 .map((e) => DeviceUnit(
@@ -82,6 +92,7 @@ class _UnitState extends State<Unit> {
       case "genric":
       default:
         return ListTile(
+            key: ValueKey(item),
             title: Text('[${item.name}]   ${item.data}'),
             leading: CircleAvatar(
               foregroundImage: AssetImage(item.iconPath),
