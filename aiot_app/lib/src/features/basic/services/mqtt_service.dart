@@ -9,14 +9,13 @@ class MqttService extends StatefulWidget {
 }
 
 class _MqttServiceState extends State<MqttService> {
-  MqttServerClient client = MqttServerClient(
-      '9f602e5f7a4e46ecbda0206bb81cc27c.s2.eu.hivemq.cloud', 'ncue_app');
+  MqttServerClient client = MqttServerClient('test.mosquitto.org', 'ncue_app');
 
   TextEditingController messageToSend = TextEditingController();
 
   Future<void> initMqtt() async {
     client.disconnect();
-    client.port = 8883;
+    client.port = 1883;
     client.logging(on: true);
 
     client.onConnected = () {
