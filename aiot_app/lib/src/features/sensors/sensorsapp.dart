@@ -84,6 +84,9 @@ class SensorsPageState extends State<SensorsPage> {
 
   void setReceivedText(String text) {
     receivedText = text;
+    setState(() {
+      
+    });
   }
 
   void onSubscribed(String topic) {}
