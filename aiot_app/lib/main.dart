@@ -4,6 +4,7 @@ import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ncue.aiot_app/src/features/web_view/services/globals.dart';
 import 'firebase_options.dart';
 import 'src/app.dart';
 import 'src/features/basic/route_view.dart';
@@ -25,5 +26,6 @@ void main() async {
     FacebookProvider(clientId: '5237e52b036ec08a84952e02e921e11f'),
   ]);
   await RouteView.loadRouteViewSettings();
-  runApp(const AppRoot());
+  Global.init().then((e) => runApp(const AppRoot()));
+  //runApp(const AppRoot());
 }
