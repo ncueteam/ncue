@@ -8,7 +8,7 @@
 
 ## aiot_app
 
-### 網頁端
+### 網頁端 & 應用程式的部分
 
 #### RD
 
@@ -26,24 +26,29 @@
   > 偵測資料傳輸
   >
 
-### 應用程式的部分
-
-#### RD
-
- >
 ## aiot_hardware
 
 ### 硬體的部分
+  
+  1. 紅外線 app 連結
+  2. 陰極鎖
+  3. [溫溼度、PM2.5、光感器、rc522....] 等傳感器 MQTT
+  4. OLED 連結 MQTT
+  5. 電力保存系統
 
-#### IR (紅外線)
+#### IR receiver (紅外線) pinout
 
-> IR       esp32
->
-> VCC <= => 3.3V
->
-> GND <= => GND
->
-> OUT <= => GPIO18
+| 紅外線感測器 | esp32 |
+|-------------|-------|
+| VCC | 3.3v |
+| GND | GND |
+| OUT | GPIO18 |
 
+#### OLED (螢幕) pinout
 
-
+| OLED | esp32 |
+|-|-|
+| VCC | 3.3v |
+| GND | GND |
+| SDA | GPIO22 |
+| SCL | GPIO23 |
