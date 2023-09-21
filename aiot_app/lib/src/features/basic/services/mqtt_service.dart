@@ -75,7 +75,7 @@ class _MqttServiceState extends State<MqttService> {
           const Text("Mqtt service"),
           const Spacer(),
           SizedBox(
-            width: 200.0,
+            width: 100.0,
             child: TextField(
               readOnly: client.connectionStatus?.returnCode ==
                   MqttConnectReturnCode.connectionAccepted,
