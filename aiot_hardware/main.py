@@ -1,30 +1,48 @@
-# from json import FirebaseJson
-# import ufirestore
+# from machine import Pin
+# from time import sleep
+# import dht
+# from umqttsimple import MQTTClient
+# import network
 
-# ufirestore.set_project_id("ncueapp")
-# raw_doc = ufirestore.get("devices/0aI1Whtihd38FsKevED6")
-# doc = FirebaseJson.from_raw(raw_doc)
+# sensor = dht.DHT11(Pin(14))
 
-# if doc["fields"].exists("FIELD"):
-#     print("The field value is: %s" % doc["fields"].get("FIELD"))
-# from ir_rx.acquire import test
-# test()
+# sta_if = network.WLAN(network.STA_IF)
+# sta_if.active(False)
+# sta_if.active(True)
+# sta_if.connect('V2041', '123456789')
 
-from machine import Pin, SoftI2C
-import ssd1306
+# while not sta_if.isconnected():
+#     pass
+# print("connected")
 
-SDA_PIN = 22
-SCL_PIN = 23
+# client = MQTTClient(
+#     client_id="client",
+#     keepalive=5,
+#     server="test.mosquitto.org",
+#     ssl=False)
 
-i2c = SoftI2C(sda=Pin(SDA_PIN), scl=Pin(SCL_PIN))
+# client.connect()
 
-display = ssd1306.SSD1306_I2C(128,32,i2c)
+# def get_msg(topic, msg):
+#     print(msg)
 
-value = 0
+# client.set_callback(get_msg)
+# client.subscribe("NCUEMQTT") #訂閱NCUE這個主題 
 
-display.fill(value)
-display.text('1',0,0)
-display.text('2',0,10)
-display.text('3',0,20)
-display.text('4',0,30)
-display.show()
+# while True:
+#   try:
+#     client.check_msg()
+#     sensor.measure()
+#     temp = sensor.temperature()
+#     hum = sensor.humidity()
+#     temp_f = temp * (9/5) + 32.0
+#     string = str(hum) + " " + str(temp)
+#     print(string)
+    
+#     client.publish("receive_topic", string) #向receive_topic這個主題送出訊號
+#     sleep(2)
+#     #print('Temperature: %3.1f C' %temp)
+#     #print('Temperature: %3.1f F' %temp_f)
+#     #print('Humidity: %3.1f %%' %hum)
+#   except OSError as e:
+#     print('Failed to read sensor.')

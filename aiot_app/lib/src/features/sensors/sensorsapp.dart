@@ -137,7 +137,7 @@ class SensorsPageState extends State<SensorsPage> {
                       height: 100,
                       fit: BoxFit.fill,
                     ),
-                    Text(receivedtext[0] + "%",
+                    Text(receivedtext[0] + ".00%",
                         style: TextStyle(
                           fontSize: 25,
                         )),
@@ -169,7 +169,7 @@ class SensorsPageState extends State<SensorsPage> {
                       height: 100,
                       fit: BoxFit.fill,
                     ),
-                    Text(receivedtext[1] + "°C",
+                    Text(receivedtext[1] + ".00°C",
                         style: TextStyle(
                           fontSize: 25,
                         )),
