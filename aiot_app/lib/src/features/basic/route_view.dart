@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
 import 'package:ncue.aiot_app/src/features/sensors/sensorsapp.dart';
 import 'package:ncue.aiot_app/src/features/web_view/webview.dart';
 
@@ -39,20 +40,21 @@ abstract class RouteView extends StatefulWidget {
     await settingsController.loadSettings();
   }
 
-  static List<RouteView> pages = [
-    const Home(),
-    const SignInView(),
-    const ProfileView(),
-    const DeviceDetailsView(),
-    const PasswordResetView(),
-    const PhoneView(),
-    const SmsView(),
-    const BluetoothView(),
-    const MqttPage(),
-    const SensorsPage(),
-    const SettingsView(),
-    const ItemDetailsView(),
-    const AddDeviceView(),
-    const WebViewTest()
+  static List<RouteView> pages = const [
+    Home(),
+    SignInView(),
+    ProfileView(),
+    DeviceDetailsView(),
+    PasswordResetView(),
+    PhoneView(),
+    SmsView(),
+    BluetoothView(),
+    MqttPage(),
+    SensorsPage(),
+    SettingsView(),
+    ItemDetailsView(),
+    AddDeviceView(),
+    WebViewTest(),
+    IRDeviceControlPanel()
   ];
 }

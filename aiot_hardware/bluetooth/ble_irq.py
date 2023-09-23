@@ -1,7 +1,7 @@
 from machine import Pin
 from time import sleep_ms, sleep
 import ubluetooth
-from lib.file_set import FileSet
+from file_set import FileSet
 
 
 class BLE_IRQ():

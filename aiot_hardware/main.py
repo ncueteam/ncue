@@ -1,48 +1,34 @@
-from machine import Pin
-from time import sleep
-import dht
-from umqttsimple import MQTTClient
-import network
+import machine
+import uasyncio as asyncio
+import sys
+from segment7 import Segment7
 
-sensor = dht.DHT11(Pin(14))
-
-sta_if = network.WLAN(network.STA_IF)
-sta_if.active(False)
-sta_if.active(True)
-sta_if.connect('V2041', '123456789')
-
-while not sta_if.isconnected():
-    pass
-print("connected")
-
-client = MQTTClient(
-    client_id="client",
-    keepalive=5,
-    server="test.mosquitto.org",
-    ssl=False)
-
-client.connect()
-
-def get_msg(topic, msg):
-    print(msg)
-
-client.set_callback(get_msg)
-client.subscribe("NCUEMQTT") #訂閱NCUE這個主題 
-
-while True:
-  try:
-    client.check_msg()
-    sensor.measure()
-    temp = sensor.temperature()
-    hum = sensor.humidity()
-    temp_f = temp * (9/5) + 32.0
-    string = str(hum) + " " + str(temp)
-    print(string)
-    
-    client.publish("receive_topic", string) #向receive_topic這個主題送出訊號
-    sleep(2)
-    #print('Temperature: %3.1f C' %temp)
-    #print('Temperature: %3.1f F' %temp_f)
-    #print('Humidity: %3.1f %%' %hum)
-  except OSError as e:
-    print('Failed to read sensor.')
+#初始化
+pins = [machine.Pin(i, machine.Pin.OUT) for i in [18,5,25,33,32,19,21,26]]
+#計數器
+global counter
+counter = 0
+def count():
+    global counter
+    counter  = (counter + 1)%10
+    return counter
+#七段顯示器
+s7 = Segment7()
+#取得總迴圈
+loop = asyncio.get_event_loop()
+#主程式
+async def main_task():
+    while True:
+        count()
+        await s7.display(pins,str(counter))
+#主程式加入總迴圈
+task = loop.create_task(main_task())
+#關閉相關
+try:
+    loop.run_forever()
+except KeyboardInterrupt:
+    print("Ctrl+C pressed. Stopping...")
+finally:
+    task.cancel()
+    loop.run_until_complete(task)
+    loop.close()

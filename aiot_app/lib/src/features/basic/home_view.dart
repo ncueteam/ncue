@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
 import 'package:ncue.aiot_app/src/features/sensors/sensorsapp.dart';
 
 import '../auth_system/profile_view.dart';
@@ -36,6 +37,7 @@ class _HomeState extends State<Home> {
     items.add(DataItem("route", [const MqttPage()], "MQTT測試"));
     items.add(DataItem("route", [const SensorsPage()], "感應器資料版"));
     items.add(DataItem("route", [const WebViewTest()], "網站版"));
+    items.add(DataItem("route", [const IRDeviceControlPanel()], "紅外線控制器"));
     // items.add(DataItem("mqtt", [], "mqtt"));
     List x = [];
     for (DeviceModel device in await DeviceService().loadDeviceData()) {
