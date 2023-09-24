@@ -17,27 +17,26 @@ PATTERNS = {
 }
 
 class Segment7():
-    PIN_OUTS = []
-    def __init__(self, pin:[int] = DEFAULT_PIN) -> None:
+    def __init__(self, pin_set) -> None:
         print("initializing segment....")
-#         self.PIN_OUTS = [machine.Pin(it, machine.Pin.OUT) for it in pin]
+        self.pins = pin_set
         print("segment initialize finished")
     
-    async def flash(self, pin):
-        await uasyncio.sleep(1)
-        pin.on()
-        await uasyncio.sleep(1)
-        pin.off()
+    async def flash(self,n):
+        await uasyncio.sleep_ms(1)
+        self.pins[n].on()
+        await uasyncio.sleep_ms(1)
+        self.pins[n].off()
     
-    async def display(self, pins, code):
+    async def display(self, code):
         for i in range(0,8):
             if (PATTERNS[code][i] == 0):
-                pins[i].on()
+                self.pins[i].on()
             else:
-                pins[i].off()
-        await uasyncio.sleep(1)
-        for pin in pins:
-            pin.on()
+                self.pins[i].off()
+#         for pin in self.pins:
+#             pin.on()
+
 
 
 
