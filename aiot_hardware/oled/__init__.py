@@ -4,7 +4,6 @@ import machine
 class OLED():
     
     def __init__(self, screen_set) -> None:
-        print("initializing oled....")
         self.screen = screen_set
         self.x = 0
         self.y = 0
@@ -13,7 +12,6 @@ class OLED():
         self.count = 0
         self.s = 0
         self.accumulation = 0
-        print("oled initialize finished")
 
     async def blank(self):
         self.screen.sleep(False)
@@ -31,6 +29,9 @@ class OLED():
 
     async def displayTime(self):
         self.screen.text(str(self.accumulation),128-8*len(str(self.accumulation)),0,0)
+        
+    async def centerText(self, line, content):
+        self.screen.text(content, 64-len(content)*4, 8*line, 0)
 
     async def drawSleepPage(self):
         block = ["#", "@"]
