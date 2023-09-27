@@ -22,16 +22,19 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
       final DeviceModel item = arguments['data'];
       return Scaffold(
         appBar: AppBar(
-          title: Row(children: [
-            CircleAvatar(
-                foregroundImage: AssetImage(item.iconPath),
-                backgroundColor: Colors.white),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text("    ${item.name}",
-                  style: const TextStyle(fontSize: 30)),
-            )
-          ]),
+          title: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(children: [
+              CircleAvatar(
+                  foregroundImage: AssetImage(item.iconPath),
+                  backgroundColor: Colors.white),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text("    ${item.name}",
+                    style: const TextStyle(fontSize: 30)),
+              )
+            ]),
+          ),
         ),
         body: Align(
             alignment: Alignment.center,
@@ -62,6 +65,17 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
                           DeviceService().updateDeviceData(item);
                         });
                       }),
+                  Switch(
+                    value: item.powerOn,
+                    onChanged: (bool value) => {
+                      setState(
+                        () {
+                          item.powerOn = value;
+                          DeviceService().updateDeviceData(item);
+                        },
+                      )
+                    },
+                  )
                 ],
               ),
             )),

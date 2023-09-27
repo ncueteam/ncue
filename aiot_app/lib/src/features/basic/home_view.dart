@@ -1,22 +1,11 @@
 import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
-import 'package:ncue.aiot_app/src/features/sensors/sensorsapp.dart';
-
 import '../auth_system/profile_view.dart';
 import '../bluetooth/flutterblueapp.dart';
-import '../devices/add_device_view.dart';
-import '../devices/device_model.dart';
-import '../devices/device_service.dart';
-import '../mqtt/mqttapp.dart';
 import '../settings/settings_view.dart';
 import '../item_system/data_item.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../user/user_model.dart';
-import '../user/user_service.dart';
-import '../web_view/webview.dart';
 import 'route_view.dart';
 import 'unit.dart';
 
@@ -29,35 +18,6 @@ class Home extends RouteView {
 
 class _HomeState extends State<Home> {
   List<DataItem> items = [];
-  UserModel model = UserModel("error", "error");
-
-  Future<void> loadDevices() async {
-    items.clear();
-    items.add(DataItem("addDevice", [const AddDeviceView(), model], "註冊裝置"));
-    items.add(DataItem("route", [const MqttPage()], "MQTT測試"));
-    items.add(DataItem("route", [const SensorsPage()], "感應器資料版"));
-    items.add(DataItem("route", [const WebViewTest()], "網站版"));
-    items.add(DataItem("route", [const IRDeviceControlPanel()], "紅外線控制器"));
-    // items.add(DataItem("mqtt", [], "mqtt"));
-    List x = [];
-    for (DeviceModel device in await DeviceService().loadDeviceData()) {
-      if (model.devices.contains(device.uuid)) {
-        setState(() {
-          x.add(device);
-          // items.add(device.toDataItem());
-        });
-      }
-    }
-
-    items.add(DataItem("extend", x, "集合"));
-  }
-
-  Future<void> loadAccount() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      model = await UserService().loadUserData(user);
-    }
-  }
 
   @override
   void initState() {
@@ -66,8 +26,7 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> reload() async {
-    await loadAccount();
-    await loadDevices();
+    items = await RouteView.loadUnits();
     setState(() {});
   }
 
