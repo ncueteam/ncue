@@ -18,15 +18,29 @@ class WebViewTestState extends State<WebViewTest> {
   late final WebViewController controller;
   bool authenticated = false;
   var currentUrl = "http://frp.4hotel.tw:25580/";
+  double _progressValue = 0.0;
 
   setCookie() async {
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
+          onPageStarted: (String url) {
+            setState(() {
+              _progressValue = 0.1;
+            });
+          },
           onPageFinished: (String url) {
             _getCurrentUrl();
             debugPrint('URL: $url');
+            setState(() {
+                  _progressValue = 1.0;
+            });
+          },
+          onProgress: (int progress) {
+            setState(() {
+              _progressValue = progress / 100.0;
+            });
           },
         ),
       )
@@ -58,7 +72,8 @@ class WebViewTestState extends State<WebViewTest> {
         title: const Text('WebView'),
         //toolbarHeight: 0.0,
       ),
-      body: WillPopScope(
+      body: 
+      WillPopScope(
         onWillPop: () async {
           var canBack = await controller.canGoBack();
           if (canBack) {
@@ -72,7 +87,18 @@ class WebViewTestState extends State<WebViewTest> {
           }
           return false;
         },
-        child: WebViewWidget(controller: controller),
+        child: Column(
+          children: [
+            LinearProgressIndicator(
+              value: _progressValue,
+              backgroundColor: Colors.grey[200],
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+            ),
+            Expanded(
+              child: WebViewWidget(controller: controller),            
+            ),
+          ]
+        ),
       ),
       drawer: const MyDrawer(), //抽屉菜单
       floatingActionButton: getCookie(),
