@@ -26,6 +26,6 @@ void main() async {
     FacebookProvider(clientId: '5237e52b036ec08a84952e02e921e11f'),
   ]);
   await RouteView.loadRouteViewSettings();
-  Global.init().then((e) => runApp(const AppRoot()));
-  //runApp(const AppRoot());
+  await Global.init();
+  runApp(const AppRoot());
 }
