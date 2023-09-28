@@ -80,13 +80,14 @@ class _UnitState extends State<Unit> {
         {
           return ExpansionTile(
             key: ValueKey(item),
-            title: const Text("家電"),
-            children: item.data
-                .map((e) => DeviceUnit(
-                      deviceData: e,
-                      onChanged: (value) {},
-                    ))
-                .toList(),
+            title: const Text("捷徑"),
+            children: item.data.map((value) {
+              if (value is DataItem) {
+                return Unit(item: value);
+              } else {
+                return Container();
+              }
+            }).toList(),
           );
         }
       case "genric":
