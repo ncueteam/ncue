@@ -5,12 +5,14 @@ from segment7 import Segment7, DEFAULT_PIN
 import oled
 import sh1106
 import network
+import dht11
 from umqtt.simple import MQTTClient
+from umqtt import aiot
 
 #初始化
 pins = [machine.Pin(i, machine.Pin.OUT) for i in DEFAULT_PIN]
 i2c = machine.SoftI2C(sda=machine.Pin(21), scl=machine.Pin(22), freq=400000)
-scn1106 = sh1106.SH1106_I2C(128, 64, i2c)
+sh1106 = sh1106.SH1106_I2C(128, 64, i2c)
 #mqtt
 # client = MQTTClient(
 #     client_id="client",
@@ -22,10 +24,14 @@ scn1106 = sh1106.SH1106_I2C(128, 64, i2c)
 #     print(msg)
 # client.set_callback(get_msg)
 # client.subscribe("NCUEMQTT")
+# MQTT
+linkor = aiot.AIOT()
 #七段顯示器
 s7 = Segment7(pins)
+# DHT11
+dht = dht11.Sensor()
 #OLED顯示器
-screen = oled.OLED(scn1106)
+screen = oled.OLED(sh1106)
 #取得總迴圈
 loop = asyncio.get_event_loop()
 
@@ -40,8 +46,8 @@ async def main_task():
     sta_if = network.WLAN(network.STA_IF)
     sta_if.active(False)
     sta_if.active(True)
-    ssid = '302'
-    password = '0937565253'
+    ssid = 'c&k'
+    password = '0423151980'
     sta_if.connect(ssid, password)
     await screen.blank()
     await screen.centerText(3,"connecting")
@@ -52,8 +58,14 @@ async def main_task():
     while not sta_if.isconnected():
         pass
     print("connected")
-    
+    # mqtt初始化
+    await linkor.connect()
     while True:
+        await linkor.wait()
+        # DHT
+        await dht.wait()
+        await dht.detect()
+        await linkor.routine(await dht.getMQTTMessage())
         # OLED
         await screen.blank()
         await screen.drawSleepPage()
