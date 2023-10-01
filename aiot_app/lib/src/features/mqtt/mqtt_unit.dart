@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 
-class MqttService extends StatefulWidget {
-  const MqttService({super.key});
+class MqttUnit extends StatefulWidget {
+  const MqttUnit({super.key});
   @override
-  State<MqttService> createState() => _MqttServiceState();
+  State<MqttUnit> createState() => _MqttUnitState();
 }
 
-class _MqttServiceState extends State<MqttService> {
+class _MqttUnitState extends State<MqttUnit> {
   MqttServerClient client = MqttServerClient('test.mosquitto.org', 'ncue_app');
 
   TextEditingController messageToSend = TextEditingController();
@@ -70,23 +70,18 @@ class _MqttServiceState extends State<MqttService> {
               MqttConnectReturnCode.connectionAccepted
           ? Icons.wifi_tethering
           : Icons.wifi_tethering_off),
-      title: Row(
-        children: [
-          const Text("Mqtt service"),
-          const Spacer(),
-          SizedBox(
-            width: 100.0,
-            child: TextField(
-              readOnly: client.connectionStatus?.returnCode ==
-                  MqttConnectReturnCode.connectionAccepted,
-              controller: messageToSend,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "the message you wanna send"),
-            ),
-          )
-        ],
+      title: SizedBox(
+        width: 100.0,
+        child: TextField(
+          readOnly: client.connectionStatus?.returnCode ==
+              MqttConnectReturnCode.connectionAccepted,
+          controller: messageToSend,
+          decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: "the message you wanna send"),
+        ),
       ),
+      subtitle: const Text("Mqtt service"),
       trailing: IconButton(
         onPressed: () {},
         icon: const Icon(Icons.send),

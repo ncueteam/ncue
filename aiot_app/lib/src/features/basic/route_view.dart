@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/basic/services/mqtt_service.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
 import 'package:ncue.aiot_app/src/features/item_system/data_item.dart';
 import 'package:ncue.aiot_app/src/features/sensors/sensorsapp.dart';
@@ -61,25 +60,24 @@ abstract class RouteView extends StatefulWidget {
   static Future<List<DataItem>> loadUnits() async {
     List<DataItem> items = [];
     items.clear();
-    List rts = [];
-    rts.add(DataItem(
-        "addDevice", [const AddDeviceView(), RouteView.model], "註冊裝置"));
-    rts.add(DataItem("route", [const MqttPage()], "MQTT測試"));
-    rts.add(DataItem("route", [const MqttService()], "MQTT測試2"));
-    rts.add(DataItem("route", [const SensorsPage()], "感應器資料版"));
-    rts.add(DataItem("route", [const WebViewTest()], "網站版"));
-    rts.add(DataItem("route", [const IRDeviceControlPanel()], "紅外線控制器"));
-
-    items.add(DataItem("extend", rts, "捷徑"));
-
     items.add(DataItem("mqtt", [], "mqtt"));
+    items.add(DataItem(
+        "extend",
+        [
+          DataItem(
+              "addDevice", [const AddDeviceView(), RouteView.model], "註冊裝置"),
+          DataItem("route", [const MqttPage()], "MQTT測試"),
+          DataItem("route", [const SensorsPage()], "感應器資料版"),
+          DataItem("route", [const WebViewTest()], "網站版"),
+          DataItem("route", [const IRDeviceControlPanel()], "紅外線控制器"),
+        ],
+        "捷徑"));
     List x = [];
     for (DeviceModel device in await DeviceService().loadDeviceData()) {
       if (RouteView.model.devices.contains(device.uuid)) {
         x.add(device.toDataItem());
       }
     }
-
     items.add(DataItem("extend", x, "集合"));
     return items;
   }

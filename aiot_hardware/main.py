@@ -13,17 +13,6 @@ from umqtt import aiot
 pins = [machine.Pin(i, machine.Pin.OUT) for i in DEFAULT_PIN]
 i2c = machine.SoftI2C(sda=machine.Pin(21), scl=machine.Pin(22), freq=400000)
 sh1106 = sh1106.SH1106_I2C(128, 64, i2c)
-#mqtt
-# client = MQTTClient(
-#     client_id="client",
-#     keepalive=5,
-#     server="test.mosquitto.org",
-#     ssl=False)
-# client.connect()
-# def get_msg(topic, msg):
-#     print(msg)
-# client.set_callback(get_msg)
-# client.subscribe("NCUEMQTT")
 # MQTT
 linkor = aiot.AIOT()
 #七段顯示器
