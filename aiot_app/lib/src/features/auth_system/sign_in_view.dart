@@ -25,13 +25,7 @@ class _SignInViewState extends State<SignInView> {
       subtitleBuilder: (context, action) {
         return Align(
             alignment: Alignment.centerRight,
-            child: IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {
-                Navigator.restorablePushNamed(
-                    context, const SettingsView().routeName);
-              },
-            ));
+            child: const SettingsView().getIconButton(context));
       },
       actions: [
         ForgotPasswordAction((context, email) {

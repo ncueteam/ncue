@@ -33,31 +33,47 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 6.0,
-            mainAxisSpacing: 6.0,
-          ),
-          itemCount: buttons.length,
-          itemBuilder: (BuildContext context, int index) {
-            return GridTile(
-              child: Center(
-                  child: buttons[index] == Icons.space_bar
-                      ? Container()
-                      : Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            child: Icon(
-                              buttons[index],
-                            ),
-                          ),
-                        )),
-            );
-          }),
+    return Scaffold(
+      appBar: AppBar(title: const Text("電視遙控器")),
+      body: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 3.0,
+              mainAxisSpacing: 3.0,
+            ),
+            itemCount: buttons.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GridTile(
+                child: Container(
+                  color: Colors.green,
+                  child: Center(
+                      child: buttons[index] is IconData
+                          ? Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Container(
+                                color: Colors.red,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ButtonStyle(
+                                      minimumSize: MaterialStateProperty.all(
+                                          const Size(100, 100))),
+                                  child: Icon(buttons[index]),
+                                ),
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                child: Text("${buttons[index]}"),
+                              ),
+                            )),
+                ),
+              );
+            }),
+      ),
     );
   }
 }

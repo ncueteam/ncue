@@ -91,3 +91,7 @@ flutter:
     - assets/key/
     - assets/lottie/day.json
     - assets/lottie/LightRain.json
+fonts:
+  - family: SocialIcons
+    fonts:
+      - asset: packages/firebase_ui_auth/fonts/SocialIcons.ttf
