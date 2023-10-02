@@ -1,7 +1,7 @@
 from machine import Pin
 from time import sleep
 import dht
-from umqttsimple import MQTTClient
+from umqtt.simple import MQTTClient
 import network
 
 sensor = dht.DHT11(Pin(14))
@@ -9,7 +9,7 @@ sensor = dht.DHT11(Pin(14))
 sta_if = network.WLAN(network.STA_IF)
 sta_if.active(False)
 sta_if.active(True)
-sta_if.connect('V2041', '123456789')
+sta_if.connect('Yunitrish', '0937565253')
 
 while not sta_if.isconnected():
     pass

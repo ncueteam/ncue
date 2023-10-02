@@ -8,7 +8,6 @@ import network
 import dht11
 from umqtt.simple import MQTTClient
 from umqtt import aiot
-
 #初始化
 # pins = [machine.Pin(i, machine.Pin.OUT) for i in DEFAULT_PIN]
 i2c = machine.SoftI2C(sda=machine.Pin(21), scl=machine.Pin(22), freq=400000)
@@ -30,7 +29,7 @@ async def main_task():
     await screen.blank()
     await screen.centerText(4,"NCUE AIOT")
     await screen.show()
-    await asyncio.sleep_ms(6000)    
+    await asyncio.sleep_ms(100)    
     #網路連線
     sta_if = network.WLAN(network.STA_IF)
     sta_if.active(False)
@@ -64,6 +63,8 @@ async def main_task():
         await screen.blank()
         await screen.drawSleepPage()
         await screen.displayTime()
+        await screen.text(64, 3, "test")
+        await screen.text(64, 4, linkor.received)
         await screen.show()
         # segment 7
 #         await s7.wait()
@@ -81,4 +82,3 @@ finally:
     task.cancel()
     loop.run_until_complete(task)
     loop.close()
-
