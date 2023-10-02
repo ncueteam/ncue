@@ -1,7 +1,7 @@
 import machine
 import uasyncio as asyncio
 import sys
-from segment7 import Segment7, DEFAULT_PIN
+# from segment7 import Segment7, DEFAULT_PIN
 import oled
 import sh1106
 import network
@@ -10,13 +10,13 @@ from umqtt.simple import MQTTClient
 from umqtt import aiot
 
 #初始化
-pins = [machine.Pin(i, machine.Pin.OUT) for i in DEFAULT_PIN]
+# pins = [machine.Pin(i, machine.Pin.OUT) for i in DEFAULT_PIN]
 i2c = machine.SoftI2C(sda=machine.Pin(21), scl=machine.Pin(22), freq=400000)
 sh1106 = sh1106.SH1106_I2C(128, 64, i2c)
 # MQTT
 linkor = aiot.AIOT()
 #七段顯示器
-s7 = Segment7(pins)
+# s7 = Segment7(pins)
 # DHT11
 dht = dht11.Sensor()
 #OLED顯示器
@@ -35,8 +35,13 @@ async def main_task():
     sta_if = network.WLAN(network.STA_IF)
     sta_if.active(False)
     sta_if.active(True)
-    ssid = 'c&k'
-    password = '0423151980'
+    
+    ssids = ["Yunitrish","V2041","studying"]
+    passwords = ["0937565253","123456789","gobacktostudy"]
+    
+    num = 0
+    ssid = ssids[num]
+    password = passwords[num]
     sta_if.connect(ssid, password)
     await screen.blank()
     await screen.centerText(3,"connecting")
@@ -61,9 +66,9 @@ async def main_task():
         await screen.displayTime()
         await screen.show()
         # segment 7
-        await s7.wait()
-        await s7.cycleDisplay()
-        await asyncio.sleep_ms(1)
+#         await s7.wait()
+#         await s7.cycleDisplay()
+#         await asyncio.sleep_ms(1)
 
 #主程式加入總迴圈
 task = loop.create_task(main_task())
