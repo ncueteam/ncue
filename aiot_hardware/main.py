@@ -6,13 +6,18 @@ import oled
 import sh1106
 import network
 import dht11
+from file_system import FileSet
 from umqtt.simple import MQTTClient
 from umqtt import aiot
+
+#取得總迴圈 
+loop = asyncio.get_event_loop()
+
 #初始化
 # pins = [machine.Pin(i, machine.Pin.OUT) for i in DEFAULT_PIN]
 i2c = machine.SoftI2C(sda=machine.Pin(21), scl=machine.Pin(22), freq=400000)
 sh1106 = sh1106.SH1106_I2C(128, 64, i2c)
-# MQTT
+ # MQTT
 linkor = aiot.AIOT()
 #七段顯示器
 # s7 = Segment7(pins)
@@ -20,22 +25,26 @@ linkor = aiot.AIOT()
 dht = dht11.Sensor()
 #OLED顯示器
 screen = oled.OLED(sh1106)
-#取得總迴圈
-loop = asyncio.get_event_loop()
+# 檔案系統
+DB =  FileSet("wifi.json")
 
 #主程式
 async def main_task():
+    # 檔案系統
+    await DB.setUp()
     # 載入畫面
     await screen.blank()
     await screen.centerText(4,"NCUE AIOT")
     await screen.show()
-    await asyncio.sleep_ms(100)    
+    await asyncio.sleep_ms(100)
+    # 初始化資料系統
+    await DB.create("302", "0937565253")
     #網路連線
     sta_if = network.WLAN(network.STA_IF)
     sta_if.active(False)
     sta_if.active(True)
     
-    ssids = ["Yunitrish","V2041","studying"]
+    ssids = ["302","V2041","studying"]
     passwords = ["0937565253","123456789","gobacktostudy"]
     
     num = 0

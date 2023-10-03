@@ -10,17 +10,17 @@ class AIOT():
             ssl=False)
         self.received = "not yet!"
     
-#     def onReceived(self, topic, msg):
-#         self.received = msg
-#         print(msg)
-#     
+    def onReceived(self, topic, msg):
+        self.received = msg
+        print(msg)
+    
     async def connect(self):
         self.client.connect()
-        def get_msg(topic, msg):
-            self.received = msg
-            print(msg)
-        self.client.set_callback(get_msg)
-#         self.client.set_callback(self.onReceived)
+#         def get_msg(topic, msg):
+#             self.received = msg
+#             print(msg)
+#         self.client.set_callback(get_msg)
+        self.client.set_callback(self.onReceived)
         self.client.subscribe("NCUEMQTT")
 
     async def wait(self):
