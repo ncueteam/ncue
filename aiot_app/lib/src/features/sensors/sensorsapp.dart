@@ -15,7 +15,7 @@ class SensorsPage extends RouteView {
 class SensorsPageState extends State<SensorsPage> {
   late MqttServerClient client;
   String messageText = "initial";
-  late List<String> receivedtext = ["initial", "initial"];
+  late List<String> mqttDataArray = ["??", "??"];
 
   Widget messageComponent(String msg) {
     return Container(
@@ -51,7 +51,7 @@ class SensorsPageState extends State<SensorsPage> {
     client.pongCallback = pong;
 
     final connMessage = MqttConnectMessage()
-        // .authenticateAs('username', 'password')
+        .authenticateAs('test', '00000000')
         .withWillTopic('NCUEMQTT')
         .withWillMessage('MQTT Connect from App')
         .startClean()
@@ -77,6 +77,7 @@ class SensorsPageState extends State<SensorsPage> {
             message.payload as MqttPublishMessage;
         messageText =
             MqttPublishPayload.bytesToStringAsString(payload.payload.message);
+        debugPrint(messageText);
         setReceivedText(messageText);
       }
     });
@@ -84,7 +85,7 @@ class SensorsPageState extends State<SensorsPage> {
 
   void setReceivedText(String text) {
     String receivedText = text;
-    receivedtext = receivedText.split(" ");
+    mqttDataArray = receivedText.split(" ");
     setState(() {});
   }
 
@@ -102,6 +103,41 @@ class SensorsPageState extends State<SensorsPage> {
     client.publishMessage(topic, MqttQos.exactlyOnce, builder.payload!);
   }
 
+  Widget sensorWidget(String lottieAsset, String title, String value) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 20),
+      height: 150,
+      width: 150,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.2),
+            spreadRadius: 6,
+            blurRadius: 0,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Center(
+          child: Column(
+        children: [
+          Lottie.asset(
+            lottieAsset,
+            width: 100,
+            height: 100,
+            fit: BoxFit.fill,
+          ),
+          Text(value,
+              style: const TextStyle(
+                fontSize: 25,
+              )),
+          Text(title)
+        ],
+      )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,74 +145,14 @@ class SensorsPageState extends State<SensorsPage> {
         title: const Text('Sensors Page'),
       ),
       body: Center(
-        child: Column(children: <Widget>[
+        child: Column(children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 20),
-                height: 150,
-                width: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.blue.withOpacity(0.2),
-                      spreadRadius: 6,
-                      blurRadius: 0,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Center(
-                    child: Column(
-                  children: <Widget>[
-                    Lottie.asset(
-                      'assets/lottie/LightRain.json',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.fill,
-                    ),
-                    Text("${receivedtext[0]}.00%",
-                        style: const TextStyle(
-                          fontSize: 25,
-                        )),
-                    const Text('humidity')
-                  ],
-                )),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 20),
-                height: 150,
-                width: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.blue.withOpacity(0.2),
-                      spreadRadius: 6,
-                      blurRadius: 0,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Center(
-                    child: Column(
-                  children: <Widget>[
-                    Lottie.asset(
-                      'assets/lottie/day.json',
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.fill,
-                    ),
-                    Text("${receivedtext[1]}.00°C",
-                        style: const TextStyle(
-                          fontSize: 25,
-                        )),
-                    const Text('Temperature')
-                  ],
-                )),
-              ),
+              sensorWidget('assets/lottie/LightRain.json', 'humidity',
+                  "${mqttDataArray[0]}%"),
+              sensorWidget('assets/lottie/day.json', 'Temperature',
+                  "${mqttDataArray[1]}°C"),
             ],
           ),
         ]),

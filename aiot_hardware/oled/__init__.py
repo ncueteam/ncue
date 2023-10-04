@@ -4,7 +4,6 @@ import machine
 class OLED():
     
     def __init__(self, screen_set) -> None:
-        print("initializing oled....")
         self.screen = screen_set
         self.x = 0
         self.y = 0
@@ -13,7 +12,7 @@ class OLED():
         self.count = 0
         self.s = 0
         self.accumulation = 0
-        print("oled initialize finished")
+        self.sleep_page = [0,0,64.64]
 
     async def blank(self):
         self.screen.sleep(False)
@@ -24,19 +23,37 @@ class OLED():
         self.screen.fill(1)
         self.screen.text('Testing '+str(num), 0, 0, 0)
 
-    async def getAccumulation():
+    async def getAccumulation(self):
         temp = self.accumulation
         self.accumulation = 0
         return temp
 
+    # async def sleepPositons(self, pos:str) -> list[int]:
+    #     if pos == "end":
+    #         return [self.sleep_page[2],self.sleep_page[3]]
+    #     elif pos == "start":
+    #         return [self.sleep_page[0], self.sleep_page[1]]
+    #     elif pos == "center":
+    #         return [(self.sleep_page[0]+self.sleep_page[2])/2, (self.sleep_page[0]+self.sleep_page[1])/2 ]
+    #     else:
+    #         return [0, 0]
+        
+
+
     async def displayTime(self):
-        self.screen.text(str(self.accumulation),128-8*len(str(self.accumulation)),0,0)
+        self.screen.text(str(self.accumulation),64-8*len(str(self.accumulation)),0,0)
+        
+    async def centerText(self, line, content):
+        self.screen.text(content, 64-len(content)*4, 8*line, 0)
+
+    async def text(self, x, y, content):
+        self.screen.text(content, x, 8*y, 0)
 
     async def drawSleepPage(self):
         block = ["#", "@"]
         self.screen.sleep(False)
         self.screen.text(block[self.s], self.x, self.y,0)
-        if (self.x > 128-6 or self.x < 0):
+        if (self.x > 64-6 or self.x < 0):
             self.ax *= -1
             self.accumulation += 1
             self.s = (self.s+1)%2

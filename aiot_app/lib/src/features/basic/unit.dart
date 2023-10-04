@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/basic/services/mqtt_service.dart';
+import 'package:ncue.aiot_app/src/features/mqtt/mqtt_unit.dart';
 
 import '../devices/device_model.dart';
 import '../devices/device_unit.dart';
@@ -40,7 +40,7 @@ class _UnitState extends State<Unit> {
         }
       case "mqtt":
         {
-          return const MqttService();
+          return const MqttUnit();
         }
       case "route":
         {
@@ -80,13 +80,14 @@ class _UnitState extends State<Unit> {
         {
           return ExpansionTile(
             key: ValueKey(item),
-            title: const Text("家電"),
-            children: item.data
-                .map((e) => DeviceUnit(
-                      deviceData: e,
-                      onChanged: (value) {},
-                    ))
-                .toList(),
+            title: Text(item.name),
+            children: item.data.map((value) {
+              if (value is DataItem) {
+                return Unit(item: value);
+              } else {
+                return Container();
+              }
+            }).toList(),
           );
         }
       case "genric":

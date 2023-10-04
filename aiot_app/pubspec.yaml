@@ -2,7 +2,7 @@ name: ncue.aiot_app
 description: NCUE team
 publish_to: 'none'
 
-version: 7.0.0+13
+version: 7.4.0+15
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -92,3 +92,7 @@ flutter:
     - assets/room/
     - assets/lottie/day.json
     - assets/lottie/LightRain.json
+fonts:
+  - family: SocialIcons
+    fonts:
+      - asset: packages/firebase_ui_auth/fonts/SocialIcons.ttf

@@ -35,7 +35,7 @@ class WebViewTestState extends State<WebViewTest> {
             _getCurrentUrl();
             debugPrint('URL: $url');
             setState(() {
-                  _progressValue = 1.0;
+              _progressValue = 1.0;
             });
           },
           onProgress: (int progress) {
@@ -73,8 +73,7 @@ class WebViewTestState extends State<WebViewTest> {
         title: const Text('WebView'),
         //toolbarHeight: 0.0,
       ),
-      body: 
-      WillPopScope(
+      body: WillPopScope(
         onWillPop: () async {
           var canBack = await controller.canGoBack();
           if (canBack) {
@@ -88,18 +87,16 @@ class WebViewTestState extends State<WebViewTest> {
           }
           return false;
         },
-        child: Column(
-          children: [
-            LinearProgressIndicator(
-              value: _progressValue,
-              backgroundColor: Colors.grey[200],
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-            ),
-            Expanded(
-              child: WebViewWidget(controller: controller),            
-            ),
-          ]
-        ),
+        child: Column(children: [
+          LinearProgressIndicator(
+            value: _progressValue,
+            backgroundColor: Colors.grey[200],
+            valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+          ),
+          Expanded(
+            child: WebViewWidget(controller: controller),
+          ),
+        ]),
       ),
       drawer: const MyDrawer(), //抽屉菜单
       floatingActionButton: getCookie(),

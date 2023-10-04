@@ -60,21 +60,24 @@ abstract class RouteView extends StatefulWidget {
   static Future<List<DataItem>> loadUnits() async {
     List<DataItem> items = [];
     items.clear();
+    items.add(DataItem("mqtt", [], "mqtt"));
     items.add(DataItem(
-        "addDevice", [const AddDeviceView(), RouteView.model], "註冊裝置"));
-    items.add(DataItem("route", [const MqttPage()], "MQTT測試"));
-    items.add(DataItem("route", [const SensorsPage()], "感應器資料版"));
-    items.add(DataItem("route", [const WebViewTest()], "網站版"));
-    items.add(DataItem("route", [const IRDeviceControlPanel()], "紅外線控制器"));
-    // items.add(DataItem("mqtt", [], "mqtt"));
+        "extend",
+        [
+          DataItem(
+              "addDevice", [const AddDeviceView(), RouteView.model], "註冊裝置"),
+          DataItem("route", [const MqttPage()], "MQTT測試"),
+          DataItem("route", [const SensorsPage()], "感應器資料版"),
+          DataItem("route", [const WebViewTest()], "網站版"),
+          DataItem("route", [const IRDeviceControlPanel()], "紅外線控制器"),
+        ],
+        "捷徑"));
     List x = [];
     for (DeviceModel device in await DeviceService().loadDeviceData()) {
       if (RouteView.model.devices.contains(device.uuid)) {
-        x.add(device);
-        // items.add(device.toDataItem());
+        x.add(device.toDataItem());
       }
     }
-
     items.add(DataItem("extend", x, "集合"));
     return items;
   }
