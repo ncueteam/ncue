@@ -39,36 +39,52 @@ async def main_task():
     await screen.show()
     await asyncio.sleep_ms(100)
     # 初始化資料系統
-    await DB.create("Yunitrish", "0937565253")
-    await DB.create("V2041", "123456789")
-    await DB.create("studying", "gobacktostudy")
+#     await DB.create("Yunitrish", "0937565253")
+#     await DB.create("V2041", "123456789")
+#     await DB.create("studying", "gobacktostudy")
     wifiData = await DB.load()
     #網路連線
     sta_if = network.WLAN(network.STA_IF)    
-    async def connector():
-        MAX_TRY = 100
+    async def connector(key,value):
+        MAX_TRY = 10
         TRY = 0
-        for key,value in DB.Data.items():
-            sta_if.active(False)
-            sta_if.active(True)
-            sta_if.connect(key,value)
+        sta_if.active(False)
+        sta_if.active(True)
+        sta_if.connect(key,value)
+        await screen.blank()
+        await screen.centerText(2,"connecting")
+        await screen.centerText(4,key)
+        await screen.show()
+        while not sta_if.isconnected():
+            await asyncio.sleep_ms(2000)
+            TRY += 1
             await screen.blank()
-            await screen.centerText(3,"connecting")
+            await screen.centerText(2,"connecting")
             await screen.centerText(4,key)
+            await screen.centerText(6,str(TRY)+" / "+str(MAX_TRY))
             await screen.show()
-            while not sta_if.isconnected():
-                await asyncio.sleep_ms(200)
-                TRY += 1
-                if  TRY < MAX_TRY:
-                    TRY = 0
-                    break
-                pass
-    await connector()
-    while not sta_if.isconnected():
-        pass
-
+            if  TRY > MAX_TRY:
+                TRY = 0
+                break
+            pass
+        if not sta_if.isconnected():
+            await screen.blank()
+            await screen.centerText(4,"connecting " + key + " failed....")
+            await screen.show()
+            await asyncio.sleep_ms(1000)
+            return False
+        else:
+            await screen.blank()
+            await screen.centerText(4,key + " connected!")
+            await screen.show()
+            await asyncio.sleep_ms(1000)
+            return True
+    for key,value in DB.Data.items():
+        if await connector(key,value):
+            break
     # mqtt初始化
     await linkor.connect()
+
     while True:
         await linkor.wait()
         # DHT

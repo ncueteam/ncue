@@ -201,4 +201,9 @@ class MQTTClient:
     # the same processing as wait_msg.
     def check_msg(self):
         self.sock.setblocking(False)
-        return self.wait_msg()
+        try:
+            return self.wait_msg()
+        except OSError as e:
+            if e.args[0] == -11:  # EAGAIN (Resource temporarily unavailable)
+                return None
+            raise
