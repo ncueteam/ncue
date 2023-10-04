@@ -72,19 +72,26 @@ class ItemCard extends StatelessWidget {
           room.description,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text("選擇房間"),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text("邀請"),
-            ),
-          ],
-        ),
+        Padding(
+          padding: const EdgeInsets.all(7.0), // Add this padding
+          child: Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text("選擇房間"),
+                /*style: ElevatedButton.styleFrom(
+                primary: Colors.blue, 
+                  ),*/
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text("邀請"),
+              ),
+            ],
+          ),
+        )
       ],
     );
   }
 }
+
