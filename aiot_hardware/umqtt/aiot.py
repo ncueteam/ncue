@@ -5,7 +5,7 @@ class AIOT():
         self.cycle = 0
         self.client = MQTTClient(
             client_id="client",
-            keepalive=MAX_CYCLE,
+            keepalive=MAX_CYCLE*2,
             server="test.mosquitto.org",
             ssl=False)
         self.received = "not yet!"
