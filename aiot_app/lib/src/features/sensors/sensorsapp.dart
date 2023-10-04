@@ -15,7 +15,7 @@ class SensorsPage extends RouteView {
 class SensorsPageState extends State<SensorsPage> {
   late MqttServerClient client;
   String messageText = "initial";
-  late List<String> receivedtext = ["??", "??"];
+  late List<String> mqttDataArray = ["??", "??"];
 
   Widget messageComponent(String msg) {
     return Container(
@@ -51,7 +51,7 @@ class SensorsPageState extends State<SensorsPage> {
     client.pongCallback = pong;
 
     final connMessage = MqttConnectMessage()
-        // .authenticateAs('username', 'password')
+        .authenticateAs('test', '00000000')
         .withWillTopic('NCUEMQTT')
         .withWillMessage('MQTT Connect from App')
         .startClean()
@@ -85,7 +85,7 @@ class SensorsPageState extends State<SensorsPage> {
 
   void setReceivedText(String text) {
     String receivedText = text;
-    receivedtext = receivedText.split(" ");
+    mqttDataArray = receivedText.split(" ");
     setState(() {});
   }
 
@@ -150,9 +150,9 @@ class SensorsPageState extends State<SensorsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               sensorWidget('assets/lottie/LightRain.json', 'humidity',
-                  "${receivedtext[0]}%"),
+                  "${mqttDataArray[0]}%"),
               sensorWidget('assets/lottie/day.json', 'Temperature',
-                  "${receivedtext[1]}°C"),
+                  "${mqttDataArray[1]}°C"),
             ],
           ),
         ]),

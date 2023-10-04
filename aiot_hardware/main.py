@@ -28,7 +28,6 @@ screen = oled.OLED(sh1106)
 # 檔案系統
 DB =  FileSet("wifi.json")
 DB2 =  FileSet("degree_wet.json")
-
 #主程式
 async def main_task():
     # 檔案系統
@@ -40,31 +39,34 @@ async def main_task():
     await screen.show()
     await asyncio.sleep_ms(100)
     # 初始化資料系統
-    await DB.create("302", "0937565253")
+    await DB.create("Yunitrish", "0937565253")
     await DB.create("V2041", "123456789")
     await DB.create("studying", "gobacktostudy")
     wifiData = await DB.load()
     #網路連線
-    sta_if = network.WLAN(network.STA_IF)
-    sta_if.active(False)
-    sta_if.active(True)
-    
-    ssids = ["302","V2041","studying"]
-    passwords = ["0937565253","123456789","gobacktostudy"]
-    
-    num = 0
-    ssid = ssids[num]
-    password = passwords[num]
-    sta_if.connect(ssid, password)
-    await screen.blank()
-    await screen.centerText(3,"connecting")
-    await screen.centerText(4, "SSID: " + ssid)
-    await screen.centerText(5, "pass: " + password)
-    await screen.show()
-    
+    sta_if = network.WLAN(network.STA_IF)    
+    async def connector():
+        MAX_TRY = 100
+        TRY = 0
+        for key,value in DB.Data.items():
+            sta_if.active(False)
+            sta_if.active(True)
+            sta_if.connect(key,value)
+            await screen.blank()
+            await screen.centerText(3,"connecting")
+            await screen.centerText(4,key)
+            await screen.show()
+            while not sta_if.isconnected():
+                await asyncio.sleep_ms(200)
+                TRY += 1
+                if  TRY < MAX_TRY:
+                    TRY = 0
+                    break
+                pass
+    await connector()
     while not sta_if.isconnected():
         pass
-    print("connected")
+
     # mqtt初始化
     await linkor.connect()
     while True:
@@ -81,20 +83,16 @@ async def main_task():
         await screen.displayTime()
         await screen.text(64, 4, linkor.received)
         await screen.show()
-        await asyncio.sleep_ms(1)
         # segment 7
 #         await s7.wait()
 #         await s7.cycleDisplay()
 #         await asyncio.sleep_ms(1)
 
-#主程式加入總迴圈
-task = loop.create_task(main_task())
-#關閉相關
 try:
+    task = loop.create_task(main_task())
     loop.run_forever()
 except KeyboardInterrupt:
     print("Ctrl+C pressed stopping.....")
 finally:
-    task.cancel()
     loop.run_until_complete(task)
     loop.close()
