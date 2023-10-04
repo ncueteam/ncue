@@ -4,6 +4,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'services/globals.dart';
 import 'drawer.dart';
 import 'web_login.dart';
+import 'room.dart';
 
 class WebViewTest extends RouteView {
   const WebViewTest({super.key})
@@ -116,9 +117,13 @@ class WebViewTestState extends State<WebViewTest> {
           debugPrint('Current URL2: $currentUrl');
           if (currentUrl.toString() == '"http://frp.4hotel.tw:25580/login"') {
             debugPrint('Current URL4: $currentUrl');
-            Navigator.push(
+            /*Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const LoginRoute()),
+            );*/
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RoomSelect()),
             );
             /*Navigator.push(
               context,
