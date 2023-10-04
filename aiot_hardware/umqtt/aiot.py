@@ -5,22 +5,17 @@ class AIOT():
         self.cycle = 0
         self.client = MQTTClient(
             client_id="client",
-            keepalive=5,
+            keepalive=MAX_CYCLE,
             server="test.mosquitto.org",
             ssl=False)
         self.received = "not yet!"
     
-    def onReceived(self, topic, msg):
-        self.received = msg
-        print(msg)
-    
     async def connect(self):
         self.client.connect()
-#         def get_msg(topic, msg):
-#             self.received = msg
+        def get_msg(topic, msg):
+            self.received = msg
 #             print(msg)
-#         self.client.set_callback(get_msg)
-        self.client.set_callback(self.onReceived)
+        self.client.set_callback(get_msg)
         self.client.subscribe("NCUEMQTT")
 
     async def wait(self):

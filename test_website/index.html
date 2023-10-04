@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MQTT 測試</title>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+</head>
+<body>
+<div class="msg-text"></div>
+<script lang="javascript">
+  var client = mqtt.connect("ws://test.mosquitto.org:1883")
+  client.on('connect', ()=>
+    {
+        console.log('connected.');
+        client.subscribe("NCUEMQTT")
+        client.on("message", function (topic, payload) {
+        //console.log(payload);
+        var msgText = document.getElementsByClassName('msg-text')[0];
+        msgText.innerHTML = msgText.innerHTML+"<li>"+payload.toString()+"</li>"+"<br>";
+        console.log([topic, payload].join(": "));
+        // client.end()
+        });
+
+        client.publish("NCUEMQTT", "hello");
+    }
+  );
+</script>
+</body>
+</html>

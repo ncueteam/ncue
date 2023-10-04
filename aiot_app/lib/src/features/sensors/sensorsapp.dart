@@ -77,6 +77,7 @@ class SensorsPageState extends State<SensorsPage> {
             message.payload as MqttPublishMessage;
         messageText =
             MqttPublishPayload.bytesToStringAsString(payload.payload.message);
+        debugPrint(messageText);
         setReceivedText(messageText);
       }
     });

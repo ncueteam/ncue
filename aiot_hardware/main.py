@@ -27,11 +27,13 @@ dht = dht11.Sensor()
 screen = oled.OLED(sh1106)
 # 檔案系統
 DB =  FileSet("wifi.json")
+DB2 =  FileSet("degree_wet.json")
 
 #主程式
 async def main_task():
     # 檔案系統
     await DB.setUp()
+    await DB2.setUp()
     # 載入畫面
     await screen.blank()
     await screen.centerText(4,"NCUE AIOT")
@@ -39,6 +41,9 @@ async def main_task():
     await asyncio.sleep_ms(100)
     # 初始化資料系統
     await DB.create("302", "0937565253")
+    await DB.create("V2041", "123456789")
+    await DB.create("studying", "gobacktostudy")
+    wifiData = await DB.load()
     #網路連線
     sta_if = network.WLAN(network.STA_IF)
     sta_if.active(False)
@@ -67,14 +72,16 @@ async def main_task():
         # DHT
         await dht.wait()
         await dht.detect()
-        await linkor.routine(await dht.getMQTTMessage())
+        value = await dht.getMQTTMessage()
+        await linkor.routine(value)
+        await DB2.create("degree",value)
         # OLED
         await screen.blank()
         await screen.drawSleepPage()
         await screen.displayTime()
-        await screen.text(64, 3, "test")
         await screen.text(64, 4, linkor.received)
         await screen.show()
+        await asyncio.sleep_ms(1)
         # segment 7
 #         await s7.wait()
 #         await s7.cycleDisplay()
