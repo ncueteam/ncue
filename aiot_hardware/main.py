@@ -8,7 +8,7 @@ import network
 import dht11
 from file_system import FileSet
 from umqtt.simple import MQTTClient
-from umqtt import aiot
+from umqtt.aiot import AIOT
 
 #取得總迴圈 
 loop = asyncio.get_event_loop()
@@ -18,7 +18,7 @@ loop = asyncio.get_event_loop()
 i2c = machine.SoftI2C(sda=machine.Pin(21), scl=machine.Pin(22), freq=400000)
 sh1106 = sh1106.SH1106_I2C(128, 64, i2c)
  # MQTT
-linkor = aiot.AIOT()
+mqtt = AIOT()
 #七段顯示器
 # s7 = Segment7(pins)
 # DHT11
@@ -39,9 +39,10 @@ async def main_task():
     await screen.show()
     await asyncio.sleep_ms(100)
     # 初始化資料系統
-#     await DB.create("Yunitrish", "0937565253")
-#     await DB.create("V2041", "123456789")
-#     await DB.create("studying", "gobacktostudy")
+    await DB.create("Yunitrish", "0937565253")
+    await DB.create("302", "0937565253")
+    await DB.create("V2041", "123456789")
+    await DB.create("studying", "gobacktostudy")
     wifiData = await DB.load()
     #網路連線
     sta_if = network.WLAN(network.STA_IF)    
@@ -83,21 +84,21 @@ async def main_task():
         if await connector(key,value):
             break
     # mqtt初始化
-    await linkor.connect()
+    await mqtt.connect()
 
     while True:
-        await linkor.wait()
+        await mqtt.wait()
         # DHT
         await dht.wait()
         await dht.detect()
         value = await dht.getMQTTMessage()
-        await linkor.routine(value)
+        await mqtt.routine(value)
         await DB2.create("degree",value)
         # OLED
         await screen.blank()
         await screen.drawSleepPage()
         await screen.displayTime()
-        await screen.text(64, 4, linkor.received)
+        await screen.text(64, 4, mqtt.received)
         await screen.show()
         # segment 7
 #         await s7.wait()
@@ -110,5 +111,6 @@ try:
 except KeyboardInterrupt:
     print("Ctrl+C pressed stopping.....")
 finally:
+    task.cancel()
     loop.run_until_complete(task)
     loop.close()

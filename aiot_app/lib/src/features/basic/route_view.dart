@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
 import 'package:ncue.aiot_app/src/features/item_system/data_item.dart';
+import 'package:ncue.aiot_app/src/features/notify_system/notify_view.dart';
+import 'package:ncue.aiot_app/src/features/room_system/room_view.dart';
 import 'package:ncue.aiot_app/src/features/sensors/sensorsapp.dart';
 import 'package:ncue.aiot_app/src/features/user/user_model.dart';
 import 'package:ncue.aiot_app/src/features/web_view/webview.dart';
@@ -64,12 +66,14 @@ abstract class RouteView extends StatefulWidget {
     items.add(DataItem(
         "extend",
         [
+          DataItem("route", [const RoomListView()], "房間列表"),
           DataItem(
               "addDevice", [const AddDeviceView(), RouteView.model], "註冊裝置"),
           DataItem("route", [const MqttPage()], "MQTT測試"),
           DataItem("route", [const SensorsPage()], "感應器資料版"),
           DataItem("route", [const WebViewTest()], "網站版"),
           DataItem("route", [const IRDeviceControlPanel()], "紅外線控制器"),
+          DataItem("route", [const NotifyView()], "提醒列表"),
         ],
         "捷徑"));
     List x = [];
@@ -97,6 +101,8 @@ abstract class RouteView extends StatefulWidget {
     ItemDetailsView(),
     AddDeviceView(),
     WebViewTest(),
-    IRDeviceControlPanel()
+    IRDeviceControlPanel(),
+    NotifyView(),
+    RoomListView()
   ];
 }

@@ -11,6 +11,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'features/basic/route_view.dart';
 import 'features/web_view/services/states.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 class AppRoot extends StatelessWidget {
   const AppRoot({super.key});
 
@@ -25,34 +27,36 @@ class AppRoot extends StatelessWidget {
             ],
             builder: (BuildContext context, child) {
               return MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  restorationScopeId: 'app',
-                  locale: const Locale('tw'),
-                  supportedLocales: const [
-                    Locale('en'),
-                    Locale('zh_tw'),
-                  ],
-                  localizationsDelegates: [
-                    FirebaseUILocalizations.withDefaultOverrides(
-                        LabelOverrides()),
-                    AppLocalizations.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                    FirebaseUILocalizations.delegate,
-                  ],
-                  theme: ThemeData(
-                    primarySwatch: Colors.brown,
-                  ),
-                  darkTheme: ThemeData.dark(),
-                  themeMode: RouteView.settingsController.themeMode,
-                  initialRoute: FirebaseAuth.instance.currentUser == null
-                      ? const SignInView().routeName
-                      : const Home().routeName,
-                  routes: RouteView.pages.fold({}, (map, routeView) {
-                    map[routeView.routeName] = (context) => routeView;
-                    return map;
-                  }));
+                navigatorKey: navigatorKey,
+                debugShowCheckedModeBanner: false,
+                restorationScopeId: 'app',
+                locale: const Locale('tw'),
+                supportedLocales: const [
+                  Locale('en'),
+                  Locale('zh_tw'),
+                ],
+                localizationsDelegates: [
+                  FirebaseUILocalizations.withDefaultOverrides(
+                      LabelOverrides()),
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  FirebaseUILocalizations.delegate,
+                ],
+                theme: ThemeData(
+                  primarySwatch: Colors.brown,
+                ),
+                darkTheme: ThemeData.dark(),
+                themeMode: RouteView.settingsController.themeMode,
+                initialRoute: FirebaseAuth.instance.currentUser == null
+                    ? const SignInView().routeName
+                    : const Home().routeName,
+                routes: RouteView.pages.fold({}, (map, routeView) {
+                  map[routeView.routeName] = (context) => routeView;
+                  return map;
+                }),
+              );
             });
       },
     );

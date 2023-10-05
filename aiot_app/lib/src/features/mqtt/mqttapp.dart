@@ -140,12 +140,18 @@ class MqttPageState extends State<MqttPage> {
       appBar: AppBar(
         title: const Text('MQTT Page'),
       ),
-      body: Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: widgetList),
+      body: ListView.builder(
+        itemCount: widgetList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return widgetList[index];
+        },
       ),
+      // Center(
+      //   child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.start,
+      //       crossAxisAlignment: CrossAxisAlignment.start,
+      //       children: widgetList),
+      // ),
     );
   }
 }
