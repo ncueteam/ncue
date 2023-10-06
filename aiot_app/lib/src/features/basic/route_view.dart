@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
 import 'package:ncue.aiot_app/src/features/item_system/data_item.dart';
 import 'package:ncue.aiot_app/src/features/notify_system/notify_view.dart';
+import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_view.dart';
 import 'package:ncue.aiot_app/src/features/sensors/sensorsapp.dart';
 import 'package:ncue.aiot_app/src/features/user/user_model.dart';
@@ -59,6 +60,15 @@ abstract class RouteView extends StatefulWidget {
     }
   }
 
+  static Future<User> getUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return user;
+    } else {
+      return getUser();
+    }
+  }
+
   static Future<List<DataItem>> loadUnits() async {
     List<DataItem> items = [];
     items.clear();
@@ -77,7 +87,7 @@ abstract class RouteView extends StatefulWidget {
         ],
         "捷徑"));
     List x = [];
-    for (DeviceModel device in await DeviceService().loadDeviceData()) {
+    for (DeviceModel device in await DeviceService().loadDeviceDataList()) {
       if (RouteView.model.devices.contains(device.uuid)) {
         x.add(device.toDataItem());
       }
@@ -103,6 +113,7 @@ abstract class RouteView extends StatefulWidget {
     WebViewTest(),
     IRDeviceControlPanel(),
     NotifyView(),
-    RoomListView()
+    RoomListView(),
+    RoomDetailsView()
   ];
 }

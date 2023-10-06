@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/mqtt/mqtt_unit.dart';
+import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
+import 'package:ncue.aiot_app/src/features/room_system/room_unit.dart';
 
 import '../devices/device_model.dart';
 import '../devices/device_unit.dart';
@@ -58,6 +60,16 @@ class _UnitState extends State<Unit> {
           }
           return Container();
         }
+      case "room":
+        {
+          if (item.data.elementAt(0) is RoomModel) {
+            return RoomUnit(
+              roomData: item.data.elementAt(0),
+              onChanged: (p0) {},
+            );
+          }
+          return Container();
+        }
       case "addDevice":
         {
           if (item.data.elementAt(0) is RouteView &&
@@ -88,6 +100,13 @@ class _UnitState extends State<Unit> {
                 return Container();
               }
             }).toList(),
+          );
+        }
+      case "text":
+        {
+          return ListTile(
+            key: ValueKey(item),
+            title: Text(item.name),
           );
         }
       case "genric":

@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/devices/device_model.dart';
+import 'package:ncue.aiot_app/src/features/devices/device_service.dart';
 import '../auth_system/profile_view.dart';
 import '../bluetooth/flutterblueapp.dart';
 import '../settings/settings_view.dart';
@@ -28,6 +30,10 @@ class _HomeState extends State<Home> {
   Future<void> reload() async {
     items = await RouteView.loadUnits();
     setState(() {});
+
+    DeviceModel model = await DeviceService()
+        .getDeviceFromUuid("433a0320-53b7-11ee-b9f1-5943342c988d");
+    model.debugData();
   }
 
   @override

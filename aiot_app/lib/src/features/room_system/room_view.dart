@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/route_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/unit.dart';
+import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
+import 'package:uuid/uuid.dart';
 import '../auth_system/profile_view.dart';
 import '../settings/settings_view.dart';
 import '../item_system/data_item.dart';
@@ -24,7 +26,12 @@ class _RoomListViewState extends State<RoomListView> {
   }
 
   static Future<List<DataItem>> loadUnits() async {
-    List<DataItem> items = [];
+    List<DataItem> items = [
+      DataItem(
+          "room",
+          [RoomModel(await RouteView.getUser(), "雙人房", const Uuid().v1())],
+          "雙人房")
+    ];
     return items;
   }
 

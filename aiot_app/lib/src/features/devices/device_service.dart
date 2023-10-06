@@ -5,7 +5,7 @@ import 'device_model.dart';
 class DeviceService {
   FirebaseFirestore database = FirebaseFirestore.instance;
 
-  Future<List<DeviceModel>> loadDeviceData() async {
+  Future<List<DeviceModel>> loadDeviceDataList() async {
     List<DeviceModel> data = [];
     CollectionReference devices =
         FirebaseFirestore.instance.collection('devices');
@@ -20,6 +20,23 @@ class DeviceService {
       data.add(temp);
     }
     return data;
+  }
+
+  Future<DeviceModel> getDeviceFromUuid(String uuid) async {
+    CollectionReference devices =
+        FirebaseFirestore.instance.collection('devices');
+    QuerySnapshot querySnapshot = await devices.get();
+    for (QueryDocumentSnapshot document in querySnapshot.docs) {
+      Map<String, dynamic> result = document.data() as Map<String, dynamic>;
+      if (result['uuid'] == uuid) {
+        return DeviceModel(
+            result['device_name'], result['powerOn'], result['uuid'],
+            iconPath: result['iconPath'],
+            type: result['type'],
+            temperature: result['temperature'] ?? 28);
+      }
+    }
+    return DeviceModel("error", false, "error");
   }
 
   Future<void> updateDeviceData(DeviceModel device) async {
