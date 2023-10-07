@@ -20,10 +20,10 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
-      final RoomModel item = arguments['data'];
+      final RoomModel room = arguments['data'];
       final List<DataItem> items = [];
-      items.add(DataItem("text", [], item.uuid));
-      items.addAll(item.devices.map((device) {
+      items.add(DataItem("text", [], room.uuid));
+      items.addAll(room.devices.map((device) {
         return device.toDataItem();
       }).toList());
       return Scaffold(
@@ -33,7 +33,7 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
             child: Row(children: [
               FittedBox(
                 fit: BoxFit.scaleDown,
-                child: Text("    ${item.name}",
+                child: Text("    ${room.name}",
                     style: const TextStyle(fontSize: 30)),
               )
             ]),

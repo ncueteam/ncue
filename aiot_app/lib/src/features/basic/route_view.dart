@@ -4,7 +4,7 @@ import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart'
 import 'package:ncue.aiot_app/src/features/item_system/data_item.dart';
 import 'package:ncue.aiot_app/src/features/notify_system/notify_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
-import 'package:ncue.aiot_app/src/features/room_system/room_view.dart';
+import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
 import 'package:ncue.aiot_app/src/features/sensors/sensorsapp.dart';
 import 'package:ncue.aiot_app/src/features/user/user_model.dart';
 import 'package:ncue.aiot_app/src/features/web_view/webview.dart';
@@ -31,6 +31,7 @@ abstract class RouteView extends StatefulWidget {
   final String routeName;
   final IconData routeIcon;
   static UserModel model = RouteView.model;
+  static User? user = FirebaseAuth.instance.currentUser;
   const RouteView({Key? key, required this.routeName, required this.routeIcon})
       : super(key: key);
 
@@ -49,15 +50,11 @@ abstract class RouteView extends StatefulWidget {
   static Future<void> loadRouteViewSettings() async {
     await settingsController.loadSettings();
     model = await loadAccount();
+    user = await getUser();
   }
 
   static Future<UserModel> loadAccount() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      return await UserService().loadUserData(user);
-    } else {
-      return UserModel("error", "erroe");
-    }
+    return await UserService().loadUserData(user!);
   }
 
   static Future<User> getUser() async {
@@ -72,7 +69,7 @@ abstract class RouteView extends StatefulWidget {
   static Future<List<DataItem>> loadUnits() async {
     List<DataItem> items = [];
     items.clear();
-    items.add(DataItem("mqtt", [], "mqtt"));
+    // items.add(DataItem("mqtt", [], "mqtt"));
     items.add(DataItem(
         "extend",
         [

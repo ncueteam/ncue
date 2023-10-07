@@ -1,39 +1,83 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/route_view.dart';
 import 'package:ncue.aiot_app/src/features/devices/device_model.dart';
+import 'package:ncue.aiot_app/src/features/devices/device_service.dart';
 
 class RoomModel {
   static FirebaseFirestore database = FirebaseFirestore.instance;
-  RoomModel(this.owner, this.name, this.uuid, {this.devices = const []});
+  RoomModel(this.name, this.uuid,
+      {List<String> addDeviceIDs = const [],
+      List<DeviceModel> addDevices = const []}) {
+    deviceIDs = [];
+    deviceIDs.addAll(addDeviceIDs);
+    devices = [];
+    devices.addAll(addDevices);
+    initialize();
+  }
 
   String uuid;
   String name;
-  User owner;
-  List<DeviceModel> devices;
+  User owner = RouteView.user!;
+  List<DeviceModel> devices = [];
+  List<String> deviceIDs = [];
+
+  Future<void> initialize() async {
+    await getDevices();
+    owner = await RouteView.getUser();
+  }
+
   void debugData() {
     debugPrint("name:$name");
     debugPrint("uuid:$uuid");
-    debugPrint("devices:$devices");
+    debugPrint("devices:$deviceIDs");
   }
 
-  Future<void> loadUserData(User user) async {
+  Future<List<DeviceModel>> getDevices() async {
+    for (String s in deviceIDs) {
+      devices.add(await DeviceService().getDeviceFromUuid(s));
+    }
+    return devices;
+  }
+
+  Future<void> loadRoomData(String uuid) async {
     CollectionReference reference =
         FirebaseFirestore.instance.collection('rooms');
     QuerySnapshot querySnapshot =
-        await reference.where('uuid', isEqualTo: user.uid).get();
-    if (querySnapshot.size == 1) {
-      QueryDocumentSnapshot lst = querySnapshot.docs.first;
-      name = lst['name'];
-      uuid = lst['uuid'];
-      devices = lst['devices'];
-    } else {
-      name = user.displayName ?? user.email ?? user.phoneNumber ?? user.uid;
-      uuid = user.uid;
+        await reference.where('uuid', isEqualTo: uuid).get();
+    QueryDocumentSnapshot lst = querySnapshot.docs.first;
+    name = lst['name'];
+    uuid = lst['uuid'];
+    deviceIDs = lst['devices'];
+
+    for (String s in deviceIDs) {
+      devices.add(await DeviceService().getDeviceFromUuid(s));
     }
   }
 
-  void updateUserData(RoomModel model, List<String> devices) async {
+  void update() async {
+    CollectionReference reference =
+        FirebaseFirestore.instance.collection('rooms');
+    QuerySnapshot querySnapshot =
+        await reference.where('uuid', isEqualTo: uuid).get();
+
+    if (querySnapshot.size > 0) {
+      DocumentSnapshot documentSnapshot = querySnapshot.docs[0];
+      DocumentReference documentReference = reference.doc(documentSnapshot.id);
+
+      Map<String, dynamic> updatedData = {
+        'name': name,
+        "uuid": uuid,
+        'devices': deviceIDs,
+      };
+      await documentReference.update(updatedData);
+    } else {
+      create();
+    }
+  }
+
+  void updateRoomData(RoomModel model, List<String> deviceIDs) async {
     CollectionReference reference =
         FirebaseFirestore.instance.collection('rooms');
     QuerySnapshot querySnapshot =
@@ -46,11 +90,11 @@ class RoomModel {
       Map<String, dynamic> updatedData = {
         'name': model.name,
         "uuid": model.uuid,
-        'devices': devices,
+        'devices': deviceIDs,
       };
       await documentReference.update(updatedData);
     } else {
-      createUserData(model);
+      createRoomData(model);
     }
   }
 
@@ -69,12 +113,21 @@ class RoomModel {
     }
   }
 
-  Future<void> createUserData(RoomModel model) async {
+  Future<void> createRoomData(RoomModel model) async {
     List<String> temp = [];
     database.collection('rooms').add({
       'name': model.name,
       "uuid": model.uuid,
       "devices": temp,
+    });
+  }
+
+  Future<void> create() async {
+    database.collection('rooms').add({
+      'owner': owner.uid,
+      'name': name,
+      "uuid": uuid,
+      "devices": deviceIDs,
     });
   }
 }

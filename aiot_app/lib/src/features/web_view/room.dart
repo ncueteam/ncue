@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'models/RoomDetail.dart';
+import 'models/room_detail.dart';
 
 class RoomSelect extends StatelessWidget {
+  const RoomSelect({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class RoomSelect extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: GridView.builder(
                 itemCount: rooms.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 1,
                   mainAxisSpacing: 20.0,
                   crossAxisSpacing: 20.0,
@@ -46,7 +47,7 @@ class RoomSelect extends StatelessWidget {
 }
 
 class ItemCard extends StatelessWidget {
-  ItemCard({super.key, required this.room});
+  const ItemCard({super.key, required this.room});
 
   final Room room;
   @override
@@ -55,7 +56,7 @@ class ItemCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          padding:EdgeInsets.all(20.0),
+          padding:const EdgeInsets.all(20.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -65,12 +66,12 @@ class ItemCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 20.0 / 4),
           child: Text(
             room.title,
-            style: TextStyle(fontSize: 20)
+            style: const TextStyle(fontSize: 20)
           )
         ),
         Text(
           room.description,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         Padding(
           padding: const EdgeInsets.all(7.0), // Add this padding

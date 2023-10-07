@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Room {
   final String image, title, description;
   final int id;
