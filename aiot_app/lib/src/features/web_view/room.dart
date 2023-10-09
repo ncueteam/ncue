@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'models/room_detail.dart';
+import '../basic/route_view.dart';
 
-class RoomSelect extends StatelessWidget {
-  const RoomSelect({super.key});
+//class RoomSelect extends StatelessWidget {
+  //const RoomSelect({super.key});
+class RoomSelect extends RouteView {
+  const RoomSelect({super.key})
+      : super(routeName: '/room-select', routeIcon: Icons.meeting_room_sharp);
+@override
+  RoomSelectState createState() => RoomSelectState();
+}
 
+class RoomSelectState extends State<RoomSelect> {
 
   @override
   Widget build(BuildContext context) {
