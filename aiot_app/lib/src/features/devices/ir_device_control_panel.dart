@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/route_view.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
 
 class IRDeviceControlPanel extends RouteView {
   const IRDeviceControlPanel({super.key})
@@ -10,6 +12,94 @@ class IRDeviceControlPanel extends RouteView {
 }
 
 class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
+  late MqttServerClient client;
+  final messageToSend = TextEditingController();
+
+  Widget messageComponent(String msg) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: Text(msg),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    connect();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    messageToSend.dispose();
+    // client.disconnect();
+    super.dispose();
+  }
+
+  void connect() async {
+    client = MqttServerClient('test.mosquitto.org', 'ncue_app');
+    client.disconnect();
+    client.port = 1883;
+    client.logging(on: true);
+
+    client.onConnected = onConnected;
+    client.onSubscribed = onSubscribed;
+    client.onDisconnected = onDisconnected;
+    client.onUnsubscribed = onUnsubscribed;
+    client.pongCallback = pong;
+
+    final connMessage = MqttConnectMessage()
+        .authenticateAs('test', '00000000')
+        .withWillTopic('NCUEMQTT')
+        .withWillMessage('MQTT Connect from App')
+        .startClean()
+        .withWillQos(MqttQos.atLeastOnce);
+
+    client.connectionMessage = connMessage;
+
+    try {
+      await client.connect();
+    } catch (e) {
+      debugPrint('Exception: $e');
+      client.disconnect();
+    }
+  }
+
+  void onConnected() {
+    debugPrint('Connected');
+    client.subscribe('receive_topic', MqttQos.exactlyOnce);
+    client.subscribe('NCUEMQTT', MqttQos.exactlyOnce);
+    client.updates?.listen((List<MqttReceivedMessage<MqttMessage>> messages) {
+      for (var message in messages) {
+        final MqttPublishMessage payload =
+            message.payload as MqttPublishMessage;
+        final String messageText =
+            MqttPublishPayload.bytesToStringAsString(payload.payload.message);
+      }
+    });
+  }
+
+  void onSubscribed(String topic) {}
+
+  void onDisconnected() {}
+
+  void onUnsubscribed(String? topic) {}
+
+  void pong() {}
+
+  void sendMessage(String topic, String message) {
+    final builder = MqttClientPayloadBuilder();
+    builder.addString(message);
+    try {
+      client.publishMessage(topic, MqttQos.exactlyOnce, builder.payload!);
+    } catch (e) {
+      debugPrint('Exception: $e');
+      client.connect();
+    }
+  }
+
   List buttons = [
     Icons.space_bar,
     Icons.keyboard_arrow_up,
@@ -66,7 +156,9 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                           : Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  sendMessage('NCUEMQTT', "0x0000 0x09");
+                                },
                                 child: Text("${buttons[index]}"),
                               ),
                             )),

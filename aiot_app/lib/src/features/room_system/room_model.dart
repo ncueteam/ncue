@@ -25,7 +25,7 @@ class RoomModel {
 
   Future<void> initialize() async {
     await getDevices();
-    owner = await RouteView.getUser();
+    owner = (await RouteView.getUser())!;
   }
 
   void debugData() {
