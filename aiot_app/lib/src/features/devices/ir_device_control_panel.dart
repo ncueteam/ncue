@@ -75,6 +75,7 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
       for (var message in messages) {
         final MqttPublishMessage payload =
             message.payload as MqttPublishMessage;
+        // ignore: unused_local_variable
         final String messageText =
             MqttPublishPayload.bytesToStringAsString(payload.payload.message);
       }

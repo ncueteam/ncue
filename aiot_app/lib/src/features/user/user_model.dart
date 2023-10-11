@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 
 class UserModel {
   static FirebaseFirestore database = FirebaseFirestore.instance;
-  UserModel(this.name, this.uuid, {this.type = "", this.devices = const []});
+  UserModel(this.name, this.uuid,
+      {this.type = "", this.devices = const [], this.rooms = const []});
 
   String uuid;
   String name;
   String type;
   List<dynamic> devices;
+  List<dynamic> rooms;
   void debugData() {
     debugPrint("name:$name");
     debugPrint("uuid:$uuid");
@@ -28,6 +30,7 @@ class UserModel {
       uuid = lst['uuid'];
       type = lst['type'];
       devices = lst['devices'];
+      rooms = lst['rooms'];
     } else {
       name = user.displayName ?? user.email ?? user.phoneNumber ?? user.uid;
       uuid = user.uid;
@@ -50,6 +53,7 @@ class UserModel {
         "type": model.type,
         "uuid": model.uuid,
         'devices': devices,
+        'rooms': rooms
       };
       await documentReference.update(updatedData);
     } else {
@@ -79,6 +83,7 @@ class UserModel {
       "type": model.type,
       "uuid": model.uuid,
       "devices": temp,
+      "rooms": temp,
     });
   }
 }

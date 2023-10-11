@@ -25,7 +25,8 @@ class UserService {
     }
   }
 
-  void updateUserData(UserModel model, List<String> devices) async {
+  void updateUserData(UserModel model,
+      {List<String> devices = const [], List<String> rooms = const []}) async {
     CollectionReference reference =
         FirebaseFirestore.instance.collection('users');
     QuerySnapshot querySnapshot =
@@ -40,6 +41,7 @@ class UserService {
         "type": model.type,
         "uuid": model.uuid,
         'devices': devices,
+        'rooms': rooms,
       };
       await documentReference.update(updatedData);
     } else {
@@ -62,6 +64,21 @@ class UserService {
     }
   }
 
+  void addRoom(UserModel model, String roomUUID) async {
+    CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    QuerySnapshot querySnapshot =
+        await usersCollection.where('uuid', isEqualTo: model.uuid).get();
+    if (querySnapshot.docs.isNotEmpty) {
+      DocumentReference documentReference = querySnapshot.docs[0].reference;
+      List<dynamic> currentRooms = querySnapshot.docs[0].get('rooms') ?? [];
+      currentRooms.add(roomUUID);
+      await documentReference.update({'rooms': currentRooms});
+    } else {
+      debugPrint('Document with uuid "${model.uuid}" not found.');
+    }
+  }
+
   UserModel createUserData(UserModel model) {
     List<String> temp = [];
     database.collection('users').add({
@@ -69,6 +86,7 @@ class UserService {
       "type": model.type,
       "uuid": model.uuid,
       "devices": temp,
+      "rooms": temp,
     });
     return model;
   }

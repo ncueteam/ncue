@@ -88,6 +88,24 @@ class _UnitState extends State<Unit> {
           }
           return Container();
         }
+      case "addRoom":
+        {
+          if (item.data.elementAt(0) is RouteView &&
+              item.data.elementAt(1) is UserModel) {
+            RouteView view = item.data.elementAt(0);
+            return ListTile(
+                key: ValueKey(item),
+                isThreeLine: true,
+                title: Text("前往頁面 : ${item.name}"),
+                subtitle: Text(view.routeName),
+                leading: Icon(view.routeIcon),
+                onTap: () {
+                  Navigator.pushNamed(context, view.routeName,
+                      arguments: {"user": item.data.elementAt(1)});
+                });
+          }
+          return Container();
+        }
       case "extend":
         {
           return ExpansionTile(
