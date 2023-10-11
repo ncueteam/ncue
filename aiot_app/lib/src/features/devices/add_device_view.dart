@@ -122,7 +122,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
             ),
             IconButton(
                 onPressed: () async {
-                  UserService().addDevice(user, deviceUUID);
+                  await RouteView.model.addDevice(user, deviceUUID);
                   DeviceService().addDevice(deviceUUID, deviceType,
                       deviceName.text, deviceIconPath, false, 28.0);
                   Navigator.pop(context, true);

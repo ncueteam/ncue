@@ -3,8 +3,6 @@ import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 import 'package:uuid/uuid.dart';
 import '../basic/home_view.dart';
 import '../basic/route_view.dart';
-import '../user/user_model.dart';
-import '../user/user_service.dart';
 
 class AddRoomView extends RouteView {
   const AddRoomView({super.key})
@@ -24,7 +22,6 @@ class AddRoomViewState extends State<AddRoomView> {
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
-      final UserModel user = arguments['user'];
       return Scaffold(
         appBar: AppBar(
           title: const Text("裝置註冊頁面"),
@@ -55,8 +52,9 @@ class AddRoomViewState extends State<AddRoomView> {
             Row(children: [
               IconButton(
                   onPressed: () async {
-                    UserService().addRoom(user, roomUUID);
-                    RoomModel(roomName.text, roomUUID).create();
+                    RoomModel room = RoomModel(roomName.text, roomUUID);
+                    room.create();
+                    RouteView.model.addRoom(RouteView.model, roomUUID);
                     Navigator.pop(context, true);
                   },
                   icon: const Icon(Icons.add)),

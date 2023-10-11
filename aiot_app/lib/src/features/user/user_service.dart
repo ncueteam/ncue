@@ -15,7 +15,7 @@ class UserService {
     if (querySnapshot.size == 1) {
       QueryDocumentSnapshot lst = querySnapshot.docs.first;
       return UserModel(lst['name'], lst['uuid'],
-          type: lst['type'], devices: lst['devices']);
+          type: lst['type'], devices: lst['devices'], rooms: lst['rooms']);
     } else {
       return createUserData(UserModel(
         user.displayName ?? user.email ?? user.phoneNumber ?? user.uid,

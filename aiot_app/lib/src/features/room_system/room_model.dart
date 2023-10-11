@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/route_view.dart';
 import 'package:ncue.aiot_app/src/features/devices/device_model.dart';
 import 'package:ncue.aiot_app/src/features/devices/device_service.dart';
+import 'package:ncue.aiot_app/src/features/item_system/data_item.dart';
 
 class RoomModel {
   static FirebaseFirestore database = FirebaseFirestore.instance;
@@ -41,6 +42,13 @@ class RoomModel {
     return devices;
   }
 
+  DataItem toDataItem() {
+    return DataItem(
+        "room",
+        [RoomModel(name, uuid, addDevices: devices, addDeviceIDs: deviceIDs)],
+        name);
+  }
+
   Future<void> loadRoomData(String uuid) async {
     CollectionReference reference =
         FirebaseFirestore.instance.collection('rooms');
@@ -54,6 +62,19 @@ class RoomModel {
     for (String s in deviceIDs) {
       devices.add(await DeviceService().getDeviceFromUuid(s));
     }
+  }
+
+  Future<RoomModel> getRoomFromUuid(String uuid) async {
+    CollectionReference devices =
+        FirebaseFirestore.instance.collection('rooms');
+    QuerySnapshot querySnapshot = await devices.get();
+    for (QueryDocumentSnapshot document in querySnapshot.docs) {
+      Map<String, dynamic> result = document.data() as Map<String, dynamic>;
+      if (result['uuid'] == uuid) {
+        return RoomModel(result['name'], result['uuid']);
+      }
+    }
+    return RoomModel("error", "error");
   }
 
   void update() async {
