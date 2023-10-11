@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 
 class UserModel {
   static FirebaseFirestore database = FirebaseFirestore.instance;
