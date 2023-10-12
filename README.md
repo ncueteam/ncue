@@ -36,6 +36,9 @@
   4. OLED 連結 MQTT
   5. 電力保存系統
 
+#### MQTT topic
+
+
 #### IR receiver (紅外線) pinout
 
 | 紅外線感測器 | esp32 |
