@@ -3,7 +3,6 @@ import 'package:uuid/uuid.dart';
 import '../basic/home_view.dart';
 import '../basic/route_view.dart';
 import '../user/user_model.dart';
-import '../user/user_service.dart';
 import 'device_service.dart';
 
 class AddDeviceView extends RouteView {
@@ -122,7 +121,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
             ),
             IconButton(
                 onPressed: () async {
-                  UserService().addDevice(user, deviceUUID);
+                  await RouteView.model.addDevice(user, deviceUUID);
                   DeviceService().addDevice(deviceUUID, deviceType,
                       deviceName.text, deviceIconPath, false, 28.0);
                   Navigator.pop(context, true);
