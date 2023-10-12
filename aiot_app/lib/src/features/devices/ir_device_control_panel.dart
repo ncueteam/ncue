@@ -51,9 +51,9 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
     client.pongCallback = pong;
 
     final connMessage = MqttConnectMessage()
-        .authenticateAs('test', '00000000')
-        .withWillTopic('NCUEMQTT')
-        .withWillMessage('MQTT Connect from App')
+        //.authenticateAs('test', '00000000')
+        .withWillTopic('AIOT_113/IR_transmitter')
+        //.withWillMessage('MQTT Connect from App')
         .startClean()
         .withWillQos(MqttQos.atLeastOnce);
 
@@ -70,7 +70,7 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
   void onConnected() {
     debugPrint('Connected');
     client.subscribe('receive_topic', MqttQos.exactlyOnce);
-    client.subscribe('NCUEMQTT', MqttQos.exactlyOnce);
+    client.subscribe('AIOT_113/IR_transmitter', MqttQos.exactlyOnce);
     client.updates?.listen((List<MqttReceivedMessage<MqttMessage>> messages) {
       for (var message in messages) {
         final MqttPublishMessage payload =
@@ -158,7 +158,7 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                               padding: const EdgeInsets.all(2.0),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  sendMessage('NCUEMQTT', "0x0000 0x09");
+                                  sendMessage('AIOT_113/IR_transmitter', "0x0000 0x09");
                                 },
                                 child: Text("${buttons[index]}"),
                               ),

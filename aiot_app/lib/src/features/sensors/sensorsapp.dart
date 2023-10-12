@@ -51,8 +51,8 @@ class SensorsPageState extends State<SensorsPage> {
     client.pongCallback = pong;
 
     final connMessage = MqttConnectMessage()
-        .authenticateAs('test', '00000000')
-        .withWillTopic('NCUEMQTT')
+        //.authenticateAs('test', '00000000')
+        .withWillTopic('AIOT_113/dht11')
         .withWillMessage('MQTT Connect from App')
         .startClean()
         .withWillQos(MqttQos.atLeastOnce);
@@ -70,7 +70,7 @@ class SensorsPageState extends State<SensorsPage> {
   void onConnected() {
     debugPrint('Connected');
     client.subscribe('receive_topic', MqttQos.exactlyOnce);
-    client.subscribe('NCUEMQTT', MqttQos.exactlyOnce);
+    client.subscribe('AIOT_113/dht11', MqttQos.exactlyOnce);
     client.updates?.listen((List<MqttReceivedMessage<MqttMessage>> messages) {
       for (var message in messages) {
         final MqttPublishMessage payload =
