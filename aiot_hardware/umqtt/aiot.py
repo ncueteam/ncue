@@ -1,8 +1,10 @@
 from umqtt.simple import MQTTClient
 MAX_CYCLE = 100
+MAIN_TOPIC="AIOT_113"
 class AIOT():
-    def __init__(self) -> None:
+    def __init__(self,subtopic) -> None:
         self.cycle = 0
+        self.topic = subtopic
         self.client = MQTTClient(
             client_id="client",
             keepalive=MAX_CYCLE*2,
@@ -16,7 +18,7 @@ class AIOT():
             self.received = msg
 #             print(msg)
         self.client.set_callback(get_msg)
-        self.client.subscribe("NCUEMQTT")
+        self.client.subscribe(MAIN_TOPIC+"/"+self.topic)
 
     async def wait(self):
         self.client.check_msg()
@@ -26,4 +28,4 @@ class AIOT():
         
     async def routine(self,content):
         if (self.cycle >= MAX_CYCLE - 1):
-            self.client.publish("NCUEMQTT", content)
+            self.client.publish(MAIN_TOPIC+"/"+self.topic, content)

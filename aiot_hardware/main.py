@@ -18,7 +18,7 @@ loop = asyncio.get_event_loop()
 i2c = machine.SoftI2C(sda=machine.Pin(21), scl=machine.Pin(22), freq=400000)
 sh1106 = sh1106.SH1106_I2C(128, 64, i2c)
  # MQTT
-mqtt = AIOT()
+dht_mqtt = AIOT("dht11")
 #七段顯示器
 # s7 = Segment7(pins)
 # DHT11
@@ -83,22 +83,22 @@ async def main_task():
     for key,value in DB.Data.items():
         if await connector(key,value):
             break
-    # mqtt初始化
-    await mqtt.connect()
+    # dht_mqtt初始化
+    await dht_mqtt.connect()
 
     while True:
-        await mqtt.wait()
+        await dht_mqtt.wait()
         # DHT
         await dht.wait()
         await dht.detect()
         value = await dht.getMQTTMessage()
-        await mqtt.routine(value)
+        await dht_mqtt.routine(value)
         await DB2.create("degree",value)
         # OLED
         await screen.blank()
         await screen.drawSleepPage()
         await screen.displayTime()
-        await screen.text(64, 4, mqtt.received)
+        await screen.text(64, 4, dht_mqtt.received)
         await screen.show()
         # segment 7
 #         await s7.wait()
