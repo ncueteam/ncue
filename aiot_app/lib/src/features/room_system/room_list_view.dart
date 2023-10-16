@@ -35,7 +35,15 @@ class _RoomListViewState extends State<RoomListView> {
               addDeviceIDs: ["433a0320-53b7-11ee-b9f1-5943342c988d"],
             )
           ],
-          "雙人房")
+          "雙人房"),
+      DataItem(
+          "extend",
+          [
+            DataItem("text", [], "字串1"),
+            DataItem("text", [], "字串2"),
+            DataItem("text", [], "字串3")
+          ],
+          "字串集合")
     ];
     return items;
   }
