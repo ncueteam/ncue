@@ -54,7 +54,23 @@ class Segment7():
             else:
                 self.pins[i].off()
         
-
+def test():
+    loop = uasyncio.get_event_loop()
+    async def main_task():
+        s7 = Segment7(pins)
+        while True:
+            await s7.wait()
+            await s7.cycleDisplay()
+            await asyncio.sleep_ms(1)
+    try:
+        task = loop.create_task(main_task())
+        loop.run_forever()
+    except KeyboardInterrupt:
+        print("Ctrl+C pressed stopping.....")
+    finally:
+        task.cancel()
+        loop.run_until_complete(task)
+        loop.close()
 
 
 

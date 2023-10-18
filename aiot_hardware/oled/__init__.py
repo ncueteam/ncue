@@ -1,5 +1,8 @@
 import uasyncio as asyncio
 import machine
+import oled.sh1106
+
+I2C = machine.SoftI2C(sda=machine.Pin(21), scl=machine.Pin(22), freq=400000)
 
 class OLED():
     
