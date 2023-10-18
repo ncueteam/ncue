@@ -21,6 +21,7 @@ class RoomModel {
   String uuid;
   String name;
   User owner = RouteView.user!;
+  List<String> member =[];
   List<DeviceModel> devices = [];
   List<String> deviceIDs = [];
 
