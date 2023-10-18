@@ -1,13 +1,15 @@
 import uasyncio as asyncio
 import machine
 import oled.sh1106
+import uasyncio
 
 I2C = machine.SoftI2C(sda=machine.Pin(21), scl=machine.Pin(22), freq=400000)
+SH1106 = sh1106.SH1106_I2C(128, 64, I2C)
 
 class OLED():
     
     def __init__(self, screen_set) -> None:
-        self.screen = screen_set
+        self.screen = SH1106
         self.x = 0
         self.y = 0
         self.ax = 1
@@ -69,3 +71,20 @@ class OLED():
         
     async def show(self):
         self.screen.show()
+
+def test():
+    screen = OLED("test")
+    loop = uasyncio.get_event_loop()
+    async def main_task():
+        await screen.blank()
+        await screen.centerText(3,"test for oled")
+        await screen.show()
+    try:
+        task = loop.create_task(main_task())
+        loop.run_forever()
+    except KeyboardInterrupt:
+        print("Ctrl+C pressed stopping.....")
+    finally:
+        task.cancel()
+        loop.run_until_complete(task)
+        loop.close()
