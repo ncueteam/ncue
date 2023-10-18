@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'models/room_detail.dart';
 import '../basic/route_view.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_storage/firebase_storage.dart'; // 引入 firebase_storage
+import 'models/member.dart';
 
 //class RoomSelect extends StatelessWidget {
   //const RoomSelect({super.key});
@@ -14,12 +13,6 @@ class RoomSelect extends RouteView {
 }
 
 class RoomSelectState extends State<RoomSelect> {
-
-  @override
-  void initState() {
-    super.initState();
-    getdata();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +53,6 @@ class RoomSelectState extends State<RoomSelect> {
       ),
     );
   }
-  void getdata() async{
-    final db = FirebaseFirestore.instance;
-    await db.collection("users").get().then((event) {
-      for (var doc in event.docs) {
-        debugPrint("${doc.id} => ${doc.data()}");
-      }
-    });
-  }
 }
 
 class ItemCard extends StatelessWidget {
@@ -76,6 +61,36 @@ class ItemCard extends StatelessWidget {
   final Room room;
   @override
   Widget build(BuildContext context) {
+    Future<void> showListDialog() async {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("管理房間成員"),
+            content: Container(
+              width: double.maxFinite,
+              child: ListView.builder(
+                itemCount: members.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Member member = members[index];
+                  return ListTile(
+                    leading: CircleAvatar(child: Icon(Icons.people)),
+                    title: Text(member.username),
+                    subtitle: Text(member.email),
+                    trailing: ElevatedButton(
+                      onPressed: () {
+                        // Handle remove member action
+                      },
+                      child: const Text("移除"),
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        },
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -109,7 +124,9 @@ class ItemCard extends StatelessWidget {
                   ),*/
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  showListDialog();
+                },
                 child: const Text("邀請"),
               ),
             ],
@@ -119,16 +136,3 @@ class ItemCard extends StatelessWidget {
     );
   }
 }
-
-/*void setdata(){
-  db = FirebaseFirestore.instance;
-  //final users = db.collection("users");
-  final data1 = <String, dynamic>{
-    "name": "tsing347437@gmail.com",
-    "type": "user"
-  };
-  //cities.doc("SF").set(data1);
-  db.collection("users").add(data1).then((DocumentReference doc) =>
-  debugPrint('DocumentSnapshot added with ID: ${doc.id}'));
-
-}*/
