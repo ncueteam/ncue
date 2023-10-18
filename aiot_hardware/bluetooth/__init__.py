@@ -2,10 +2,11 @@ import ubluetooth
 from file_system import FileSet
 class Bluetooth():
     def __init__(self) -> None:
+        self.name = "esp32 ncue test"
         self.ble = ubluetooth.BLE()
         self.ble.active(False)
         self.ble.active(True)
-        self.ble.register()
+        self.register()
         self.ble.irq(self.handler)
     
     def register(self):
@@ -30,11 +31,9 @@ class Bluetooth():
                                adv_data=b'\x02\x01\x06\x02\x0A\x10' + bytearray((len(self.name) + 1, 0x09)) + self.name)
     def handler(self,event,data):
         if event == 1:
-            self.led.off()
             print("BLE 連接成功")
 
         elif event == 2:
-            self.led.on()
             print("BLE 斷開連結")
             self.ble.gap_advertise(100, adv_data=b'\x02\x01\x06\x02\x0A\x08' + bytearray(
                 (len(self.name) + 1, 0x09)) + self.name)
