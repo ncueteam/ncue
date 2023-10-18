@@ -41,6 +41,13 @@
   1. [溫溼度、PM2.5、光感器、rc522....] 等傳感器 MQTT
   1. OLED 連結 MQTT
 
+#### 韌體安裝
+
+1. 安裝python以及pip
+2. 安裝cp10驅動
+3. 利用pip安裝esptool
+4. 執行 reset.bat 後面加上參數 COMx
+
 #### MQTT topic
 
 | MQTT | AIOT_113 |
