@@ -25,28 +25,7 @@ class _RoomListViewState extends State<RoomListView> {
   }
 
   static Future<List<DataItem>> loadUnits() async {
-    List<DataItem> items = [
-      DataItem(
-          "room",
-          [
-            RoomModel(
-              "Test Room",
-              "668c0660-64f2-11ee-bf36-9f6d5cf22990",
-              addDeviceIDs: ["433a0320-53b7-11ee-b9f1-5943342c988d"],
-            )
-          ],
-          "雙人房"),
-      DataItem(
-          "room",
-          [
-            RoomModel(
-              "Test Room",
-              "668c0660-64f2-11ee-bf36-9f6d5cf22991",
-              addDeviceIDs: ["433a0320-53b7-11ee-b9f1-5943342c988d"],
-            )
-          ],
-          "雙人房"),
-    ];
+    List<DataItem> items = [];
     return items;
   }
 
