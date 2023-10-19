@@ -53,7 +53,7 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
     final connMessage = MqttConnectMessage()
         //.authenticateAs('test', '00000000')
         .withWillTopic('AIOT_113/IR_transmitter')
-        //.withWillMessage('MQTT Connect from App')
+        .withWillMessage('MQTT Connect from App')
         .startClean()
         .withWillQos(MqttQos.atLeastOnce);
 
@@ -102,46 +102,55 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
   }
 
   List buttons = [
-    Icons.space_bar,
-    Icons.keyboard_arrow_up,
-    Icons.space_bar,
-    Icons.keyboard_arrow_left,
-    Icons.center_focus_strong,
-    Icons.keyboard_arrow_right,
-    Icons.space_bar,
-    Icons.keyboard_arrow_down,
-    Icons.space_bar,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
+    // Icons.space_bar,
+    // Icons.keyboard_arrow_up,
+    // Icons.space_bar,
+    // Icons.keyboard_arrow_left,
+    // Icons.center_focus_strong,
+    // Icons.keyboard_arrow_right,
+    // Icons.space_bar,
+    // Icons.keyboard_arrow_down,
+    // Icons.space_bar,
+    // 1,
+    // 2,
+    // 3,
+    // 4,
+    // 5,
+    // 6,
+    // 7,
+    // 8,
+    // 9,
+    "light",
+    "wave +",
+    "wave -",
+    "head",
+    "mode",
   ];
 
   List buttondata = [
-    "0x00",//0
-    "0x46",
-    "0x03",//0
-    "0x44",
-    "0x40",
-    "0x43",
-    "0x07",//0
-    "0x15",
-    "0x09",//0
-    //1~9
-    "0x16",
-    "0x19",
-    "0x0D",
-    "0x0C",
-    "0x18",
-    "0x5E",
-    "0x08",
-    "0x1C",
-    "0x5A",
+    // "0x00",
+    // "0x46",
+    // "0x03",
+    // "0x44",
+    // "0x40",
+    // "0x43",
+    // "0x07",
+    // "0x15",
+    // "0x09",
+    // //1~9
+    // "0x16",
+    // "0x19",
+    // "0x0D",
+    // "0x0C",
+    // "0x18",
+    // "0x5E",
+    // "0x08",
+    // "0x1C",
+    "0x02",
+    "0x0e",
+    "0x12",
+    "0x0c",
+    "0x04",
   ];
 
   @override
@@ -162,30 +171,31 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                 child: Container(
                   color: Colors.green,
                   child: Center(
-                      child: buttons[index] is IconData
-                          ? Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Container(
-                                color: Colors.red,
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  style: ButtonStyle(
-                                      minimumSize: MaterialStateProperty.all(
-                                          const Size(100, 100))),
-                                  child: Icon(buttons[index]),
-                                ),
-                              ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.all(2.0),
+                    child: buttons[index] is IconData
+                        ? Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Container(
+                              color: Colors.red,
                               child: ElevatedButton(
-                                onPressed: () {
-                                  sendMessage(
-                                      'AIOT_113/IR_transmitter', "0x0000 0x09");
-                                },
-                                child: Text("${buttons[index]}"),
+                                onPressed: () {},
+                                style: ButtonStyle(
+                                    minimumSize: MaterialStateProperty.all(
+                                        const Size(100, 100))),
+                                child: Icon(buttons[index]),
                               ),
-                            )),
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                sendMessage('AIOT_113/IR_transmitter',
+                                    buttondata[index]);
+                              },
+                              child: Text("${buttons[index]}"),
+                            ),
+                          ),
+                  ),
                 ),
               );
             }),
