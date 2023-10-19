@@ -8,22 +8,30 @@ import 'package:ncue.aiot_app/src/features/item_system/data_item.dart';
 
 class RoomModel {
   static FirebaseFirestore database = FirebaseFirestore.instance;
+  String uuid;
+  String name;
+  String imagePath = "";
+  String description = "";
+  User owner = RouteView.user!;
+  List<String> members = [];
+  List<DeviceModel> devices = [];
+  List<String> deviceIDs = [];
+
   RoomModel(this.name, this.uuid,
       {List<String> addDeviceIDs = const [],
-      List<DeviceModel> addDevices = const []}) {
+      List<DeviceModel> addDevices = const [],
+      List<String> members = const [],
+      String path = "assets/room/room1.jpg",
+      String description = "no description"}) {
     deviceIDs = [];
     deviceIDs.addAll(addDeviceIDs);
     devices = [];
     devices.addAll(addDevices);
+    members = members;
+    imagePath = path;
+    description = description;
     initialize();
   }
-
-  String uuid;
-  String name;
-  User owner = RouteView.user!;
-  List<String> member =[];
-  List<DeviceModel> devices = [];
-  List<String> deviceIDs = [];
 
   Future<void> initialize() async {
     await getDevices();
@@ -32,7 +40,10 @@ class RoomModel {
 
   void debugData() {
     debugPrint("name:$name");
-    debugPrint("uuid:$uuid");
+    debugPrint("name:$name");
+    debugPrint("description:$description");
+    debugPrint("imagePath:$imagePath");
+    debugPrint("members:$members");
     debugPrint("devices:$deviceIDs");
   }
 
@@ -46,7 +57,16 @@ class RoomModel {
   DataItem toDataItem() {
     return DataItem(
         "room",
-        [RoomModel(name, uuid, addDevices: devices, addDeviceIDs: deviceIDs)],
+        [
+          RoomModel(
+            name,
+            uuid,
+            addDevices: devices,
+            addDeviceIDs: deviceIDs,
+            path: imagePath,
+            description: description,
+          )
+        ],
         name);
   }
 
@@ -58,6 +78,9 @@ class RoomModel {
     QueryDocumentSnapshot lst = querySnapshot.docs.first;
     name = lst['name'];
     uuid = lst['uuid'];
+    description = lst['description'];
+    imagePath = lst['imagePath'];
+    members = lst['members'];
     deviceIDs = lst['devices'];
 
     for (String s in deviceIDs) {
@@ -72,7 +95,26 @@ class RoomModel {
     for (QueryDocumentSnapshot document in querySnapshot.docs) {
       Map<String, dynamic> result = document.data() as Map<String, dynamic>;
       if (result['uuid'] == uuid) {
-        return RoomModel(result['name'], result['uuid']);
+        List<String> members;
+        List<String> devices;
+        if (result['members'].runtimeType == List<dynamic>) {
+          members = [];
+        } else {
+          members = result['members'];
+        }
+        if (result['devices'].runtimeType == List<dynamic>) {
+          devices = [];
+        } else {
+          devices = result['devices'];
+        }
+        return RoomModel(
+          result['name'],
+          result['uuid'],
+          description: result['description'],
+          path: result['imagePath'],
+          members: members,
+          addDeviceIDs: devices,
+        );
       }
     }
     return RoomModel("error", "error");
@@ -91,32 +133,14 @@ class RoomModel {
       Map<String, dynamic> updatedData = {
         'name': name,
         "uuid": uuid,
+        'description': description,
+        'imagePath': imagePath,
+        'members': members,
         'devices': deviceIDs,
       };
       await documentReference.update(updatedData);
     } else {
       create();
-    }
-  }
-
-  void updateRoomData(RoomModel model, List<String> deviceIDs) async {
-    CollectionReference reference =
-        FirebaseFirestore.instance.collection('rooms');
-    QuerySnapshot querySnapshot =
-        await reference.where('uuid', isEqualTo: model.uuid).get();
-
-    if (querySnapshot.size > 0) {
-      DocumentSnapshot documentSnapshot = querySnapshot.docs[0];
-      DocumentReference documentReference = reference.doc(documentSnapshot.id);
-
-      Map<String, dynamic> updatedData = {
-        'name': model.name,
-        "uuid": model.uuid,
-        'devices': deviceIDs,
-      };
-      await documentReference.update(updatedData);
-    } else {
-      createRoomData(model);
     }
   }
 
@@ -136,11 +160,13 @@ class RoomModel {
   }
 
   Future<void> createRoomData(RoomModel model) async {
-    List<String> temp = [];
     database.collection('rooms').add({
       'name': model.name,
       "uuid": model.uuid,
-      "devices": temp,
+      'description': model.description,
+      'imagePath': model.imagePath,
+      'members': model.members,
+      "devices": <String>[],
     });
   }
 
@@ -149,6 +175,9 @@ class RoomModel {
       'owner': owner.uid,
       'name': name,
       "uuid": uuid,
+      'description': description,
+      'imagePath': imagePath,
+      'members': members,
       "devices": deviceIDs,
     });
   }

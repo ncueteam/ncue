@@ -124,6 +124,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
                   await RouteView.model.addDevice(user, deviceUUID);
                   DeviceService().addDevice(deviceUUID, deviceType,
                       deviceName.text, deviceIconPath, false, 28.0);
+                  // ignore: use_build_context_synchronously
                   Navigator.pop(context, true);
                 },
                 icon: const Icon(Icons.add)),

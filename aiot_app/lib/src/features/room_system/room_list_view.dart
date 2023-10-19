@@ -36,24 +36,16 @@ class _RoomListViewState extends State<RoomListView> {
             )
           ],
           "雙人房"),
-          DataItem(
+      DataItem(
           "room",
           [
             RoomModel(
               "Test Room",
-              "668c0660-64f2-11ee-bf36-9f6d5cf22990",
+              "668c0660-64f2-11ee-bf36-9f6d5cf22991",
               addDeviceIDs: ["433a0320-53b7-11ee-b9f1-5943342c988d"],
             )
           ],
           "雙人房"),
-      DataItem(
-          "extend",
-          [
-            DataItem("text", [], "字串1"),
-            DataItem("text", [], "字串2"),
-            DataItem("text", [], "字串3")
-          ],
-          "字串集合")
     ];
     return items;
   }

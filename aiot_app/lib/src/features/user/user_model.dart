@@ -81,21 +81,6 @@ class UserModel {
     }
   }
 
-  // void addDevice(UserModel model, String deviceUUID) async {
-  //   CollectionReference usersCollection =
-  //       FirebaseFirestore.instance.collection('users');
-  //   QuerySnapshot querySnapshot =
-  //       await usersCollection.where('uuid', isEqualTo: model.uuid).get();
-  //   if (querySnapshot.docs.isNotEmpty) {
-  //     DocumentReference documentReference = querySnapshot.docs[0].reference;
-  //     List<dynamic> currentDevices = querySnapshot.docs[0].get('devices') ?? [];
-  //     currentDevices.add(deviceUUID);
-  //     await documentReference.update({'devices': currentDevices});
-  //   } else {
-  //     debugPrint('Document with uuid "${model.uuid}" not found.');
-  //   }
-  // }
-
   void addRoom(UserModel model, String roomUUID) async {
     CollectionReference usersCollection =
         FirebaseFirestore.instance.collection('users');
@@ -121,5 +106,22 @@ class UserModel {
       "devices": temp,
       "rooms": temp,
     });
+  }
+
+  Future<UserModel> getUserFromUUID(String uuid) async {
+    UserModel model = UserModel(name, uuid);
+    CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    QuerySnapshot querySnapshot =
+        await usersCollection.where('uuid', isEqualTo: uuid).get();
+    if (querySnapshot.docs.isNotEmpty) {
+      model.name = querySnapshot.docs[0].get('name');
+      model.type = querySnapshot.docs[0].get('type');
+      model.uuid = uuid;
+      model.rooms = model.type = querySnapshot.docs[0].get('rooms');
+    } else {
+      debugPrint("uuid found no user!");
+    }
+    return model;
   }
 }
