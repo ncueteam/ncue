@@ -1,6 +1,6 @@
 import ubluetooth
 from file_system import FileSet
-class Bluetooth():
+class BLE():
     def __init__(self) -> None:
         self.name = "esp32 ncue test"
         self.ble = ubluetooth.BLE()
@@ -8,6 +8,7 @@ class Bluetooth():
         self.ble.active(True)
         self.register()
         self.ble.irq(self.handler)
+        self.fileSet = FileSet(fileName='wifi.json')
     
     def register(self):
         ENV_SERVER_UUID = ubluetooth.UUID(0x9011)
@@ -47,5 +48,4 @@ class Bluetooth():
             arr = ble_msg.split(',')
             name = arr[0]
             password = arr[1]
-            fileset = FileSet(folder='database', file_name='wifi.json')
-            fileset.add(name, password)
+            self.fileSet.update(name, password)
