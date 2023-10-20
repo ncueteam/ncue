@@ -67,7 +67,7 @@ class RoomModel {
             description: description,
           )
         ],
-        name);
+        name: name);
   }
 
   Future<void> loadRoomData(String uuid) async {

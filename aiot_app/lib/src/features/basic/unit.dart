@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/devices/add_device_view.dart';
 import 'package:ncue.aiot_app/src/features/mqtt/mqtt_unit.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_unit.dart';
@@ -24,6 +25,18 @@ class _UnitState extends State<Unit> {
   Widget build(BuildContext context) {
     final DataItem item = widget.item;
     switch (item.type) {
+      case "removable":
+        {
+          if (item.data[0] is DataItem) {
+            DataItem children = item.data[0];
+            return Dismissible(
+                key: ValueKey(children),
+                direction: DismissDirection.endToStart,
+                onDismissed: (direction) async {},
+                child: Unit(item: children));
+          }
+          return Container();
+        }
       case "bio_device":
       case "device":
         {
@@ -72,9 +85,8 @@ class _UnitState extends State<Unit> {
         }
       case "addDevice":
         {
-          if (item.data.elementAt(0) is RouteView &&
-              item.data.elementAt(1) is UserModel) {
-            RouteView view = item.data.elementAt(0);
+          if (item.data.elementAt(0) is AddDeviceView) {
+            AddDeviceView view = item.data.elementAt(0);
             return ListTile(
                 key: ValueKey(item),
                 isThreeLine: true,
@@ -82,11 +94,16 @@ class _UnitState extends State<Unit> {
                 subtitle: Text(view.routeName),
                 leading: Icon(view.routeIcon),
                 onTap: () {
-                  Navigator.pushNamed(context, view.routeName,
-                      arguments: {"user": item.data.elementAt(1)});
+                  Navigator.pushNamed(context, view.routeName, arguments: {
+                    "user": RouteView.model,
+                    "roomID": view.roomID
+                  });
                 });
           }
-          return Container();
+          return ListTile(
+            key: ValueKey(item),
+            title: const Text("load addDevice unit failed!"),
+          );
         }
       case "addRoom":
         {
@@ -111,6 +128,7 @@ class _UnitState extends State<Unit> {
           return ExpansionTile(
             key: ValueKey(item),
             title: Text(item.name),
+            initiallyExpanded: true,
             children: item.data.map((value) {
               if (value is DataItem) {
                 return Unit(item: value);

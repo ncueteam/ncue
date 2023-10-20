@@ -32,6 +32,6 @@ class DeviceModel {
   }
 
   DataItem toDataItem() {
-    return DataItem(type, [uuid], name, iconPath: iconPath, origin: this);
+    return DataItem(type, [uuid], name: name, iconPath: iconPath, origin: this);
   }
 }

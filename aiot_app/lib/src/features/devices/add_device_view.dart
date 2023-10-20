@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 import 'package:uuid/uuid.dart';
 import '../basic/home_view.dart';
 import '../basic/route_view.dart';
@@ -6,9 +7,9 @@ import '../user/user_model.dart';
 import 'device_service.dart';
 
 class AddDeviceView extends RouteView {
-  const AddDeviceView({super.key})
+  final String roomID;
+  const AddDeviceView({super.key, required this.roomID})
       : super(routeName: "/add-device-page", routeIcon: Icons.add_box);
-
   @override
   State<AddDeviceView> createState() => AddDeviceViewState();
 }
@@ -18,6 +19,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
   TextEditingController deviceName = TextEditingController();
   String deviceIconPath = "lib/src/icons/light-bulb.png";
   String deviceUUID = const Uuid().v1();
+  RoomModel room = RoomModel("error", "error");
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
       final UserModel user = arguments['user'];
+      final String roomID = arguments['roomID'];
       return Scaffold(
         appBar: AppBar(
           title: const Text("裝置註冊頁面"),
@@ -39,6 +42,18 @@ class AddDeviceViewState extends State<AddDeviceView> {
           padding: const EdgeInsets.all(20.0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Row(
+              children: [
+                const Text(
+                  "房間ID  ",
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  roomID,
+                  style: const TextStyle(fontSize: 15),
+                ),
+              ],
+            ),
             Row(
               children: [
                 const Text(
@@ -136,5 +151,18 @@ class AddDeviceViewState extends State<AddDeviceView> {
         child: const Home().getIconButton(context),
       );
     }
+  }
+
+  ListTile toUnit() {
+    return ListTile(
+        key: ValueKey(this),
+        isThreeLine: true,
+        title: const Text("為房間註冊裝置"),
+        subtitle: Text(widget.routeName),
+        leading: Icon(widget.routeIcon),
+        onTap: () {
+          Navigator.pushNamed(context, widget.routeName,
+              arguments: {"user": RouteView.model, "roomID": widget.roomID});
+        });
   }
 }

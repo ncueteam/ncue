@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/unit.dart';
+import 'package:ncue.aiot_app/src/features/devices/add_device_view.dart';
 import 'package:ncue.aiot_app/src/features/item_system/data_item.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 
@@ -22,7 +23,22 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
     if (arguments != null && arguments is Map<String, dynamic>) {
       final RoomModel room = arguments['data'];
       final List<DataItem> items = [];
-      items.add(DataItem("text", [], room.uuid));
+      items.add(DataItem("text", [], name: room.uuid));
+      items.add(DataItem(
+          "extend",
+          room.devices.map((e) {
+            return e.toDataItem();
+          }).toList(),
+          name: "房間內裝置"));
+      items.add(DataItem(
+          "addDevice",
+          [
+            AddDeviceView(
+              roomID: room.uuid,
+            ),
+            RouteView.model
+          ],
+          name: "註冊裝置"));
       items.addAll(room.devices.map((device) {
         return device.toDataItem();
       }).toList());

@@ -45,20 +45,11 @@ class _HomeState extends State<Home> {
       body: RefreshIndicator(
         onRefresh: () => reload(),
         child: ListView.builder(
-          restorationId: 'sampleItemListView',
+          restorationId: 'homeView',
           itemCount: items.length,
           itemBuilder: (BuildContext context, int index) {
             DataItem item = items[index];
-            return
-                // Dismissible(
-                //   key: ValueKey(item),
-                //   direction: DismissDirection.endToStart,
-                //   onDismissed: (direction) async {
-                //     SoundPlayer().play("crystal");
-                //   },
-                //   child:
-                Unit(item: item);
-            // );
+            return Unit(item: item);
           },
         ),
       ),

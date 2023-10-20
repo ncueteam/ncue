@@ -24,7 +24,7 @@ class AddRoomViewState extends State<AddRoomView> {
     if (arguments != null && arguments is Map<String, dynamic>) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text("裝置註冊頁面"),
+          title: const Text("房間選擇頁面"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -33,7 +33,7 @@ class AddRoomViewState extends State<AddRoomView> {
             Row(
               children: [
                 const Text(
-                  "裝置號碼  ",
+                  "房間ID  ",
                   style: TextStyle(fontSize: 16),
                 ),
                 Text(
@@ -45,10 +45,11 @@ class AddRoomViewState extends State<AddRoomView> {
             TextField(
               controller: roomName,
               decoration: const InputDecoration(
-                labelText: '裝置名稱',
-                hintText: '裝置名稱',
+                labelText: '房間名稱',
+                hintText: '房間名稱',
               ),
             ),
+            Image.asset("assets/room/room1.jpg"),
             Row(children: [
               IconButton(
                   onPressed: () async {

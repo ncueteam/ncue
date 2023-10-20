@@ -4,16 +4,15 @@ import '../basic/route_view.dart';
 import 'models/member.dart';
 
 //class RoomSelect extends StatelessWidget {
-  //const RoomSelect({super.key});
+//const RoomSelect({super.key});
 class RoomSelect extends RouteView {
   const RoomSelect({super.key})
       : super(routeName: '/room-select', routeIcon: Icons.meeting_room_sharp);
-@override
+  @override
   RoomSelectState createState() => RoomSelectState();
 }
 
 class RoomSelectState extends State<RoomSelect> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,23 +90,20 @@ class ItemCard extends StatelessWidget {
         },
       );
     }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          padding:const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
           ),
           child: Image.asset(room.image),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0 / 4),
-          child: Text(
-            room.title,
-            style: const TextStyle(fontSize: 20)
-          )
-        ),
+            padding: const EdgeInsets.symmetric(vertical: 20.0 / 4),
+            child: Text(room.title, style: const TextStyle(fontSize: 20))),
         Text(
           room.description,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
