@@ -3,7 +3,6 @@ import '../basic/route_view.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'services/globals.dart';
 import 'drawer.dart';
-import 'room.dart';
 
 class WebViewTest extends RouteView {
   const WebViewTest({super.key})
@@ -120,10 +119,6 @@ class WebViewTestState extends State<WebViewTest> {
               context,
               MaterialPageRoute(builder: (context) => const LoginRoute()),
             );*/
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const RoomSelect()),
-            );
             /*Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const RegisterTest()),

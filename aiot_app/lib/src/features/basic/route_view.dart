@@ -9,7 +9,6 @@ import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
 import 'package:ncue.aiot_app/src/features/sensors/sensorsapp.dart';
 import 'package:ncue.aiot_app/src/features/user/user_model.dart';
 import 'package:ncue.aiot_app/src/features/web_view/webview.dart';
-import 'package:ncue.aiot_app/src/features/web_view/room.dart';
 
 import '../auth_system/password_reset_view.dart';
 import '../auth_system/phone_input_view.dart';
@@ -81,15 +80,15 @@ abstract class RouteView extends StatefulWidget {
     items.add(DataItem(
         "extend",
         [
-          DataItem(
-              "addDevice",
-              [
-                const AddDeviceView(
-                  roomID: 'no id',
-                ),
-                RouteView.model
-              ],
-              name: "註冊裝置"),
+          // DataItem(
+          //     "addDevice",
+          //     [
+          //       const AddDeviceView(
+          //         roomID: 'no id',
+          //       ),
+          //       RouteView.model
+          //     ],
+          //     name: "註冊裝置"),
           DataItem("addRoom", [const AddRoomView(), RouteView.model],
               name: "註冊房間"),
         ],
@@ -101,7 +100,6 @@ abstract class RouteView extends StatefulWidget {
           DataItem("route", [const MqttPage()], name: "MQTT測試"),
           DataItem("route", [const SensorsPage()], name: "感應器資料版"),
           DataItem("route", [const WebViewTest()], name: "網站版"),
-          DataItem("route", [const RoomSelect()], name: "選擇房間"),
           DataItem("route", [const IRDeviceControlPanel()], name: "紅外線控制器"),
           // DataItem("route", [const NotifyView()], "提醒列表"),
         ],
@@ -137,7 +135,6 @@ abstract class RouteView extends StatefulWidget {
     NotifyView(),
     RoomListView(),
     RoomDetailsView(),
-    RoomSelect(),
     AddRoomView(),
   ];
 }

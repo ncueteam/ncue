@@ -120,7 +120,7 @@ class RoomModel {
     return RoomModel("error", "error");
   }
 
-  void update() async {
+  Future<void> update() async {
     CollectionReference reference =
         FirebaseFirestore.instance.collection('rooms');
     QuerySnapshot querySnapshot =

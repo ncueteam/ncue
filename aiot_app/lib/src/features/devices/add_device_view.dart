@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/item_system/data_item.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 import 'package:uuid/uuid.dart';
 import '../basic/home_view.dart';
@@ -137,6 +138,10 @@ class AddDeviceViewState extends State<AddDeviceView> {
             IconButton(
                 onPressed: () async {
                   await RouteView.model.addDevice(user, deviceUUID);
+                  RoomModel roomModel = RoomModel("error", "error");
+                  roomModel = await roomModel.getRoomFromUuid(roomID);
+                  roomModel.deviceIDs.add(deviceUUID);
+                  await roomModel.update();
                   DeviceService().addDevice(deviceUUID, deviceType,
                       deviceName.text, deviceIconPath, false, 28.0);
                   // ignore: use_build_context_synchronously
@@ -164,5 +169,17 @@ class AddDeviceViewState extends State<AddDeviceView> {
           Navigator.pushNamed(context, widget.routeName,
               arguments: {"user": RouteView.model, "roomID": widget.roomID});
         });
+  }
+
+  DataItem toDataItem() {
+    return DataItem(
+        "addDevice",
+        [
+          AddDeviceView(
+            roomID: widget.roomID,
+          ),
+          RouteView.model
+        ],
+        name: "註冊裝置");
   }
 }

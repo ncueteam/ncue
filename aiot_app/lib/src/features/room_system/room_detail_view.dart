@@ -29,7 +29,13 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
           room.devices.map((e) {
             return e.toDataItem();
           }).toList(),
-          name: "房間內裝置"));
+          name: "房間內裝置 from devices"));
+      items.add(DataItem(
+          "extend",
+          room.deviceIDs.map((e) async {
+            return DataItem("text", [], name: e);
+          }).toList(),
+          name: "房間內裝置 from uuids"));
       items.add(DataItem(
           "addDevice",
           [
