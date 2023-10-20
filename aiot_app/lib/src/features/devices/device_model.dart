@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import '../item_system/data_item.dart';
+import '../basic/data_item.dart';
 
 class DeviceModel {
   DeviceModel(

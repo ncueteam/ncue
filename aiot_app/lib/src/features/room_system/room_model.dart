@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/route_view.dart';
 import 'package:ncue.aiot_app/src/features/devices/device_model.dart';
 import 'package:ncue.aiot_app/src/features/devices/device_service.dart';
-import 'package:ncue.aiot_app/src/features/item_system/data_item.dart';
+import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
 
 class RoomModel {
   static FirebaseFirestore database = FirebaseFirestore.instance;

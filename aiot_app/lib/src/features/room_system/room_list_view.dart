@@ -5,7 +5,7 @@ import 'package:ncue.aiot_app/src/features/basic/unit.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 import '../auth_system/profile_view.dart';
 import '../settings/settings_view.dart';
-import '../item_system/data_item.dart';
+import '../basic/data_item.dart';
 
 class RoomListView extends RouteView {
   const RoomListView({super.key})

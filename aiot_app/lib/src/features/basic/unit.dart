@@ -6,8 +6,7 @@ import 'package:ncue.aiot_app/src/features/room_system/room_unit.dart';
 
 import '../devices/device_model.dart';
 import '../devices/device_unit.dart';
-import '../item_system/data_item.dart';
-import '../item_system/item_details_view.dart';
+import 'data_item.dart';
 import '../user/user_model.dart';
 import 'route_view.dart';
 
@@ -147,16 +146,12 @@ class _UnitState extends State<Unit> {
         }
       case "genric":
       default:
-        return ListTile(
+        {
+          return ListTile(
             key: ValueKey(item),
-            title: Text('[${item.name}]   ${item.data}'),
-            leading: CircleAvatar(
-              foregroundImage: AssetImage(item.iconPath),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, const ItemDetailsView().routeName,
-                  arguments: {'item': item});
-            });
+            title: Text(item.name),
+          );
+        }
     }
   }
 }

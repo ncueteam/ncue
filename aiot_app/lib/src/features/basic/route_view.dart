@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/devices/ac_panel.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
-import 'package:ncue.aiot_app/src/features/item_system/data_item.dart';
+import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
 import 'package:ncue.aiot_app/src/features/notify_system/notify_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/add_room_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
@@ -18,7 +19,6 @@ import '../auth_system/sms_view.dart';
 import '../bluetooth/flutterblueapp.dart';
 import '../devices/add_device_view.dart';
 import '../devices/device_detail_view.dart';
-import '../item_system/item_details_view.dart';
 import '../mqtt/mqttapp.dart';
 import '../settings/settings_controller.dart';
 import '../settings/settings_service.dart';
@@ -57,7 +57,7 @@ abstract class RouteView extends StatefulWidget {
     if (user != null) {
       model = await UserService().loadUserData(user);
       // await model.load(user);
-      model.debugData();
+      // model.debugData();
     } else {
       debugPrint("error loading user!");
     }
@@ -77,40 +77,19 @@ abstract class RouteView extends StatefulWidget {
     items.clear();
     // items.add(DataItem("mqtt", [], "mqtt"));
     items.add(DataItem("removable", [DataItem("text", [], name: "左滑移除")]));
+    items.add(DataItem("addRoom", [const AddRoomView(), RouteView.model],
+        name: "註冊房間"));
     items.add(DataItem(
         "extend",
         [
-          // DataItem(
-          //     "addDevice",
-          //     [
-          //       const AddDeviceView(
-          //         roomID: 'no id',
-          //       ),
-          //       RouteView.model
-          //     ],
-          //     name: "註冊裝置"),
-          DataItem("addRoom", [const AddRoomView(), RouteView.model],
-              name: "註冊房間"),
-        ],
-        name: "註冊"));
-    items.add(DataItem(
-        "extend",
-        [
+          DataItem("route", [const ACPanel()], name: "冷氣遙控"),
           DataItem("route", [const RoomListView()], name: "房間列表"),
           DataItem("route", [const MqttPage()], name: "MQTT測試"),
           DataItem("route", [const SensorsPage()], name: "感應器資料版"),
-          DataItem("route", [const WebViewTest()], name: "網站版"),
           DataItem("route", [const IRDeviceControlPanel()], name: "紅外線控制器"),
           // DataItem("route", [const NotifyView()], "提醒列表"),
         ],
         name: "捷徑"));
-    // List x = [];
-    // for (DeviceModel device in await DeviceService().loadDeviceDataList()) {
-    //   if (RouteView.model.devices.contains(device.uuid)) {
-    //     x.add(device.toDataItem());
-    //   }
-    // }
-    // items.add(DataItem("extend", x, "集合"));
     return items;
   }
 
@@ -126,7 +105,6 @@ abstract class RouteView extends StatefulWidget {
     MqttPage(),
     SensorsPage(),
     SettingsView(),
-    ItemDetailsView(),
     AddDeviceView(
       roomID: '????',
     ),
@@ -136,5 +114,6 @@ abstract class RouteView extends StatefulWidget {
     RoomListView(),
     RoomDetailsView(),
     AddRoomView(),
+    ACPanel(),
   ];
 }

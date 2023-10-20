@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../auth_system/profile_view.dart';
 import '../bluetooth/flutterblueapp.dart';
 import '../settings/settings_view.dart';
-import '../item_system/data_item.dart';
+import 'data_item.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'route_view.dart';
