@@ -8,7 +8,7 @@ import 'package:ncue.aiot_app/src/features/room_system/add_room_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
 import 'package:ncue.aiot_app/src/features/sensors/sensorsapp.dart';
-import 'package:ncue.aiot_app/src/features/user/user_model.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
 import 'package:ncue.aiot_app/src/features/web_view/webview.dart';
 
 import '../auth_system/password_reset_view.dart';
@@ -19,12 +19,10 @@ import '../auth_system/sms_view.dart';
 import '../bluetooth/flutterblueapp.dart';
 import '../devices/add_device_view.dart';
 import '../devices/device_detail_view.dart';
-import '../mqtt/mqttapp.dart';
 import '../settings/settings_controller.dart';
 import '../settings/settings_service.dart';
 import '../settings/settings_view.dart';
-import '../user/user_service.dart';
-import 'home_view.dart';
+import 'views/home_view.dart';
 
 abstract class RouteView extends StatefulWidget {
   final String routeName;
@@ -55,9 +53,7 @@ abstract class RouteView extends StatefulWidget {
   static Future<void> loadAccount() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      model = await UserService().loadUserData(user);
-      // await model.load(user);
-      // model.debugData();
+      model = await UserModel().load(user);
     } else {
       debugPrint("error loading user!");
     }
@@ -75,7 +71,7 @@ abstract class RouteView extends StatefulWidget {
   static Future<List<DataItem>> loadUnits() async {
     List<DataItem> items = [];
     items.clear();
-    // items.add(DataItem("mqtt", [], "mqtt"));
+    items.add(DataItem("mqtt", []));
     items.add(DataItem("removable", [DataItem("text", [], name: "左滑移除")]));
     items.add(DataItem("addRoom", [const AddRoomView(), RouteView.model],
         name: "註冊房間"));
@@ -84,7 +80,6 @@ abstract class RouteView extends StatefulWidget {
         [
           DataItem("route", [const ACPanel()], name: "冷氣遙控"),
           DataItem("route", [const RoomListView()], name: "房間列表"),
-          DataItem("route", [const MqttPage()], name: "MQTT測試"),
           DataItem("route", [const SensorsPage()], name: "感應器資料版"),
           DataItem("route", [const IRDeviceControlPanel()], name: "紅外線控制器"),
           // DataItem("route", [const NotifyView()], "提醒列表"),
@@ -102,7 +97,6 @@ abstract class RouteView extends StatefulWidget {
     PhoneView(),
     SmsView(),
     BluetoothView(),
-    MqttPage(),
     SensorsPage(),
     SettingsView(),
     AddDeviceView(

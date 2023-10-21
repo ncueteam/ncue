@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 import 'package:uuid/uuid.dart';
-import '../basic/home_view.dart';
+import '../basic/views/home_view.dart';
 import '../basic/route_view.dart';
 
 class AddRoomView extends RouteView {
@@ -55,7 +55,7 @@ class AddRoomViewState extends State<AddRoomView> {
                   onPressed: () async {
                     RoomModel room = RoomModel(roomName.text, roomUUID);
                     room.create();
-                    RouteView.model.addRoom(RouteView.model, roomUUID);
+                    RouteView.model.addRoom(roomUUID);
                     Navigator.pop(context, true);
                   },
                   icon: const Icon(Icons.add)),

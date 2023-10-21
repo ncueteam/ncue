@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 import 'package:uuid/uuid.dart';
-import '../basic/home_view.dart';
+import '../basic/views/home_view.dart';
 import '../basic/route_view.dart';
-import '../user/user_model.dart';
 import 'device_service.dart';
 
 class AddDeviceView extends RouteView {
@@ -33,7 +32,6 @@ class AddDeviceViewState extends State<AddDeviceView> {
 
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
-      final UserModel user = arguments['user'];
       final String roomID = arguments['roomID'];
       return Scaffold(
         appBar: AppBar(
@@ -137,7 +135,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
             ),
             IconButton(
                 onPressed: () async {
-                  await RouteView.model.addDevice(user, deviceUUID);
+                  await RouteView.model.addDevice(deviceUUID);
                   RoomModel roomModel = RoomModel("error", "error");
                   roomModel = await roomModel.getRoomFromUuid(roomID);
                   roomModel.deviceIDs.add(deviceUUID);

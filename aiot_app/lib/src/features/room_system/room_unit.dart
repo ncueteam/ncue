@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
-import 'package:ncue.aiot_app/src/features/user/user_model.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
 
 class RoomUnit extends StatefulWidget {
   const RoomUnit({super.key, required this.roomData, required this.onChanged});
@@ -34,7 +34,8 @@ class _RoomUnitState extends State<RoomUnit> {
             child: ListView.builder(
               itemCount: room.members.length,
               itemBuilder: (BuildContext context, int index) {
-                UserModel member = UserModel("test user", room.members[index]);
+                UserModel member =
+                    UserModel(name: "test user", uuid: room.members[index]);
                 return ListTile(
                   leading: const CircleAvatar(child: Icon(Icons.people)),
                   title: Text(member.name),

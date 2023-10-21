@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/devices/add_device_view.dart';
-import 'package:ncue.aiot_app/src/features/mqtt/mqtt_unit.dart';
+import 'package:ncue.aiot_app/src/features/basic/units/mqtt_unit.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_unit.dart';
 
 import '../devices/device_model.dart';
 import '../devices/device_unit.dart';
 import 'data_item.dart';
-import '../user/user_model.dart';
+import 'models/user_model.dart';
 import 'route_view.dart';
 
 class Unit extends StatefulWidget {

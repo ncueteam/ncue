@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'features/auth_system/sign_in_view.dart';
-import 'features/basic/home_view.dart';
+import 'features/basic/views/home_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'features/basic/route_view.dart';

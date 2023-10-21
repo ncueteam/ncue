@@ -37,4 +37,9 @@ class MQTTService {
       port.connect();
     }
   }
+
+  bool isConnected() {
+    return port.connectionStatus?.returnCode ==
+        MqttConnectReturnCode.connectionAccepted;
+  }
 }
