@@ -1,5 +1,4 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/app.dart';
 import 'package:ncue.aiot_app/src/features/notify_system/notify_view.dart';
 
@@ -9,9 +8,9 @@ class NotifyApi {
   Future<void> initNotifications() async {
     await _firebaseMessaging.requestPermission();
 
-    final fCMToken = await _firebaseMessaging.getToken();
+    // final fCMToken = await _firebaseMessaging.getToken();
 
-    debugPrint('Token: $fCMToken');
+    // debugPrint('Token: $fCMToken');
 
     initPushNotifications();
   }

@@ -36,13 +36,12 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
             child: Column(
               children: <Widget>[
                 StreamBuilder<List<BluetoothDevice>>(
-                  stream:
-                      Stream.fromFuture(FlutterBluePlus.connectedSystemDevices),
+                  stream: Stream.fromFuture(FlutterBluePlus.systemDevices),
                   initialData: const [],
                   builder: (c, snapshot) => Column(
                     children: (snapshot.data ?? [])
                         .map((d) => ListTile(
-                              title: Text(d.localName),
+                              title: Text(d.platformName),
                               subtitle: Text(d.remoteId.toString()),
                               trailing: StreamBuilder<BluetoothConnectionState>(
                                 stream: d.connectionState,
