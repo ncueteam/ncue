@@ -25,7 +25,7 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
   Widget build(BuildContext context) {
     List<String> keys = button.keys.toList();
     return Scaffold(
-      appBar: AppBar(title: const Text("電視遙控器")),
+      appBar: AppBar(title: const Text("電扇遙控器")),
       body: Padding(
         padding: const EdgeInsets.all(6.0),
         child: GridView.builder(
@@ -37,16 +37,17 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
             itemCount: button.length,
             itemBuilder: (BuildContext context, int index) {
               return GridTile(
-                child: Container(
-                  color: Colors.green,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          mqttService.send(button[keys[index]]!);
-                        },
-                        child: Text(keys[index]),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      mqttService.send(button[keys[index]]!);
+                    },
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Text(
+                        keys[index],
+                        style: const TextStyle(fontSize: 100),
                       ),
                     ),
                   ),

@@ -14,12 +14,17 @@ class _ACPanelState extends State<ACPanel> {
   MQTTService mqttService = MQTTService("NCUEMQTT/AC");
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      ElevatedButton(
-          onPressed: () {
-            mqttService.send("test messsage!");
-          },
-          child: const Icon(Icons.abc))
-    ]);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("冷氣控制"),
+      ),
+      body: Column(children: [
+        ElevatedButton(
+            onPressed: () {
+              mqttService.send("test messsage!");
+            },
+            child: const Icon(Icons.abc))
+      ]),
+    );
   }
 }
