@@ -6,6 +6,7 @@ class MQTTService {
   late MqttServerClient port;
   String value = "";
   String topic = "NCUEMQTT";
+  void Function() callback = () {};
   MQTTService(String mqttTopic) {
     port = MqttServerClient('test.mosquitto.org', 'ncue_app');
     port.disconnect();
@@ -13,7 +14,10 @@ class MQTTService {
     port.port = 1883;
     port.logging(on: false);
     port.autoReconnect = true;
-    port.onConnected = () => port.subscribe(topic, MqttQos.atMostOnce);
+    port.onConnected = () {
+      port.subscribe(topic, MqttQos.exactlyOnce);
+      port.subscribe('receive_topic', MqttQos.exactlyOnce);
+    };
     port.onDisconnected = () {};
     port.onSubscribed = (topic) =>
         port.updates?.listen((List<MqttReceivedMessage<MqttMessage>> messages) {
@@ -24,9 +28,16 @@ class MQTTService {
                 payload.payload.message);
             value = messageText;
           }
+          callback();
         });
+    port.connectionMessage = MqttConnectMessage()
+        .withWillTopic(topic)
+        .withWillMessage(value)
+        .startClean()
+        .withWillQos(MqttQos.atLeastOnce);
     port.connect();
   }
+
   void send(String message) {
     if (port.connectionStatus?.state == MqttConnectionState.connected) {
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();

@@ -8,7 +8,7 @@ import 'features/auth_system/sign_in_view.dart';
 import 'features/basic/views/home_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'features/basic/route_view.dart';
+import 'features/basic/views/route_view.dart';
 import 'features/web_view/services/states.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();

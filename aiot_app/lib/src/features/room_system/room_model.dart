@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/basic/route_view.dart';
+import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import 'package:ncue.aiot_app/src/features/devices/device_model.dart';
 import 'package:ncue.aiot_app/src/features/devices/device_service.dart';
 import 'package:ncue.aiot_app/src/features/basic/data_item.dart';

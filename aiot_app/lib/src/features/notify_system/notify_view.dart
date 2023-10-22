@@ -1,6 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/basic/route_view.dart';
+import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 
 class NotifyView extends RouteView {
   const NotifyView({super.key})

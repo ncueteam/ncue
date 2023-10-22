@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/basic/route_view.dart';
+import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/mqtt_service.dart';
 
 class IRDeviceControlPanel extends RouteView {

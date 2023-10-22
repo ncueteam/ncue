@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/devices/device_service.dart';
 
-import '../basic/route_view.dart';
+import '../basic/views/route_view.dart';
 import 'device_model.dart';
 
 class DeviceDetailsView extends RouteView {

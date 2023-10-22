@@ -1,6 +1,6 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import '../basic/route_view.dart';
+import '../basic/views/route_view.dart';
 import '../settings/settings_view.dart';
 
 class SignInView extends RouteView {

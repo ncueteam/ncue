@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
 import 'package:ncue.aiot_app/src/features/devices/add_device_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/mqtt_unit.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_unit.dart';
 
-import '../devices/device_model.dart';
-import '../devices/device_unit.dart';
-import 'data_item.dart';
-import 'models/user_model.dart';
-import 'route_view.dart';
+import '../../devices/device_model.dart';
+import '../../devices/device_unit.dart';
+import '../data_item.dart';
+import '../models/user_model.dart';
+import '../views/route_view.dart';
 
 class Unit extends StatefulWidget {
   const Unit({super.key, required this.item});
@@ -24,6 +25,14 @@ class _UnitState extends State<Unit> {
   Widget build(BuildContext context) {
     final DataItem item = widget.item;
     switch (item.type) {
+      case "dht11":
+        {
+          return const Dht11Unit();
+        }
+      case "auto":
+        {
+          return Container();
+        }
       case "removable":
         {
           if (item.data[0] is DataItem) {

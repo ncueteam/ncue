@@ -8,7 +8,7 @@ import 'package:ncue.aiot_app/src/features/notify_system/notify_service.dart';
 import 'package:ncue.aiot_app/src/features/web_view/services/globals.dart';
 import 'firebase_options.dart';
 import 'src/app.dart';
-import 'src/features/basic/route_view.dart';
+import 'src/features/basic/views/route_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

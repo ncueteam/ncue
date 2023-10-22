@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../basic/route_view.dart';
+import '../basic/views/route_view.dart';
 
 class SettingsView extends RouteView {
   const SettingsView({super.key})

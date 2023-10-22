@@ -11,18 +11,18 @@ import 'package:ncue.aiot_app/src/features/sensors/sensorsapp.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
 import 'package:ncue.aiot_app/src/features/web_view/webview.dart';
 
-import '../auth_system/password_reset_view.dart';
-import '../auth_system/phone_input_view.dart';
-import '../auth_system/profile_view.dart';
-import '../auth_system/sign_in_view.dart';
-import '../auth_system/sms_view.dart';
-import '../bluetooth/flutterblueapp.dart';
-import '../devices/add_device_view.dart';
-import '../devices/device_detail_view.dart';
-import '../settings/settings_controller.dart';
-import '../settings/settings_service.dart';
-import '../settings/settings_view.dart';
-import 'views/home_view.dart';
+import '../../auth_system/password_reset_view.dart';
+import '../../auth_system/phone_input_view.dart';
+import '../../auth_system/profile_view.dart';
+import '../../auth_system/sign_in_view.dart';
+import '../../auth_system/sms_view.dart';
+import '../../bluetooth/flutterblueapp.dart';
+import '../../devices/add_device_view.dart';
+import '../../devices/device_detail_view.dart';
+import '../../settings/settings_controller.dart';
+import '../../settings/settings_service.dart';
+import '../../settings/settings_view.dart';
+import 'home_view.dart';
 
 abstract class RouteView extends StatefulWidget {
   final String routeName;
@@ -71,7 +71,8 @@ abstract class RouteView extends StatefulWidget {
   static Future<List<DataItem>> loadUnits() async {
     List<DataItem> items = [];
     items.clear();
-    items.add(DataItem("mqtt", []));
+    items.add(DataItem("dht11", []));
+    // items.add(DataItem("mqtt", []));
     items.add(DataItem("removable", [DataItem("text", [], name: "左滑移除")]));
     items.add(DataItem("addRoom", [const AddRoomView(), RouteView.model],
         name: "註冊房間"));

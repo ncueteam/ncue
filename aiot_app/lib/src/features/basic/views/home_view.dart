@@ -6,8 +6,8 @@ import '../../settings/settings_view.dart';
 import '../data_item.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../route_view.dart';
-import '../unit.dart';
+import 'route_view.dart';
+import '../units/unit.dart';
 
 class Home extends RouteView {
   const Home({super.key}) : super(routeName: '/home', routeIcon: Icons.home);
