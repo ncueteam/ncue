@@ -71,9 +71,9 @@ abstract class RouteView extends StatefulWidget {
     List<DataItem> items = [];
     items.clear();
     // items.add(DataItem("mqtt", []));
-    items.add(DataItem("removable", [DataItem("text", [], name: "左滑移除")]));
-    items.add(DataItem("addRoom", [const AddRoomView(), RouteView.model],
-        name: "註冊房間"));
+    items.add(DataItem("removable", [
+      DataItem("addRoom", [const AddRoomView(), RouteView.model], name: "註冊房間")
+    ]));
     items.add(DataItem(
         "extend",
         [

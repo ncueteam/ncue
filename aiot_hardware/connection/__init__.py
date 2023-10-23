@@ -8,6 +8,7 @@ class Network():
     def __init__(self):
         self.DB =  FileSet("wifi.json")
     
+    
     async def addDefaultWifi(self):
         await self.DB.create("Yunitrish", "0937565253")
 

@@ -20,12 +20,45 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
     "head": "0x0c",
     "mode": "0x04",
   };
+  String protoco = "NEC8";
 
   @override
   Widget build(BuildContext context) {
     List<String> keys = button.keys.toList();
+    List<String> protocos = [
+      "NEC8",
+      "NEC16",
+      "sony",
+      "Philip",
+    ];
     return Scaffold(
-      appBar: AppBar(title: const Text("電扇遙控器")),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: Text(
+                "電扇遙控器 協定",
+                style: TextStyle(fontSize: 17),
+              ),
+            ),
+            DropdownButton<String>(
+                onChanged: (value) {
+                  setState(() {
+                    protoco = value!;
+                  });
+                  debugPrint("$protoco ${value!}");
+                },
+                value: protoco,
+                items: protocos.map((name) {
+                  return DropdownMenuItem(
+                    value: name,
+                    child: Text(name),
+                  );
+                }).toList()),
+          ],
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(6.0),
         child: GridView.builder(

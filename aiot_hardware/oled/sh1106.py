@@ -1,7 +1,7 @@
 # from machine import Pin, I2C
 # import sh1106
-#
-# i2c = I2C(scl=Pin(5), sda=Pin(4), freq=400000)
+# 
+# i2c = SoftI2C(scl=Pin(5), sda=Pin(4), freq=400000)
 # display = sh1106.SH1106_I2C(128, 64, i2c, Pin(16), 0x3c)
 # display.sleep(False)
 # display.fill(0)

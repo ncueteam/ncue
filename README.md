@@ -78,5 +78,5 @@
 |-|-|
 | VCC | 3.3v |
 | GND | GND |
-| SDA | GPIO22 |
-| SCL | GPIO23 |
+| SDA | GPIO21 |
+| SCL | GPIO22 |

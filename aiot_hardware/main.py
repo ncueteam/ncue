@@ -14,8 +14,8 @@ loop = asyncio.get_event_loop()
 
 #初始化
 # pins = [machine.Pin(i, machine.Pin.OUT) for i in DEFAULT_PIN]
-i2c = machine.SoftI2C(sda=machine.Pin(21), scl=machine.Pin(22), freq=400000)
-sh1106 = oled.sh1106.SH1106_I2C(128, 64, i2c)
+# i2c = machine.SoftI2C(sda=machine.Pin(21), scl=machine.Pin(22), freq=400000)
+# sh1106 = oled.sh1106.SH1106_I2C(128, 64, i2c)
  # MQTT
 dht_mqtt = AIOT("dht11")
 #七段顯示器
@@ -23,7 +23,7 @@ dht_mqtt = AIOT("dht11")
 # DHT11
 dht = dht11.Sensor()
 #OLED顯示器
-screen = oled.OLED(sh1106)
+screen = oled.OLED("X")
 # 檔案系統
 DB2 =  FileSet("degree_wet.json")
 # 網路連線
