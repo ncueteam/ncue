@@ -29,24 +29,56 @@ class _RoomUnitState extends State<RoomUnit> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("管理房間成員"),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: ListView.builder(
-              itemCount: room.members.length,
-              itemBuilder: (BuildContext context, int index) {
-                UserModel member =
-                    UserModel(name: "test user", uuid: room.members[index]);
-                return ListTile(
-                  leading: const CircleAvatar(child: Icon(Icons.people)),
-                  title: Text(member.name),
-                  subtitle: Text(member.uuid),
-                  trailing: ElevatedButton(
-                    onPressed: () {},
-                    child: const Text("移除"),
+          content: 
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width:  double.maxFinite,//100,
+                height: 40,
+                padding: EdgeInsets.only(left: 20),
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10), color: Colors.white),
+                child: TextField(
+                  //controller: _controller,
+                  //focusNode: _focusNode,
+                  //autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: "搜尋成員",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    border: InputBorder.none,
+                    icon: Padding(
+                      padding: const EdgeInsets.only(left: 0, top: 0),
+                      child: Icon(
+                        Icons.search,
+                        size: 18,
+                        color: Theme.of(context).primaryColor,
+                      )
+                    ),
                   ),
-                );
-              },
-            ),
+                ),
+              ),
+              SizedBox(
+                width: double.maxFinite,
+                child: ListView.builder(
+                  itemCount: room.members.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    UserModel member =
+                      UserModel(name: "test user", uuid: room.members[index]);
+                    return ListTile(
+                      leading: const CircleAvatar(child: Icon(Icons.people)),
+                      title: Text(member.name),
+                      subtitle: Text(member.uuid),
+                      trailing: ElevatedButton(
+                        onPressed: () {},
+                        child: const Text("移除"),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         );
       },
