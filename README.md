@@ -8,6 +8,12 @@
 
 ## aiot_app
 
+### google OAuth 授權檢查備忘錄
+
+1. release token 是否上傳至 firebase
+2. google-service.json是否為該資料庫資料
+3. build.gradle 是否導入google service plugin
+
 ### 網頁端 & 應用程式的部分
 
 #### RD
