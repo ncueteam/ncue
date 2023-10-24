@@ -13,7 +13,10 @@ class AIOT():
         self.received = "not yet!"
     
     async def connect(self):
-        self.client.connect()
+        try:
+            self.client.connect()
+        except:
+            return None
         def get_msg(topic, msg):
             self.received = msg
 #             print(msg)

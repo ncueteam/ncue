@@ -71,6 +71,12 @@ class OLED():
         
     async def show(self):
         self.screen.show()
+        
+    def type(self,line,content):
+        self.screen.sleep(False)
+        self.screen.fill(1)
+        self.screen.text(content, 64-len(content)*4, 8*line, 0)
+        self.screen.show()
 
 def test():
     screen = OLED("test")

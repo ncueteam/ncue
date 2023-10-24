@@ -19,7 +19,9 @@ class Network():
             if await self.connector(key,value):
                 print(key+" connected!")
                 break
-
+        if not sta_if.isconnected():
+            print("connection error")
+    
     async def connector(self,key,value,oled=False):
         MAX_TRY = 10
         TRY = 0
