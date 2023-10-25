@@ -114,7 +114,7 @@ class _RoomUnitState extends State<RoomUnit> {
             padding: const EdgeInsets.all(7.0),
             child: Row(
               children: [
-                ElevatedButton(onPressed: () {}, child: const Text("選擇房間")),
+                ElevatedButton(onPressed: () {}, child: const Text("轉移房間主人")),
                 const Spacer(),
                 ElevatedButton(
                     onPressed: () {
