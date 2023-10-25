@@ -2,14 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:provider/provider.dart';
 
 import 'features/auth_system/sign_in_view.dart';
 import 'features/basic/views/home_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'features/basic/views/route_view.dart';
-import 'features/web_view/services/states.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -21,43 +19,36 @@ class AppRoot extends StatelessWidget {
     return AnimatedBuilder(
       animation: RouteView.settingsController,
       builder: (BuildContext context, Widget? child) {
-        return MultiProvider(
-            providers: [
-              ChangeNotifierProvider(create: (_) => UserModel()),
-            ],
-            builder: (BuildContext context, child) {
-              return MaterialApp(
-                navigatorKey: navigatorKey,
-                debugShowCheckedModeBanner: false,
-                restorationScopeId: 'app',
-                locale: const Locale('tw'),
-                supportedLocales: const [
-                  Locale('en'),
-                  Locale('zh_tw'),
-                ],
-                localizationsDelegates: [
-                  FirebaseUILocalizations.withDefaultOverrides(
-                      LabelOverrides()),
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  FirebaseUILocalizations.delegate,
-                ],
-                theme: ThemeData(
-                  primarySwatch: Colors.brown,
-                ),
-                darkTheme: ThemeData.dark(),
-                themeMode: RouteView.settingsController.themeMode,
-                initialRoute: FirebaseAuth.instance.currentUser == null
-                    ? const SignInView().routeName
-                    : const Home().routeName,
-                routes: RouteView.pages.fold({}, (map, routeView) {
-                  map[routeView.routeName] = (context) => routeView;
-                  return map;
-                }),
-              );
-            });
+        return MaterialApp(
+          navigatorKey: navigatorKey,
+          debugShowCheckedModeBanner: false,
+          restorationScopeId: 'app',
+          locale: const Locale('tw'),
+          supportedLocales: const [
+            Locale('en'),
+            Locale('zh_tw'),
+          ],
+          localizationsDelegates: [
+            FirebaseUILocalizations.withDefaultOverrides(LabelOverrides()),
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            FirebaseUILocalizations.delegate,
+          ],
+          theme: ThemeData(
+            primarySwatch: Colors.brown,
+          ),
+          darkTheme: ThemeData.dark(),
+          themeMode: RouteView.settingsController.themeMode,
+          initialRoute: FirebaseAuth.instance.currentUser == null
+              ? const SignInView().routeName
+              : const Home().routeName,
+          routes: RouteView.pages.fold({}, (map, routeView) {
+            map[routeView.routeName] = (context) => routeView;
+            return map;
+          }),
+        );
       },
     );
   }

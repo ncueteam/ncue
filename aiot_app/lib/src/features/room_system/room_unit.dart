@@ -24,6 +24,7 @@ class _RoomUnitState extends State<RoomUnit> {
   }
 
   Future<void> showListDialog() async {
+    debugPrint(room.members.toString());
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -66,7 +67,9 @@ class _RoomUnitState extends State<RoomUnit> {
                   title: Text(member.name),
                   subtitle: Text(member.uuid),
                   trailing: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {});
+                    },
                     child: const Text("移除"),
                   ),
                 );

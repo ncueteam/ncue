@@ -55,19 +55,8 @@ class RoomModel {
   }
 
   DataItem toDataItem() {
-    return DataItem(
-        "room",
-        [
-          RoomModel(
-            name,
-            uuid,
-            addDevices: devices,
-            addDeviceIDs: deviceIDs,
-            path: imagePath,
-            description: description,
-          )
-        ],
-        name: name);
+    debugData();
+    return DataItem("room", [this], name: name);
   }
 
   Future<void> loadRoomData(String uuid) async {

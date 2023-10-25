@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:ncue.aiot_app/src/features/notify_system/notify_service.dart';
-import 'package:ncue.aiot_app/src/features/web_view/services/globals.dart';
 import 'firebase_options.dart';
 import 'src/app.dart';
 import 'src/features/basic/views/route_view.dart';
@@ -26,6 +25,5 @@ void main() async {
   ]);
   await NotifyApi().initNotifications();
   await RouteView.loadRouteViewSettings();
-  await Global.init();
   runApp(const AppRoot());
 }
