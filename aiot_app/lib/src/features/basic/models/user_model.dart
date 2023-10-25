@@ -122,7 +122,7 @@ class UserModel {
       model.name = doc.get('name');
       model.uuid = doc.get('uuid');
       model.type = doc.get('type');
-      model.rooms = model.type = querySnapshot.docs[0].get('rooms');
+      model.rooms = querySnapshot.docs[0].get('rooms');
       return model;
     }).toList();
     return users;
