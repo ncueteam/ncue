@@ -8,8 +8,8 @@ import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
 
 class RoomModel {
   static FirebaseFirestore database = FirebaseFirestore.instance;
-  String uuid;
-  String name;
+  String uuid = "Error";
+  String name = "Error";
   String imagePath = "";
   String description = "";
   User owner = RouteView.user!;
@@ -17,12 +17,16 @@ class RoomModel {
   List<DeviceModel> devices = [];
   List<String> deviceIDs = [];
 
-  RoomModel(this.name, this.uuid,
-      {List<String> addDeviceIDs = const [],
+  RoomModel(
+      {String name = "Error name",
+      String id = "Error id",
+      List<String> addDeviceIDs = const [],
       List<DeviceModel> addDevices = const [],
       List<String> members = const [],
       String path = "assets/room/room1.jpg",
       String description = "no description"}) {
+    name = name;
+    uuid = id;
     deviceIDs = [];
     deviceIDs.addAll(addDeviceIDs);
     devices = [];
@@ -55,7 +59,6 @@ class RoomModel {
   }
 
   DataItem toDataItem() {
-    debugData();
     return DataItem("room", [this], name: name);
   }
 
@@ -78,18 +81,19 @@ class RoomModel {
   }
 
   Future<RoomModel> getRoomFromUuid(String uuid) async {
-    CollectionReference devices =
-        FirebaseFirestore.instance.collection('rooms');
-    QuerySnapshot querySnapshot = await devices.get();
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('rooms').get();
     for (QueryDocumentSnapshot document in querySnapshot.docs) {
       Map<String, dynamic> result = document.data() as Map<String, dynamic>;
       if (result['uuid'] == uuid) {
         List<String> members;
         List<String> devices;
-        if (result['members'].runtimeType == List<dynamic>) {
-          members = [];
+        List<dynamic> memberData = result['members'];
+        if (memberData.isNotEmpty) {
+          List<String> tmp = memberData.map((item) => item.toString()).toList();
+          members = tmp;
         } else {
-          members = result['members'];
+          members = [];
         }
         if (result['devices'].runtimeType == List<dynamic>) {
           devices = [];
@@ -97,8 +101,8 @@ class RoomModel {
           devices = result['devices'];
         }
         return RoomModel(
-          result['name'],
-          result['uuid'],
+          name: result['name'],
+          id: result['uuid'],
           description: result['description'],
           path: result['imagePath'],
           members: members,
@@ -106,7 +110,7 @@ class RoomModel {
         );
       }
     }
-    return RoomModel("error", "error");
+    return this;
   }
 
   Future<void> update() async {

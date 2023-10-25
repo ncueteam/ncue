@@ -15,23 +15,32 @@ class RoomUnit extends StatefulWidget {
 
 class _RoomUnitState extends State<RoomUnit> {
   late RoomModel room;
-  bool authenticated = false;
+  late List<UserModel> userModels;
+
+  void getUsers() async {
+    userModels = await UserModel().loadAll();
+  }
 
   @override
   void initState() {
-    super.initState();
+    getUsers();
     room = widget.roomData;
+    room.initialize();
+    super.initState();
+    room.members.add("ssssssss");
+    setState(() {});
   }
 
   Future<void> showListDialog() async {
-    debugPrint(room.members.toString());
+    // List<UserModel> roomMembers = room.members.map((id) {return await UserModel().fromID(id);}).toList();
     return showDialog(
       context: context,
       builder: (BuildContext context) {
+        room.initialize();
         return AlertDialog(
           icon: const Text("管理房間成員"),
           title: Container(
-            width: double.maxFinite, //100,
+            width: double.maxFinite,
             height: 40,
             padding: const EdgeInsets.only(left: 20),
             alignment: Alignment.centerLeft,
@@ -58,14 +67,12 @@ class _RoomUnitState extends State<RoomUnit> {
           content: SizedBox(
             width: double.maxFinite,
             child: ListView.builder(
-              itemCount: room.members.length,
+              itemCount: userModels.length,
               itemBuilder: (BuildContext context, int index) {
-                UserModel member =
-                    UserModel(name: "test user", uuid: room.members[index]);
+                UserModel member = userModels[index];
                 return ListTile(
                   leading: const CircleAvatar(child: Icon(Icons.people)),
                   title: Text(member.name),
-                  subtitle: Text(member.uuid),
                   trailing: ElevatedButton(
                     onPressed: () {
                       setState(() {});
@@ -105,7 +112,7 @@ class _RoomUnitState extends State<RoomUnit> {
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           Padding(
-            padding: const EdgeInsets.all(7.0), // Add this padding
+            padding: const EdgeInsets.all(7.0),
             child: Row(
               children: [
                 ElevatedButton(onPressed: () {}, child: const Text("選擇房間")),
@@ -128,10 +135,6 @@ class _RoomUnitState extends State<RoomUnit> {
           )
         ],
       ),
-      // onTap: () {
-      //   Navigator.pushNamed(context, const RoomDetailsView().routeName,
-      //       arguments: {'data': room});
-      // },
     );
   }
 }

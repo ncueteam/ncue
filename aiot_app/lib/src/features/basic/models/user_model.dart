@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 
 class UserModel {
   static FirebaseFirestore database = FirebaseFirestore.instance;
-  UserModel(
-      {this.name = "Error",
-      this.uuid = "Error",
-      this.type = "",
-      this.devices = const [],
-      this.rooms = const []});
+  UserModel({
+    this.name = "Error",
+    this.uuid = "Error",
+    this.type = "",
+    this.devices = const [],
+    this.rooms = const [],
+  });
 
   String uuid;
   String name;
@@ -101,15 +102,29 @@ class UserModel {
     QuerySnapshot querySnapshot =
         await usersCollection.where('uuid', isEqualTo: uuid).get();
     if (querySnapshot.docs.isNotEmpty) {
-      UserModel model = UserModel(name: name, uuid: uuid);
+      UserModel model = UserModel();
       model.name = querySnapshot.docs[0].get('name');
       model.type = querySnapshot.docs[0].get('type');
       model.uuid = uuid;
-      model.rooms = model.type = querySnapshot.docs[0].get('rooms');
+      model.rooms = querySnapshot.docs[0].get('rooms');
       return model;
     } else {
       debugPrint("uuid found no user!");
       return this;
     }
+  }
+
+  Future<List<UserModel>> loadAll() async {
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('users').get();
+    List<UserModel> users = querySnapshot.docs.map((doc) {
+      UserModel model = UserModel();
+      model.name = doc.get('name');
+      model.uuid = doc.get('uuid');
+      model.type = doc.get('type');
+      model.rooms = model.type = querySnapshot.docs[0].get('rooms');
+      return model;
+    }).toList();
+    return users;
   }
 }

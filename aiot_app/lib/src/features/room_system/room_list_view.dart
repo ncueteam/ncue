@@ -33,8 +33,7 @@ class _RoomListViewState extends State<RoomListView> {
     await RouteView.loadAccount();
     items = await loadUnits();
     for (String s in RouteView.model.rooms) {
-      items.add(
-          (await RoomModel("error", "error").getRoomFromUuid(s)).toDataItem());
+      items.add((await RoomModel().getRoomFromUuid(s)).toDataItem());
     }
     setState(() {});
   }

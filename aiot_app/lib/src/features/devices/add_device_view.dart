@@ -19,7 +19,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
   TextEditingController deviceName = TextEditingController();
   String deviceIconPath = "lib/src/icons/light-bulb.png";
   String deviceUUID = const Uuid().v1();
-  RoomModel room = RoomModel("error", "error");
+  RoomModel room = RoomModel();
 
   @override
   Widget build(BuildContext context) {
@@ -136,8 +136,8 @@ class AddDeviceViewState extends State<AddDeviceView> {
             IconButton(
                 onPressed: () async {
                   await RouteView.model.addDevice(deviceUUID);
-                  RoomModel roomModel = RoomModel("error", "error");
-                  roomModel = await roomModel.getRoomFromUuid(roomID);
+                  RoomModel roomModel =
+                      await RoomModel().getRoomFromUuid(roomID);
                   roomModel.deviceIDs.add(deviceUUID);
                   await roomModel.update();
                   DeviceService().addDevice(deviceUUID, deviceType,

@@ -53,7 +53,8 @@ class AddRoomViewState extends State<AddRoomView> {
             Row(children: [
               IconButton(
                   onPressed: () async {
-                    RoomModel room = RoomModel(roomName.text, roomUUID);
+                    RoomModel room =
+                        RoomModel(name: roomName.text, id: roomUUID);
                     room.members.add(RouteView.user!.uid.toString());
                     room.create();
                     RouteView.model.addRoom(roomUUID);
