@@ -25,9 +25,8 @@ class _RoomUnitState extends State<RoomUnit> {
   void initState() {
     getUsers();
     room = widget.roomData;
-    room.initialize();
+    // room.initialize();
     super.initState();
-    room.members.add("ssssssss");
     setState(() {});
   }
 

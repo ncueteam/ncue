@@ -90,15 +90,15 @@ class RoomModel {
         List<String> devices;
         List<dynamic> memberData = result['members'];
         if (memberData.isNotEmpty) {
-          List<String> tmp = memberData.map((item) => item.toString()).toList();
-          members = tmp;
+          members = memberData.map((item) => item.toString()).toList();
         } else {
           members = [];
         }
-        if (result['devices'].runtimeType == List<dynamic>) {
-          devices = [];
+        List<dynamic> deviceData = result['devices'];
+        if (deviceData.isNotEmpty) {
+          devices = deviceData.map((item) => item.toString()).toList();
         } else {
-          devices = result['devices'];
+          devices = [];
         }
         return RoomModel(
           name: result['name'],

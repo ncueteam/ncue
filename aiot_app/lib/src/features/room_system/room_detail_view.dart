@@ -31,12 +31,6 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
           }).toList(),
           name: "房間內裝置 from devices"));
       items.add(DataItem(
-          "extend",
-          room.deviceIDs.map((e) async {
-            return DataItem("text", [], name: e);
-          }).toList(),
-          name: "房間內裝置 from uuids"));
-      items.add(DataItem(
           "addDevice",
           [
             AddDeviceView(
@@ -45,9 +39,6 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
             RouteView.model
           ],
           name: "註冊裝置"));
-      items.addAll(room.devices.map((device) {
-        return device.toDataItem();
-      }).toList());
       return Scaffold(
         appBar: AppBar(
           title: FittedBox(
