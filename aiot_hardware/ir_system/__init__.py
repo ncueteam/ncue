@@ -1,17 +1,18 @@
 import time
 from machine import Pin
 from ir_rx.nec import NEC_16
+from ir_tx.nec import NEC
 import uasyncio
 import oled
-from umqtt import aiot
+from umqtt.simple import MQTTClient
+from umqtt.aiot import AIOT
+import network
 
-nec = NEC(Pin(32, Pin.OUT, value = 0))
-
-client.set_callback(get_msg)
-client.subscribe("AIOT_113/IR_transmitter") #訂閱NCUE這個主題
 
 class IR_IN():
     def __init__(self):
+        self.client.subscribe("AIOT_113/IR_transmitter")
+        self.nec = NEC(Pin(32, Pin.OUT, value = 0))
         self.port = NEC_16(Pin(23, Pin.IN), self.callback)
         self.result = "no data"
         self.toSend = ""
@@ -20,6 +21,7 @@ class IR_IN():
         if data > 0:
             self.result = 'Data {:02x} Addr {:04x}'.format(data, addr)
             print('Data {:02x} Addr {:04x}'.format(data, addr))
+            
     def get_msg(self,topic, msg):
         nec.transmit(0x0000, int(str(msg, 'UTF-8')))
         print("IR transmit: "+str(msg, 'UTF-8'))
