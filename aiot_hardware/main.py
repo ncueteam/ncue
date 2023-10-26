@@ -30,6 +30,23 @@ net = connection.Network(oled=True)
 async def main_task():
     # 檔案系統
     await DB2.setUp()
+    uuid = ""
+    if (DB2.read("uuid") ):
+        import uhashlib
+        import ubinascii
+        import urandom
+        def generate_uuid():
+            uuid_bytes = bytearray(urandom.getrandbits(8) for _ in range(16))
+            uuid_bytes[6] = (uuid_bytes[6] & 0x0F) | 0x40
+            uuid_bytes[8] = (uuid_bytes[8] & 0x3F) | 0x80
+            uuid_str = ubinascii.hexlify(uuid_bytes).decode('utf-8')
+            uuid = '-'.join((uuid_str[:8], uuid_str[8:12], uuid_str[12:16], uuid_str[16:20], uuid_str[20:]))
+            return uuid
+        uuid = generate_uuid()
+        await DB2.create("uuid",uuid)
+    else:
+        uuid = DB2.read("uuid")
+    print(uuid)
     # 載入畫面
     await screen.blank()
     await screen.centerText(4,"NCUE AIOT")
