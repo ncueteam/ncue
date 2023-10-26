@@ -2,13 +2,15 @@ import ubluetooth
 from file_system import FileSet
 class BLE():
     def __init__(self) -> None:
-        self.name = "esp32 ncue test"
+        self.name = "esp32 ncue"
         self.ble = ubluetooth.BLE()
         self.ble.active(False)
         self.ble.active(True)
         self.register()
         self.ble.irq(self.handler)
         self.fileSet = FileSet(fileName='wifi.json')
+        self.wifi_added = False
+        self.bt_linked = False
     
     def register(self):
         ENV_SERVER_UUID = ubluetooth.UUID(0x9011)
@@ -33,11 +35,13 @@ class BLE():
     def handler(self,event,data):
         if event == 1:
             print("BLE 連接成功")
+            self.bt_linked = True
 
         elif event == 2:
             print("BLE 斷開連結")
             self.ble.gap_advertise(100, adv_data=b'\x02\x01\x06\x02\x0A\x08' + bytearray(
                 (len(self.name) + 1, 0x09)) + self.name)
+            self.bt_linked = False
 
         elif event == 3:
             onn_handle, char_handle = data
@@ -49,3 +53,4 @@ class BLE():
             name = arr[0]
             password = arr[1]
             self.fileSet.update(name, password)
+            self.wifi_added = True

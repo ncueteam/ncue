@@ -55,6 +55,7 @@ class Segment7():
                 self.pins[i].off()
         
 def test():
+    pins = [machine.Pin(i, machine.Pin.OUT) for i in DEFAULT_PIN]
     loop = uasyncio.get_event_loop()
     async def main_task():
         s7 = Segment7(pins)

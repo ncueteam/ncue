@@ -1,7 +1,6 @@
 import machine
-import uasyncio as asyncio
+import uasyncio
 import sys
-# from segment7 import Segment7, DEFAULT_PIN
 import oled
 import connection
 import dht11
@@ -10,22 +9,18 @@ from umqtt.simple import MQTTClient
 from umqtt.aiot import AIOT
 
 #取得總迴圈 
-loop = asyncio.get_event_loop()
+loop = uasyncio.get_event_loop()
 
-#初始化
-# pins = [machine.Pin(i, machine.Pin.OUT) for i in DEFAULT_PIN]
 #OLED顯示器
 screen = oled.OLED("X")
  # MQTT
 dht_mqtt = AIOT("dht11")
-#七段顯示器
-# s7 = Segment7(pins)
 # DHT11
 dht = dht11.Sensor()
 # 檔案系統
 DB2 =  FileSet("degree_wet.json")
 # 網路連線
-net = connection.Network()
+net = connection.Network(oled=True)
 #主程式
 async def main_task():
     # 檔案系統
@@ -34,31 +29,64 @@ async def main_task():
     await screen.blank()
     await screen.centerText(4,"NCUE AIOT")
     await screen.show()
-    await asyncio.sleep_ms(100)
+    await uasyncio.sleep_ms(100)
     # 網路連線
-    await net.setUp()
-    # dht_mqtt初始化
-    await screen.blank()
-    await screen.text(0, 2, "Connecting")
-    await screen.text(0, 4, "MQTT dht11")
-    await screen.show()
-    await dht_mqtt.connect()
-
-    while True:
-        await dht_mqtt.wait()
-        # DHT
-        await dht.wait()
-        await dht.detect()
-        value = await dht.getMQTTMessage()
-        await dht_mqtt.routine(value)
-        await DB2.create("degree",value)
-        # OLED
+    is_connected = await net.setUp()
+    if (is_connected):
+        # dht_mqtt初始化
         await screen.blank()
-        await screen.drawSleepPage()
-        await screen.displayTime()
-        await screen.text(64, 4, dht_mqtt.received)
+        await screen.text(0, 2, "Connecting")
+        await screen.text(0, 4, "MQTT dht11")
         await screen.show()
-
+        await dht_mqtt.connect()
+        while True:
+            await dht_mqtt.wait()
+            # DHT
+            await dht.wait()
+            await dht.detect()
+            value = await dht.getMQTTMessage()
+            await dht_mqtt.routine(value)
+            await DB2.create("degree",value)
+            # OLED
+            await screen.blank()
+            await screen.drawSleepPage()
+            await screen.displayTime()
+            await screen.text(64, 4, dht_mqtt.received)
+            await screen.show()
+    else:
+        await uasyncio.sleep_ms(2000)
+        await screen.blank()
+        await screen.centerText(1, "BLE!")
+        await screen.centerText(3, "Connect")
+        await screen.centerText(5, "Mode")
+        await screen.show()
+        import ble
+        bt = ble.BLE()
+        await uasyncio.sleep_ms(2000)
+        await screen.blank()
+        await screen.centerText(2, "BLE name")
+        await screen.centerText(4, bt.name)
+        await screen.show()
+        await uasyncio.sleep_ms(2000)
+        ble_try = 10
+        while ble_try:
+            await screen.blank()
+            await screen.centerText(2, bt.name)
+            await screen.centerText(4, str(11-ble_try)+" / 10")
+            await screen.show()
+            await uasyncio.sleep_ms(2000)
+            if (bt.wifi_added):
+                await screen.blank()
+                await screen.centerText(4, "wifi added!")
+                await screen.show()
+                await uasyncio.sleep_ms(2000)
+            if (bt.bt_linked):
+                await screen.blank()
+                await screen.centerText(4, "bt linked!")
+                await screen.show()
+                await uasyncio.sleep_ms(2000)
+            ble_try-=1
+        
 try:
     task = loop.create_task(main_task())
     loop.run_forever()

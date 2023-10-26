@@ -5,8 +5,12 @@ from file_system import FileSet
 sta_if = network.WLAN(network.STA_IF)    
 
 class Network():
-    def __init__(self):
+    def __init__(self,oled=True):
         self.DB =  FileSet("wifi.json")
+        self.oled = oled
+        if(oled):
+            import oled
+            self.screen = oled.OLED("Y")
     
     
     async def addDefaultWifi(self):
@@ -15,49 +19,72 @@ class Network():
     async def setUp(self):
         await self.DB.setUp()
         for key,value in self.DB.Data.items():
-            print("connecting.. "+key)
+            if (self.oled):
+                await self.screen.blank()
+                await self.screen.centerText(2,"connecting")
+                await self.screen.centerText(4,"from")
+                await self.screen.centerText(6,"Database!")
+                await self.screen.show()
+            else:
+                print("connecting.. "+key)
+            await uasyncio.sleep_ms(1000)
             if await self.connector(key,value):
-                print(key+" connected!")
-                break
+                if(self.oled):
+                    await self.screen.blank()
+                    await self.screen.centerText(2,key)
+                    await self.screen.centerText(4,"connected!")
+                    await self.screen.show()
+                else:
+                    print(key+" connected!")
+                return True
         if not sta_if.isconnected():
-            print("connection error")
+            if(self.oled):
+                await self.screen.blank()
+                await self.screen.centerText(2,"connect")
+                await self.screen.centerText(4,"error!")
+                await self.screen.show()
+            else:
+                print("connection error")
+            return False
     
-    async def connector(self,key,value,oled=False):
+    async def connector(self,key,value):
         MAX_TRY = 10
         TRY = 0
         sta_if.active(False)
         sta_if.active(True)
         sta_if.connect(key,value)
-        if(oled):
-            await screen.blank()
-            await screen.centerText(2,"connecting")
-            await screen.centerText(4,key)
-            await screen.show()
+        if(self.oled):
+            await self.screen.blank()
+            await self.screen.centerText(2,"connecting")
+            await self.screen.centerText(4,key)
+            await self.screen.show()
         while not sta_if.isconnected():
             await uasyncio.sleep_ms(2000)
             TRY += 1
-            if(oled):
-                await screen.blank()
-                await screen.centerText(2,"connecting")
-                await screen.centerText(4,key)
-                await screen.centerText(6,str(TRY)+" / "+str(MAX_TRY))
-                await screen.show()
+            if(self.oled):
+                await self.screen.blank()
+                await self.screen.centerText(2,"connecting")
+                await self.screen.centerText(4,key)
+                await self.screen.centerText(6,str(TRY)+" / "+str(MAX_TRY))
+                await self.screen.show()
             if  TRY > MAX_TRY:
                 TRY = 0
                 break
             pass
         if not sta_if.isconnected():
-            if(oled):
-                await screen.blank()
-                await screen.centerText(4,"connecting " + key + " failed....")
-                await screen.show()
-            await uasyncio.sleep_ms(1000)
+            if(self.oled):
+                await self.screen.blank()
+                await self.screen.centerText(2,"connecting ")
+                await self.screen.centerText(4,key)
+                await self.screen.centerText(6," failed....")
+                await self.screen.show()
+            await uasyncio.sleep_ms(2000)
             return False
         else:
-            if(oled):
-                await screen.blank()
-                await screen.centerText(4,key + " connected!")
-                await screen.show()
+            if(self.oled):
+                await self.screen.blank()
+                await self.screen.centerText(4,key + " connected!")
+                await self.screen.show()
             await uasyncio.sleep_ms(1000)
             return True
 def bootLink():
