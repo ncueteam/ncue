@@ -4,27 +4,31 @@ from ir_rx.nec import NEC_16
 from ir_tx.nec import NEC
 import uasyncio
 import oled
-from umqtt.simple import MQTTClient
-from umqtt.aiot import AIOT
 import network
 
-
 class IR_IN():
-    def __init__(self):
-        self.client.subscribe("AIOT_113/IR_transmitter")
-        self.nec = NEC(Pin(32, Pin.OUT, value = 0))
-        self.port = NEC_16(Pin(23, Pin.IN), self.callback)
+    def __init__(self,oled=False):
+        self.sendor = NEC(Pin(32, Pin.OUT, value = 0))
+        self.receivor = NEC_16(Pin(23, Pin.IN), self.callback)
         self.result = "no data"
+#         self.oled = oled
+#         if(oled):
+#             import oled
+#             self.screen = oled.OLED("Z")
+#             await self.screen.blank()
+#             await self.screen.centerText(4,"test ir")
+#             await self.screen.show()
+    
+    async def wait(self):
         self.toSend = ""
-
+    
+    async def send(self,msg):
+        self.sendor.transmit(0x0000, int(str(msg, 'UTF-8')))
+    
     def callback(self,data, addr, ctrl):
         if data > 0:
             self.result = 'Data {:02x} Addr {:04x}'.format(data, addr)
             print('Data {:02x} Addr {:04x}'.format(data, addr))
-            
-    def get_msg(self,topic, msg):
-        nec.transmit(0x0000, int(str(msg, 'UTF-8')))
-        print("IR transmit: "+str(msg, 'UTF-8'))
     
 def test():
     temp = IR_IN()
@@ -46,3 +50,5 @@ def test():
         task.cancel()
         loop.run_until_complete(task)
         loop.close()
+if __name__ == '__main__':
+    test()
