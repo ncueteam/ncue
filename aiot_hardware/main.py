@@ -31,7 +31,9 @@ async def main_task():
     # 檔案系統
     await DB2.setUp()
     uuid = ""
-    if (DB2.read("uuid") ):
+    try:
+        uuid = (await DB2.read("uuid"))[1]
+    except Exception as e:
         import uhashlib
         import ubinascii
         import urandom
@@ -44,8 +46,7 @@ async def main_task():
             return uuid
         uuid = generate_uuid()
         await DB2.create("uuid",uuid)
-    else:
-        uuid = DB2.read("uuid")
+        print(e)
     print(uuid)
     # 載入畫面
     await screen.blank()
