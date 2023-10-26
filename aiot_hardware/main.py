@@ -11,6 +11,9 @@ from umqtt.aiot import AIOT
 #取得總迴圈 
 loop = uasyncio.get_event_loop()
 
+global restart_main_task
+restart_main_task = False
+
 #OLED顯示器
 screen = oled.OLED("X")
  # MQTT
@@ -80,19 +83,32 @@ async def main_task():
                 await screen.centerText(4, "wifi added!")
                 await screen.show()
                 await uasyncio.sleep_ms(2000)
+                global restart_main_task
+                restart_main_task = True
             if (bt.bt_linked):
                 await screen.blank()
                 await screen.centerText(4, "bt linked!")
                 await screen.show()
                 await uasyncio.sleep_ms(2000)
             ble_try-=1
-        
-try:
-    task = loop.create_task(main_task())
-    loop.run_forever()
-except KeyboardInterrupt:
-    print("Ctrl+C pressed stopping.....")
-finally:
-    task.cancel()
-    loop.run_until_complete(task)
-    loop.close()
+
+def run():
+    try:
+        task = loop.create_task(main_task())
+        loop.run_forever()
+    except KeyboardInterrupt:
+        print("Ctrl+C pressed stopping.....")
+    finally:
+        task.cancel()
+        loop.run_until_complete(task)
+        loop.close()
+if __name__ == '__main__':
+    global restart_main_task
+    max_try = 3
+    while(max_try or restart_main_task):
+        run()
+        if (restart_main_task):
+            max_try = 3
+        else:
+            max_try-=1
+        restart_main_task = False
