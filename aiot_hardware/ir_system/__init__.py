@@ -3,17 +3,27 @@ from machine import Pin
 from ir_rx.nec import NEC_16
 import uasyncio
 import oled
+from umqtt import aiot
+
+nec = NEC(Pin(32, Pin.OUT, value = 0))
+
+client.set_callback(get_msg)
+client.subscribe("AIOT_113/IR_transmitter") #訂閱NCUE這個主題
 
 class IR_IN():
     def __init__(self):
         self.port = NEC_16(Pin(23, Pin.IN), self.callback)
         self.result = "no data"
+        self.toSend = ""
 
     def callback(self,data, addr, ctrl):
         if data > 0:
             self.result = 'Data {:02x} Addr {:04x}'.format(data, addr)
             print('Data {:02x} Addr {:04x}'.format(data, addr))
-
+    def get_msg(self,topic, msg):
+        nec.transmit(0x0000, int(str(msg, 'UTF-8')))
+        print("IR transmit: "+str(msg, 'UTF-8'))
+    
 def test():
     temp = IR_IN()
     screen = oled.OLED("test")
