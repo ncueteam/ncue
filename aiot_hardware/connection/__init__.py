@@ -5,7 +5,7 @@ from file_system import FileSet
 sta_if = network.WLAN(network.STA_IF)    
 
 class Network():
-    def __init__(self,oled=True):
+    def __init__(self,oled=False):
         self.DB =  FileSet("wifi.json")
         self.oled = oled
         if(oled):

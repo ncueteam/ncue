@@ -4,6 +4,7 @@ import sys
 import oled
 import connection
 import dht11
+import ir_system
 from file_system import FileSet
 from umqtt.simple import MQTTClient
 from umqtt.aiot import AIOT
@@ -14,6 +15,7 @@ loop = uasyncio.get_event_loop()
 global restart_main_task
 restart_main_task = False
 
+ir = ir_system.IR_IN()
 #OLED顯示器
 screen = oled.OLED("X")
  # MQTT

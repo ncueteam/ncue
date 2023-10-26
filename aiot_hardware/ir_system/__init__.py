@@ -31,7 +31,10 @@ class IR_IN():
             print('Data {:02x} Addr {:04x}'.format(data, addr))
     
 def test():
+    import umqtt.aiot
+    irt = umqtt.aiot.AIOT("IR_transmitter")
     temp = IR_IN()
+    irt.connect()
     screen = oled.OLED("test")
     loop = uasyncio.get_event_loop()
     async def test():
@@ -51,4 +54,6 @@ def test():
         loop.run_until_complete(task)
         loop.close()
 if __name__ == '__main__':
+    import connection
+    connection.bootLink()
     test()
