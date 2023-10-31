@@ -44,7 +44,7 @@ async def main_task():
     is_connected = await net.setUp()
     if (is_connected):
         # MQTT
-        dht_mqtt = AIOT(uuid+"/dht11")
+        dht_mqtt = AIOT(uuid+"_dht11")
         await screen.blank()
         await screen.text(0, 2, "Connecting")
         await screen.text(0, 4, "MQTT dht11")
