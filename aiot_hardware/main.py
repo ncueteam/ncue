@@ -5,6 +5,7 @@ import oled
 import connection
 import dht11
 import ir_system
+import web_api
 from file_system import FileSet
 from umqtt.simple import MQTTClient
 from umqtt.aiot import AIOT
@@ -15,6 +16,7 @@ loop = uasyncio.get_event_loop()
 global restart_main_task
 restart_main_task = False
 
+#紅外線數值
 ir = ir_system.IR_IN()
 #OLED顯示器
 screen = oled.OLED("X")
@@ -51,6 +53,8 @@ async def main_task():
         await screen.show()
         await dht_mqtt.connect()
         while True:
+            print(ir.result)
+            await web_api.send_ir_data(device_uuid, ir.result)
             await dht_mqtt.wait()
             # DHT
             await dht.wait()
@@ -58,6 +62,7 @@ async def main_task():
             value = await dht.getMQTTMessage()
             await dht_mqtt.routine(value)
             await DB2.create("degree",value)
+            await web_api.sendDHTData(device_uuid, value.split(" ")[0], value.split(" ")[1])
             # OLED
             await screen.blank()
             await screen.drawSleepPage()
