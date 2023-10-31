@@ -3,14 +3,16 @@ import 'package:lottie/lottie.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/mqtt_service.dart';
 
 class Dht11Unit extends StatefulWidget {
-  const Dht11Unit({super.key});
+  final String uuid;
+  const Dht11Unit({super.key, this.uuid = ""});
 
   @override
   State<Dht11Unit> createState() => _Dht11UnitState();
 }
 
 class _Dht11UnitState extends State<Dht11Unit> {
-  MQTTService mqtt = MQTTService('AIOT_113/dht11');
+  late MQTTService mqtt;
+
   late List<String> mqttDataArray = ["??", "??"];
   void setReceivedText() {
     mqttDataArray = mqtt.value.split(" ");
@@ -19,8 +21,9 @@ class _Dht11UnitState extends State<Dht11Unit> {
 
   @override
   void initState() {
-    mqtt.callback = () => setReceivedText();
     super.initState();
+    mqtt = MQTTService('AIOT_113/${widget.uuid}dht11');
+    mqtt.callback = () => setReceivedText();
   }
 
   Widget sensorWidget(String lottieAsset, String title, String value) {

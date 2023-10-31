@@ -18,8 +18,6 @@ restart_main_task = False
 ir = ir_system.IR_IN()
 #OLED顯示器
 screen = oled.OLED("X")
- # MQTT
-dht_mqtt = AIOT("dht11")
 # DHT11
 dht = dht11.Sensor()
 # 檔案系統
@@ -34,20 +32,9 @@ async def main_task():
     try:
         uuid = (await DB2.read("uuid"))[1]
     except Exception as e:
-        import uhashlib
-        import ubinascii
-        import urandom
-        def generate_uuid():
-            uuid_bytes = bytearray(urandom.getrandbits(8) for _ in range(16))
-            uuid_bytes[6] = (uuid_bytes[6] & 0x0F) | 0x40
-            uuid_bytes[8] = (uuid_bytes[8] & 0x3F) | 0x80
-            uuid_str = ubinascii.hexlify(uuid_bytes).decode('utf-8')
-            uuid = '-'.join((uuid_str[:8], uuid_str[8:12], uuid_str[12:16], uuid_str[16:20], uuid_str[20:]))
-            return uuid
-        uuid = generate_uuid()
+        uuid = await DB2.generate_uuid()
         await DB2.create("uuid",uuid)
         print(e)
-    print(uuid)
     # 載入畫面
     await screen.blank()
     await screen.centerText(4,"NCUE AIOT")
@@ -56,7 +43,8 @@ async def main_task():
     # 網路連線
     is_connected = await net.setUp()
     if (is_connected):
-        # dht_mqtt初始化
+        # MQTT
+        dht_mqtt = AIOT(uuid+"/dht11")
         await screen.blank()
         await screen.text(0, 2, "Connecting")
         await screen.text(0, 4, "MQTT dht11")

@@ -27,7 +27,11 @@ class _UnitState extends State<Unit> {
     switch (item.type) {
       case "dht11":
         {
-          return const Dht11Unit();
+          if (item.data.isNotEmpty && item.data[0] is String) {
+            return Dht11Unit(uuid: item.data[0]);
+          } else {
+            return const Dht11Unit();
+          }
         }
       case "auto":
         {

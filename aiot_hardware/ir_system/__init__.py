@@ -7,12 +7,12 @@ import oled
 import network
 
 class IR_IN():
-    def __init__(self,oled=False):
+    def __init__(self,SCN=False):
         self.sendor = NEC(Pin(32, Pin.OUT, value = 0))
         self.receivor = NEC_16(Pin(23, Pin.IN), self.callback)
         self.result = "no data"
-#         self.oled = oled
-#         if(oled):
+#         self.oled = SCN
+#         if(self.oled):
 #             import oled
 #             self.screen = oled.OLED("Z")
 #             await self.screen.blank()
@@ -32,8 +32,9 @@ class IR_IN():
     
 def test():
     import umqtt.aiot
+    import oled
     irt = umqtt.aiot.AIOT("IR_transmitter")
-    temp = IR_IN()
+    temp = IR_IN(oled=True)
     irt.connect()
     screen = oled.OLED("test")
     loop = uasyncio.get_event_loop()
@@ -43,7 +44,7 @@ def test():
             await screen.blank()
             await screen.centerText(3,temp.result)
             await screen.show()
-            await uasyncio.sleep_ms(100)
+#             await uasyncio.sleep_ms(100)
     try:
         task = loop.create_task(test())
         loop.run_forever()

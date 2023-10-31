@@ -1,6 +1,8 @@
 import ujson
 import os
-
+import uhashlib
+import ubinascii
+import urandom
 DEFAULT_FOLDER = 'database'
 
 class FileSet:
@@ -46,3 +48,11 @@ class FileSet:
     async def delete(self, key: str):
         del self.Data[key]
         await self.save()
+
+    async def generate_uuid():
+        uuid_bytes = bytearray(urandom.getrandbits(8) for _ in range(16))
+        uuid_bytes[6] = (uuid_bytes[6] & 0x0F) | 0x40
+        uuid_bytes[8] = (uuid_bytes[8] & 0x3F) | 0x80
+        uuid_str = ubinascii.hexlify(uuid_bytes).decode('utf-8')
+        uuid = '-'.join((uuid_str[:8], uuid_str[8:12], uuid_str[12:16], uuid_str[16:20], uuid_str[20:]))
+        return uuid
