@@ -135,10 +135,10 @@ class AddDeviceViewState extends State<AddDeviceView> {
             ),
             IconButton(
                 onPressed: () async {
-                  await RouteView.model.addDevice(deviceUUID);
                   RoomModel roomModel =
                       await RoomModel().getRoomFromUuid(roomID);
-                  roomModel.deviceIDs.add(deviceUUID);
+                  roomModel.devices
+                      .add(await DeviceService().getDeviceFromUuid(deviceUUID));
                   await roomModel.update();
                   DeviceService().addDevice(deviceUUID, deviceType,
                       deviceName.text, deviceIconPath, false, 28.0);

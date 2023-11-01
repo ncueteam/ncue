@@ -8,20 +8,17 @@ class UserModel {
     this.name = "Error",
     this.uuid = "Error",
     this.type = "",
-    this.devices = const [],
     this.rooms = const [],
   });
 
   String uuid;
   String name;
   String type;
-  List<dynamic> devices;
   List<dynamic> rooms;
   void debugData() {
     debugPrint("name:$name");
     debugPrint("uuid:$uuid");
     debugPrint("type:$type");
-    debugPrint("devices:$devices");
     debugPrint("rooms:$rooms");
   }
 
@@ -34,7 +31,6 @@ class UserModel {
       'name': name,
       "type": type,
       "uuid": uuid,
-      "devices": <String>[],
       "rooms": <String>[],
     });
     return this;
@@ -50,7 +46,6 @@ class UserModel {
       name = lst['name'];
       uuid = lst['uuid'];
       type = lst['type'];
-      devices = lst['devices'];
       rooms = lst['rooms'];
       return this;
     } else {
@@ -74,19 +69,12 @@ class UserModel {
         'name': name,
         "type": type,
         "uuid": uuid,
-        'devices': devices,
         'rooms': rooms
       };
       await documentReference.update(updatedData);
     } else {
       create();
     }
-    return this;
-  }
-
-  Future<UserModel> addDevice(String deviceUUID) async {
-    devices.add(deviceUUID);
-    update();
     return this;
   }
 

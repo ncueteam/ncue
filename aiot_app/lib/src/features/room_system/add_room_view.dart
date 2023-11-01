@@ -53,12 +53,17 @@ class AddRoomViewState extends State<AddRoomView> {
             Row(children: [
               IconButton(
                   onPressed: () async {
-                    RoomModel room =
-                        RoomModel(name: roomName.text, id: roomUUID);
+                    RoomModel room = RoomModel(
+                      roomName: roomName.text,
+                      id: roomUUID,
+                      roomDescription: "測試描述",
+                    );
                     room.members.add(RouteView.user!.uid.toString());
-                    room.create();
-                    RouteView.model.addRoom(roomUUID);
-                    Navigator.pop(context, true);
+                    await room.create();
+                    room.debugData();
+                    await RouteView.model
+                        .addRoom(roomUUID)
+                        .then((value) => Navigator.pop(context, true));
                   },
                   icon: const Icon(Icons.add)),
             ]),
