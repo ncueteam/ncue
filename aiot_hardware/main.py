@@ -5,6 +5,8 @@ import oled
 import connection
 import dht11
 import ir_system
+import web_api
+import ujson
 from file_system import FileSet
 from umqtt.simple import MQTTClient
 from umqtt.aiot import AIOT
@@ -15,11 +17,10 @@ loop = uasyncio.get_event_loop()
 global restart_main_task
 restart_main_task = False
 
+#紅外線數值
 ir = ir_system.IR_IN()
 #OLED顯示器
-screen = oled.OLED("X")
- # MQTT
-dht_mqtt = AIOT("dht11")
+screen = oled.OLED()
 # DHT11
 dht = dht11.Sensor()
 # 檔案系統
@@ -34,20 +35,9 @@ async def main_task():
     try:
         uuid = (await DB2.read("uuid"))[1]
     except Exception as e:
-        import uhashlib
-        import ubinascii
-        import urandom
-        def generate_uuid():
-            uuid_bytes = bytearray(urandom.getrandbits(8) for _ in range(16))
-            uuid_bytes[6] = (uuid_bytes[6] & 0x0F) | 0x40
-            uuid_bytes[8] = (uuid_bytes[8] & 0x3F) | 0x80
-            uuid_str = ubinascii.hexlify(uuid_bytes).decode('utf-8')
-            uuid = '-'.join((uuid_str[:8], uuid_str[8:12], uuid_str[12:16], uuid_str[16:20], uuid_str[20:]))
-            return uuid
-        uuid = generate_uuid()
+        uuid = await DB2.generate_uuid()
         await DB2.create("uuid",uuid)
         print(e)
-    print(uuid)
     # 載入畫面
     await screen.blank()
     await screen.centerText(4,"NCUE AIOT")
@@ -56,25 +46,27 @@ async def main_task():
     # 網路連線
     is_connected = await net.setUp()
     if (is_connected):
-        # dht_mqtt初始化
+        # MQTT
+        dht_mqtt = AIOT(uuid+"_dht11")
         await screen.blank()
         await screen.text(0, 2, "Connecting")
         await screen.text(0, 4, "MQTT dht11")
         await screen.show()
         await dht_mqtt.connect()
         while True:
+#             await web_api.send_ir_data(uuid, ir.result)
             await dht_mqtt.wait()
             # DHT
             await dht.wait()
             await dht.detect()
-            value = await dht.getMQTTMessage()
-            await dht_mqtt.routine(value)
-            await DB2.create("degree",value)
+            await dht_mqtt.routine(ujson.dumps({"uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
+#             await web_api.sendDHTData(uuid, str(dht.hum), str(dht.temp))
             # OLED
             await screen.blank()
             await screen.drawSleepPage()
             await screen.displayTime()
-            await screen.text(64, 4, dht_mqtt.received)
+            await screen.text(64, 3, ir.result)
+            await screen.text(64, 5, str(dht.hum)+" "+str(dht.temp))
             await screen.show()
     else:
         await uasyncio.sleep_ms(2000)

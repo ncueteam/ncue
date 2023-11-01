@@ -10,7 +10,7 @@ class Network():
         self.oled = oled
         if(oled):
             import oled
-            self.screen = oled.OLED("Y")
+            self.screen = oled.OLED()
     
     
     async def addDefaultWifi(self):

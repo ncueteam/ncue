@@ -1,26 +1,44 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/mqtt_service.dart';
 
 class Dht11Unit extends StatefulWidget {
-  const Dht11Unit({super.key});
+  final String uuid;
+  const Dht11Unit({super.key, this.uuid = ""});
 
   @override
   State<Dht11Unit> createState() => _Dht11UnitState();
 }
 
 class _Dht11UnitState extends State<Dht11Unit> {
-  MQTTService mqtt = MQTTService('AIOT_113/dht11');
-  late List<String> mqttDataArray = ["??", "??"];
+  late MQTTService mqtt;
+
+  late String uuid = "??";
+  late String temperature = "??";
+  late String humidity = "??";
+
   void setReceivedText() {
-    mqttDataArray = mqtt.value.split(" ");
+    Map<String, dynamic> mqttData = json.decode(mqtt.value);
+    uuid = mqttData["uuid"].toString();
+    temperature = mqttData["temperature"].toString();
+    humidity = mqttData["humidity"].toString();
     setState(() {});
   }
 
   @override
   void initState() {
-    mqtt.callback = () => setReceivedText();
     super.initState();
+    // mqtt = MQTTService('AIOT_113/${widget.uuid}-dht11');
+    mqtt = MQTTService('AIOT_113/${widget.uuid}_dht11');
+    mqtt.callback = () => setReceivedText();
+  }
+
+  @override
+  void dispose() {
+    mqtt.port.disconnect();
+    super.dispose();
   }
 
   Widget sensorWidget(String lottieAsset, String title, String value) {
@@ -61,13 +79,14 @@ class _Dht11UnitState extends State<Dht11Unit> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      title: Text(uuid.split('-').toString()),
       subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          sensorWidget('assets/lottie/LightRain.json', 'humidity',
-              "${mqttDataArray[0]}%"),
           sensorWidget(
-              'assets/lottie/day.json', 'Temperature', "${mqttDataArray[1]}°C"),
+              'assets/lottie/LightRain.json', 'humidity', "$humidity%"),
+          sensorWidget(
+              'assets/lottie/day.json', 'Temperature', "$temperature°C"),
         ],
       ),
     );

@@ -4,7 +4,7 @@ MAIN_TOPIC="AIOT_113"
 class AIOT():
     def __init__(self,subtopic) -> None:
         self.cycle = 0
-        self.topic = subtopic
+        self.topic = MAIN_TOPIC+"/"+subtopic
         self.client = MQTTClient(
             client_id="client",
             keepalive=MAX_CYCLE*2,
@@ -21,7 +21,7 @@ class AIOT():
             self.received = msg
 #             print(msg)
         self.client.set_callback(get_msg)
-        self.client.subscribe(MAIN_TOPIC+"/"+self.topic)
+        self.client.subscribe(self.topic)
 
     async def wait(self):
         self.client.check_msg()
@@ -31,4 +31,4 @@ class AIOT():
         
     async def routine(self,content):
         if (self.cycle >= MAX_CYCLE - 1):
-            self.client.publish(MAIN_TOPIC+"/"+self.topic, content)
+            self.client.publish(self.topic, content)

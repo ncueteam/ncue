@@ -15,30 +15,25 @@ class RoomModel {
   User owner = RouteView.user!;
   List<String> members = [];
   List<DeviceModel> devices = [];
-  List<String> deviceIDs = [];
 
   RoomModel(
-      {String name = "Error name",
+      {String roomName = "Error name",
       String id = "Error id",
-      List<String> addDeviceIDs = const [],
       List<DeviceModel> addDevices = const [],
       List<String> members = const [],
       String path = "assets/room/room1.jpg",
-      String description = "no description"}) {
-    name = name;
+      String roomDescription = "no description"}) {
+    name = roomName;
     uuid = id;
-    deviceIDs = [];
-    deviceIDs.addAll(addDeviceIDs);
     devices = [];
     devices.addAll(addDevices);
     members = members;
     imagePath = path;
-    description = description;
+    description = roomDescription;
     initialize();
   }
 
   Future<void> initialize() async {
-    await getDevices();
     owner = (await RouteView.getUser())!;
   }
 
@@ -48,14 +43,7 @@ class RoomModel {
     debugPrint("description:$description");
     debugPrint("imagePath:$imagePath");
     debugPrint("members:$members");
-    debugPrint("devices:$deviceIDs");
-  }
-
-  Future<List<DeviceModel>> getDevices() async {
-    for (String s in deviceIDs) {
-      devices.add(await DeviceService().getDeviceFromUuid(s));
-    }
-    return devices;
+    debugPrint("devices:$devices");
   }
 
   DataItem toDataItem() {
@@ -73,9 +61,8 @@ class RoomModel {
     description = lst['description'];
     imagePath = lst['imagePath'];
     members = lst['members'];
-    deviceIDs = lst['devices'];
 
-    for (String s in deviceIDs) {
+    for (String s in lst['devices']) {
       devices.add(await DeviceService().getDeviceFromUuid(s));
     }
   }
@@ -86,8 +73,6 @@ class RoomModel {
     for (QueryDocumentSnapshot document in querySnapshot.docs) {
       Map<String, dynamic> result = document.data() as Map<String, dynamic>;
       if (result['uuid'] == uuid) {
-        List<String> members;
-        List<String> devices;
         List<dynamic> memberData = result['members'];
         if (memberData.isNotEmpty) {
           members = memberData.map((item) => item.toString()).toList();
@@ -96,18 +81,20 @@ class RoomModel {
         }
         List<dynamic> deviceData = result['devices'];
         if (deviceData.isNotEmpty) {
-          devices = deviceData.map((item) => item.toString()).toList();
+          List<String> temp =
+              deviceData.map((item) => item.toString()).toList();
+          for (String D in temp) {
+            devices.add(await DeviceService().getDeviceFromUuid(D));
+          }
         } else {
           devices = [];
         }
-        return RoomModel(
-          name: result['name'],
-          id: result['uuid'],
-          description: result['description'],
-          path: result['imagePath'],
-          members: members,
-          addDeviceIDs: devices,
-        );
+        name = result['name'];
+        uuid = result['uuid'];
+        description = result['description'];
+        imagePath = result['imagePath'];
+        debugData();
+        return this;
       }
     }
     return this;
@@ -129,7 +116,7 @@ class RoomModel {
         'description': description,
         'imagePath': imagePath,
         'members': members,
-        'devices': deviceIDs,
+        'devices': devices.map((item) => item.uuid),
       };
       await documentReference.update(updatedData);
     } else {
@@ -171,7 +158,7 @@ class RoomModel {
       'description': description,
       'imagePath': imagePath,
       'members': members,
-      "devices": deviceIDs,
+      "devices": devices.map((item) => item.uuid),
     });
   }
 }
