@@ -7,10 +7,11 @@ import oled
 import network
 
 class IR_IN():
-    def __init__(self,SCN=False):
+    def __init__(self,SCN=False,callback=None):
         self.sendor = NEC(Pin(32, Pin.OUT, value = 0))
         self.receivor = NEC_16(Pin(23, Pin.IN), self.callback)
         self.result = "no data"
+        self.onReceived = callback
 #         self.oled = SCN
 #         if(self.oled):
 #             import oled
@@ -21,6 +22,8 @@ class IR_IN():
     
     async def wait(self):
         self.toSend = ""
+        if (self.onReceived != None):
+            self.onReceived
     
     async def send(self,msg):
         self.sendor.transmit(0x0000, int(str(msg, 'UTF-8')))
@@ -33,20 +36,24 @@ class IR_IN():
 def test():
     import umqtt.aiot
     import oled
-    irt = umqtt.aiot.AIOT("IR_transmitter")
-    temp = IR_IN(oled=True)
-    irt.connect()
-    screen = oled.OLED("test")
+#     temp = IR_IN(SCN=True)
+    def clr():
+        print("CLR")
+    temp = IR_IN(callback=clr)
+    screen = oled.OLED()
     loop = uasyncio.get_event_loop()
-    async def test():
-        print("ir_system test")
-        while True:
+    async def main():
+        count = 0
+        while True: 
+            await temp.wait()
             await screen.blank()
+            count=(count+1)%8
+            await screen.centerText(count,"#")
             await screen.centerText(3,temp.result)
             await screen.show()
 #             await uasyncio.sleep_ms(100)
     try:
-        task = loop.create_task(test())
+        task = loop.create_task(main())
         loop.run_forever()
     except KeyboardInterrupt:
         print("Ctrl+C pressed stopping.....")

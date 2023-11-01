@@ -49,7 +49,7 @@ class FileSet:
         del self.Data[key]
         await self.save()
 
-    async def generate_uuid():
+    async def generate_uuid(self):
         uuid_bytes = bytearray(urandom.getrandbits(8) for _ in range(16))
         uuid_bytes[6] = (uuid_bytes[6] & 0x0F) | 0x40
         uuid_bytes[8] = (uuid_bytes[8] & 0x3F) | 0x80

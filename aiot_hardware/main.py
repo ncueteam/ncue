@@ -65,7 +65,8 @@ async def main_task():
             await screen.blank()
             await screen.drawSleepPage()
             await screen.displayTime()
-            await screen.text(64, 4, str(dht.hum)+" "+str(dht.temp))
+            await screen.text(64, 3, ir.result)
+            await screen.text(64, 5, str(dht.hum)+" "+str(dht.temp))
             await screen.show()
     else:
         await uasyncio.sleep_ms(2000)
