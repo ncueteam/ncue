@@ -16,6 +16,6 @@ class _MemberMangementDialogState extends State<MemberMangementDialog> {
   @override
   Widget build(BuildContext context) {
     //xxxxxx
-    return AlertDialog();
+    return const AlertDialog();
   }
 }
