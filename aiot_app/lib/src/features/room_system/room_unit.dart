@@ -17,6 +17,12 @@ class _RoomUnitState extends State<RoomUnit> {
   late RoomModel room;
   late List<UserModel> userModels;
 
+  late List<UserModel> tempMember;
+  late UserModel member;
+
+  String searchVal = '';
+  final TextEditingController _controller = TextEditingController();
+
   void getUsers() async {
     userModels = await UserModel().loadAll();
   }
@@ -25,12 +31,14 @@ class _RoomUnitState extends State<RoomUnit> {
   void initState() {
     getUsers();
     room = widget.roomData;
+
     // room.initialize();
     super.initState();
     setState(() {});
   }
 
   Future<void> showListDialog() async {
+    tempMember = userModels;
     // List<UserModel> roomMembers = room.members.map((id) {return await UserModel().fromID(id);}).toList();
     return showDialog(
       context: context,
@@ -46,42 +54,68 @@ class _RoomUnitState extends State<RoomUnit> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10), color: Colors.white),
             child: TextField(
-              //controller: _controller,
-              //focusNode: _focusNode,
-              //autofocus: true,
-              decoration: InputDecoration(
-                hintText: "搜尋成員",
-                hintStyle: const TextStyle(color: Colors.grey),
-                border: InputBorder.none,
-                icon: Padding(
-                    padding: const EdgeInsets.only(left: 0, top: 0),
-                    child: Icon(
-                      Icons.search,
-                      size: 18,
-                      color: Theme.of(context).primaryColor,
-                    )),
-              ),
-            ),
+                style: TextStyle(color: Theme.of(context).primaryColor),
+                controller: _controller,
+                decoration: InputDecoration(
+                  hintText: "搜尋成員",
+                  hintStyle: const TextStyle(color: Colors.grey),
+                  border: InputBorder.none,
+                  icon: Padding(
+                      padding: const EdgeInsets.only(left: 0, top: 0),
+                      child: Icon(
+                        Icons.search,
+                        size: 18,
+                        color: Theme.of(context).primaryColor,
+                      )),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    searchVal = value;
+                    if (value == "") {
+                      tempMember = userModels;
+                    } else {
+                      tempMember = [];
+                      //debugPrint(userModels.length.toString());
+                      for (int i = 0; i < userModels.length; i++) {
+                        //debugPrint(userModels[i].name);
+                        if (userModels[i].name == value) {
+                          tempMember.add(userModels[i]);
+                          debugPrint(tempMember[0].name);
+                        }
+                      }
+                    }
+                  });
+                  /*setState(() {
+                    tempMember;
+                  });*/
+
+                  debugPrint(tempMember.length.toString());
+                  debugPrint(searchVal);
+                }),
           ),
           content: SizedBox(
-            width: double.maxFinite,
-            child: ListView.builder(
-              itemCount: userModels.length,
-              itemBuilder: (BuildContext context, int index) {
-                UserModel member = userModels[index];
-                return ListTile(
-                  leading: const CircleAvatar(child: Icon(Icons.people)),
-                  title: Text(member.name),
-                  trailing: ElevatedButton(
-                    onPressed: () {
-                      setState(() {});
-                    },
-                    child: const Text("移除"),
-                  ),
-                );
-              },
-            ),
-          ),
+              width: double.maxFinite,
+              child: /*Builder(builder: (BuildContext context) {
+                return*/
+                  ListView.builder(
+                itemCount: tempMember.length,
+                itemBuilder: (BuildContext context, int index) {
+                  //UserModel member = tempMember[index];
+                  //UserModel member = userModels[index];
+                  //member = tempMember[index];
+                  //debugPrint(index.toString());
+                  return ListTile(
+                    leading: const CircleAvatar(child: Icon(Icons.people)),
+                    title: Text(tempMember[index].name),
+                    trailing: ElevatedButton(
+                      onPressed: () {
+                        setState(() {});
+                      },
+                      child: const Text("移除"),
+                    ),
+                  );
+                },
+              ) /*})*/),
         );
       },
     );
