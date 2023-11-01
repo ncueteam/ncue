@@ -6,6 +6,7 @@ import connection
 import dht11
 import ir_system
 import web_api
+import ujson
 from file_system import FileSet
 from umqtt.simple import MQTTClient
 from umqtt.aiot import AIOT
@@ -19,7 +20,7 @@ restart_main_task = False
 #紅外線數值
 ir = ir_system.IR_IN()
 #OLED顯示器
-screen = oled.OLED("X")
+screen = oled.OLED()
 # DHT11
 dht = dht11.Sensor()
 # 檔案系統
@@ -53,21 +54,18 @@ async def main_task():
         await screen.show()
         await dht_mqtt.connect()
         while True:
-            print(ir.result)
-            await web_api.send_ir_data(device_uuid, ir.result)
+#             await web_api.send_ir_data(uuid, ir.result)
             await dht_mqtt.wait()
             # DHT
             await dht.wait()
             await dht.detect()
-            value = await dht.getMQTTMessage()
-            await dht_mqtt.routine(value)
-            await DB2.create("degree",value)
-            await web_api.sendDHTData(device_uuid, value.split(" ")[0], value.split(" ")[1])
+            await dht_mqtt.routine(ujson.dumps({"uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
+#             await web_api.sendDHTData(uuid, str(dht.hum), str(dht.temp))
             # OLED
             await screen.blank()
             await screen.drawSleepPage()
             await screen.displayTime()
-            await screen.text(64, 4, dht_mqtt.received)
+            await screen.text(64, 4, str(dht.hum)+" "+str(dht.temp))
             await screen.show()
     else:
         await uasyncio.sleep_ms(2000)

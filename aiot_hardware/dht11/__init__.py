@@ -17,6 +17,9 @@ class Sensor():
             self.hum = self.sensor.humidity()
             self.temp = self.sensor.temperature()
 
+    def getJson(self):
+        return {"humidity":self.hum,"temperature":self.temp}
+
     async def wait(self):
         self.cycle += 1
         if (self.cycle  >= MAX_CYCLE):

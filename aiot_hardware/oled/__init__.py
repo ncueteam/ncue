@@ -8,7 +8,7 @@ SH1106 = sh1106.SH1106_I2C(128, 64, I2C)
 
 class OLED():
     
-    def __init__(self, screen_set) -> None:
+    def __init__(self) -> None:
         self.screen = SH1106
         self.x = 0
         self.y = 0
@@ -79,7 +79,7 @@ class OLED():
         self.screen.show()
 
 def test():
-    screen = OLED("test")
+    screen = OLED()
     loop = uasyncio.get_event_loop()
     async def main_task():
         await screen.blank()
