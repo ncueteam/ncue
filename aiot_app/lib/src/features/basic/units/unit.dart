@@ -67,7 +67,11 @@ class _UnitState extends State<Unit> {
         }
       case "mqtt":
         {
-          return const MqttUnit();
+          if (item.data.isNotEmpty && item.data[0] is String) {
+            return MqttUnit(uuid: item.data[0]);
+          } else {
+            return const MqttUnit();
+          }
         }
       case "route":
         {

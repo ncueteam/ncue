@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/mqtt_service.dart';
 
 class MqttUnit extends StatefulWidget {
-  const MqttUnit({super.key});
+  final String uuid;
+  const MqttUnit({super.key, this.uuid = ""});
   @override
   State<MqttUnit> createState() => _MqttUnitState();
 }
 
 class _MqttUnitState extends State<MqttUnit> {
-  MQTTService mqttService = MQTTService("ncue_app");
+  late MQTTService mqttService;
 
   TextEditingController messageToSend = TextEditingController();
   FocusNode textFocus = FocusNode();
@@ -16,6 +17,7 @@ class _MqttUnitState extends State<MqttUnit> {
   @override
   void initState() {
     super.initState();
+    mqttService = MQTTService("AIOT_113/${widget.uuid}");
     textFocus.addListener(() {
       if (textFocus.hasFocus) {
         setState(() {});

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/mqtt_service.dart';
@@ -13,9 +15,15 @@ class Dht11Unit extends StatefulWidget {
 class _Dht11UnitState extends State<Dht11Unit> {
   late MQTTService mqtt;
 
-  late List<String> mqttDataArray = ["??", "??"];
+  late String uuid = "??";
+  late String temperature = "??";
+  late String humidity = "??";
+
   void setReceivedText() {
-    mqttDataArray = mqtt.value.split(" ");
+    Map<String, dynamic> mqttData = json.decode(mqtt.value);
+    uuid = mqttData["uuid"].toString();
+    temperature = mqttData["temperature"].toString();
+    humidity = mqttData["humidity"].toString();
     setState(() {});
   }
 
@@ -23,8 +31,14 @@ class _Dht11UnitState extends State<Dht11Unit> {
   void initState() {
     super.initState();
     // mqtt = MQTTService('AIOT_113/${widget.uuid}-dht11');
-    mqtt = MQTTService('AIOT_113/8458774c-3a09-40ab-bb61-c4f541a29d84_dht11');
+    mqtt = MQTTService('AIOT_113/${widget.uuid}_dht11');
     mqtt.callback = () => setReceivedText();
+  }
+
+  @override
+  void dispose() {
+    mqtt.port.disconnect();
+    super.dispose();
   }
 
   Widget sensorWidget(String lottieAsset, String title, String value) {
@@ -68,10 +82,10 @@ class _Dht11UnitState extends State<Dht11Unit> {
       subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          sensorWidget('assets/lottie/LightRain.json', 'humidity',
-              "${mqttDataArray[0]}%"),
           sensorWidget(
-              'assets/lottie/day.json', 'Temperature', "${mqttDataArray[1]}°C"),
+              'assets/lottie/LightRain.json', 'humidity', "$humidity%"),
+          sensorWidget(
+              'assets/lottie/day.json', 'Temperature', "$temperature°C"),
         ],
       ),
     );

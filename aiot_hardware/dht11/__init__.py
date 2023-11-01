@@ -1,6 +1,6 @@
 import dht
 import machine
-MAX_CYCLE = 100
+MAX_CYCLE = 32
 DEFAULT_PIN = 14
 
 class Sensor():
