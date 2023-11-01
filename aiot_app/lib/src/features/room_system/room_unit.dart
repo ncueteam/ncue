@@ -47,59 +47,56 @@ class _RoomUnitState extends State<RoomUnit> {
       context: context,
       builder: (BuildContext context) {
         room.initialize();
-        return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-          return AlertDialog(
-            icon: const Text("管理房間成員"),
-            title: Container(
+        return AlertDialog(
+          icon: const Text("管理房間成員"),
+          title: Container(
+            width: double.maxFinite,
+            height: 40,
+            padding: const EdgeInsets.only(left: 20),
+            alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10), color: Colors.white),
+            child: TextField(
+                style: TextStyle(color: Theme.of(context).primaryColor),
+                controller: searchBar,
+                decoration: InputDecoration(
+                  hintText: "搜尋成員",
+                  hintStyle: const TextStyle(color: Colors.grey),
+                  border: InputBorder.none,
+                  icon: Padding(
+                      padding: const EdgeInsets.only(left: 0, top: 0),
+                      child: Icon(
+                        Icons.search,
+                        size: 18,
+                        color: Theme.of(context).primaryColor,
+                      )),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    Navigator.of(context).pop();
+                    showListDialog();
+                  });
+                }),
+          ),
+          content: SizedBox(
               width: double.maxFinite,
-              height: 40,
-              padding: const EdgeInsets.only(left: 20),
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.white),
-              child: TextField(
-                  style: TextStyle(color: Theme.of(context).primaryColor),
-                  controller: searchBar,
-                  decoration: InputDecoration(
-                    hintText: "搜尋成員",
-                    hintStyle: const TextStyle(color: Colors.grey),
-                    border: InputBorder.none,
-                    icon: Padding(
-                        padding: const EdgeInsets.only(left: 0, top: 0),
-                        child: Icon(
-                          Icons.search,
-                          size: 18,
-                          color: Theme.of(context).primaryColor,
-                        )),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      Navigator.of(context).pop();
-                      showListDialog();
-                    });
-                  }),
-            ),
-            content: SizedBox(
-                width: double.maxFinite,
-                child: ListView.builder(
-                  itemCount: temp.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    UserModel member = temp[index];
-                    return ListTile(
-                      leading: const CircleAvatar(child: Icon(Icons.people)),
-                      title: Text(member.name),
-                      trailing: ElevatedButton(
-                        onPressed: () {
-                          setState(() {});
-                        },
-                        child: const Text("移除"),
-                      ),
-                    );
-                  },
-                )),
-          );
-        });
+              child: ListView.builder(
+                itemCount: temp.length,
+                itemBuilder: (BuildContext context, int index) {
+                  UserModel member = temp[index];
+                  return ListTile(
+                    leading: const CircleAvatar(child: Icon(Icons.people)),
+                    title: Text(member.name),
+                    trailing: ElevatedButton(
+                      onPressed: () {
+                        setState(() {});
+                      },
+                      child: const Text("移除"),
+                    ),
+                  );
+                },
+              )),
+        );
       },
     );
   }
