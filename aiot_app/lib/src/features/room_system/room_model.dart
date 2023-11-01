@@ -93,7 +93,7 @@ class RoomModel {
         uuid = result['uuid'];
         description = result['description'];
         imagePath = result['imagePath'];
-        debugData();
+        // debugData();
         return this;
       }
     }

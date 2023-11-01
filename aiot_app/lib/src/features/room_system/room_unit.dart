@@ -16,12 +16,7 @@ class RoomUnit extends StatefulWidget {
 class _RoomUnitState extends State<RoomUnit> {
   late RoomModel room;
   late List<UserModel> userModels;
-
-  late List<UserModel> tempMember;
-  late UserModel member;
-
-  String searchVal = '';
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController searchBar = TextEditingController();
 
   void getUsers() async {
     userModels = await UserModel().loadAll();
@@ -38,85 +33,73 @@ class _RoomUnitState extends State<RoomUnit> {
   }
 
   Future<void> showListDialog() async {
-    tempMember = userModels;
     // List<UserModel> roomMembers = room.members.map((id) {return await UserModel().fromID(id);}).toList();
+    List<UserModel> temp = [];
+
+    for (UserModel user in userModels) {
+      if (user.name.contains(searchBar.text)) {
+        temp.add(user);
+        user.debugData();
+      }
+    }
+
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         room.initialize();
-        return AlertDialog(
-          icon: const Text("管理房間成員"),
-          title: Container(
-            width: double.maxFinite,
-            height: 40,
-            padding: const EdgeInsets.only(left: 20),
-            alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), color: Colors.white),
-            child: TextField(
-                style: TextStyle(color: Theme.of(context).primaryColor),
-                controller: _controller,
-                decoration: InputDecoration(
-                  hintText: "搜尋成員",
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
-                  icon: Padding(
-                      padding: const EdgeInsets.only(left: 0, top: 0),
-                      child: Icon(
-                        Icons.search,
-                        size: 18,
-                        color: Theme.of(context).primaryColor,
-                      )),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    searchVal = value;
-                    if (value == "") {
-                      tempMember = userModels;
-                    } else {
-                      tempMember = [];
-                      //debugPrint(userModels.length.toString());
-                      for (int i = 0; i < userModels.length; i++) {
-                        //debugPrint(userModels[i].name);
-                        if (userModels[i].name == value) {
-                          tempMember.add(userModels[i]);
-                          debugPrint(tempMember[0].name);
-                        }
-                      }
-                    }
-                  });
-                  /*setState(() {
-                    tempMember;
-                  });*/
-
-                  debugPrint(tempMember.length.toString());
-                  debugPrint(searchVal);
-                }),
-          ),
-          content: SizedBox(
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            icon: const Text("管理房間成員"),
+            title: Container(
               width: double.maxFinite,
-              child: /*Builder(builder: (BuildContext context) {
-                return*/
-                  ListView.builder(
-                itemCount: tempMember.length,
-                itemBuilder: (BuildContext context, int index) {
-                  //UserModel member = tempMember[index];
-                  //UserModel member = userModels[index];
-                  //member = tempMember[index];
-                  //debugPrint(index.toString());
-                  return ListTile(
-                    leading: const CircleAvatar(child: Icon(Icons.people)),
-                    title: Text(tempMember[index].name),
-                    trailing: ElevatedButton(
-                      onPressed: () {
-                        setState(() {});
-                      },
-                      child: const Text("移除"),
-                    ),
-                  );
-                },
-              ) /*})*/),
-        );
+              height: 40,
+              padding: const EdgeInsets.only(left: 20),
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.white),
+              child: TextField(
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                  controller: searchBar,
+                  decoration: InputDecoration(
+                    hintText: "搜尋成員",
+                    hintStyle: const TextStyle(color: Colors.grey),
+                    border: InputBorder.none,
+                    icon: Padding(
+                        padding: const EdgeInsets.only(left: 0, top: 0),
+                        child: Icon(
+                          Icons.search,
+                          size: 18,
+                          color: Theme.of(context).primaryColor,
+                        )),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      Navigator.of(context).pop();
+                      showListDialog();
+                    });
+                  }),
+            ),
+            content: SizedBox(
+                width: double.maxFinite,
+                child: ListView.builder(
+                  itemCount: temp.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    UserModel member = temp[index];
+                    return ListTile(
+                      leading: const CircleAvatar(child: Icon(Icons.people)),
+                      title: Text(member.name),
+                      trailing: ElevatedButton(
+                        onPressed: () {
+                          setState(() {});
+                        },
+                        child: const Text("移除"),
+                      ),
+                    );
+                  },
+                )),
+          );
+        });
       },
     );
   }
