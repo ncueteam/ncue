@@ -88,7 +88,7 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                   child: ElevatedButton(
                     onPressed: () {
                       mqttService.send(
-                          "{'from':phone',type':'ir_tx','data':'${button[keys[index]]!}','uuid':'$id'}");
+                          '{"from":"phone","type":"ir_tx","data":"${button[keys[index]]!}","uuid":"$id"}');
                     },
                     child: FittedBox(
                       fit: BoxFit.fitHeight,

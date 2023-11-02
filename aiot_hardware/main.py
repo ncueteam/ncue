@@ -80,7 +80,7 @@ async def main_task():
             await screen.text(64, 3, ir.result)
             await screen.text(64, 5, str(dht.hum)+" "+str(dht.temp))
             await screen.show()
-            await ir.send("0x02")
+#             await ir.send("0x02")
             await uasyncio.sleep_ms(100)
     else:
         await uasyncio.sleep_ms(2000)
