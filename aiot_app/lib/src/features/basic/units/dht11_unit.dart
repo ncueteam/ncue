@@ -18,20 +18,24 @@ class _Dht11UnitState extends State<Dht11Unit> {
   late String uuid = "??";
   late String temperature = "??";
   late String humidity = "??";
+  late String type = "??";
 
   void setReceivedText() {
     Map<String, dynamic> mqttData = json.decode(mqtt.value);
-    uuid = mqttData["uuid"].toString();
-    temperature = mqttData["temperature"].toString();
-    humidity = mqttData["humidity"].toString();
-    setState(() {});
+    type = mqttData["type"].toString();
+    if (type == "dht11") {
+      uuid = mqttData["uuid"].toString();
+      temperature = mqttData["temperature"].toString();
+      humidity = mqttData["humidity"].toString();
+      setState(() {});
+    }
   }
 
   @override
   void initState() {
     super.initState();
     // mqtt = MQTTService('AIOT_113/${widget.uuid}-dht11');
-    mqtt = MQTTService('AIOT_113/${widget.uuid}_dht11');
+    mqtt = MQTTService('AIOT_113/${widget.uuid}');
     mqtt.callback = () => setReceivedText();
   }
 
