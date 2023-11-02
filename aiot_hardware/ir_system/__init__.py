@@ -27,11 +27,11 @@ class IR_IN():
     
     async def send(self,msg):
         self.sendor.transmit(0x0000, int(str(msg, 'UTF-8')))
-    
+        print("msg:"+msg)
     def callback(self,data, addr, ctrl):
         if (self.onReceived != None):
             self.onReceived
-        if data > 0:
+        if data >=0:
             self.result = 'Data {:02x} Addr {:04x}'.format(data, addr)
             print('Data {:02x} Addr {:04x}'.format(data, addr))
     
@@ -53,7 +53,8 @@ def test():
             await screen.centerText(count,"#")
             await screen.centerText(3,temp.result)
             await screen.show()
-#             await uasyncio.sleep_ms(100)
+            await temp.send("0x02")
+            await uasyncio.sleep_ms(100)
     try:
         task = loop.create_task(main())
         loop.run_forever()

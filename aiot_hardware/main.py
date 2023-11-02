@@ -48,6 +48,7 @@ async def main_task():
     if (is_connected):
         # MQTT
         dht_mqtt = AIOT(uuid+"_dht11")
+        ir_tx_mqtt = AIOT(uuid+"_ir_tx")
         await screen.blank()
         await screen.text(0, 2, "Connecting")
         await screen.text(0, 4, "MQTT dht11")
@@ -56,6 +57,10 @@ async def main_task():
         while True:
 #             await web_api.send_ir_data(uuid, ir.result)
             await dht_mqtt.wait()
+            await ir_tx_mqtt.wait()
+            # ir_tx
+            if ir_tx_mqtt.received != "none":
+                ir.send(ir_tx_mqtt.received)
             # DHT
             await dht.wait()
             await dht.detect()

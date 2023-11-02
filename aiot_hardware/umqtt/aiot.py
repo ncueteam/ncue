@@ -10,7 +10,7 @@ class AIOT():
             keepalive=MAX_CYCLE*2,
             server="test.mosquitto.org",
             ssl=False)
-        self.received = "not yet!"
+        self.received = "none"
     
     async def connect(self):
         try:
