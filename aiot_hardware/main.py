@@ -47,7 +47,7 @@ async def main_task():
     is_connected = await net.setUp()
     if (is_connected):
         # MQTT
-        dht_mqtt = AIOT(uuid)
+        dht_mqtt = AIOT("services")
         await screen.blank()
         await screen.text(0, 2, "Connecting")
         await screen.text(0, 4, "MQTT dht11")
@@ -59,18 +59,19 @@ async def main_task():
             await dht_mqtt.wait()
             # ir_tx
             try :
-                if (ujson.loads(dht_mqtt.received))["type"] == "ir_tx":
-                    ir.send((ujson.loads(dht_mqtt.received))["data"])
-                    dht_mqtt.received = ""
-                    print("t1")
-                else:
-                    print("t2")
+                rdata = ujson.loads(dht_mqtt.received)
+                if rdata["from"] == "phone":
+                    print(rdata["type"])
+                    if rdata["type"] == "ir_tx":
+                        ir.send(rdata["data"])
+                        dht_mqtt.received = ""
+                        print("t1")    
             except:
                 dht_mqtt.received = ""
             # DHT
             await dht.wait()
             await dht.detect()
-            await dht_mqtt.routine(ujson.dumps({"type":"dht11","uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
+            await dht_mqtt.routine(ujson.dumps({"from":"device","type":"dht11","uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
 #             await web_api.sendDHTData(uuid, str(dht.hum), str(dht.temp))
             # OLED
             await screen.blank()
