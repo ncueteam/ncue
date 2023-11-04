@@ -105,11 +105,9 @@ class _RoomUnitState extends State<RoomUnit> {
   Widget build(BuildContext context) {
     return ListTile(
       isThreeLine: true,
-      title: Text(room.name),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("房間主人:${room.owner.displayName}"),
           Container(
             padding: const EdgeInsets.all(20.0),
             decoration: BoxDecoration(
@@ -118,11 +116,22 @@ class _RoomUnitState extends State<RoomUnit> {
             child: Image.asset(room.imagePath),
           ),
           Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0 / 4),
-              child: Text(room.name, style: const TextStyle(fontSize: 20))),
-          Text(
-            room.description,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20 / 4),
+                    child:
+                        Text(room.name, style: const TextStyle(fontSize: 20))),
+                Text("房間主人:${room.owner.displayName}"),
+                Text(
+                  room.description,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(7.0),

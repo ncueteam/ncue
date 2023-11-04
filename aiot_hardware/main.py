@@ -60,7 +60,9 @@ async def main_task():
             # ir_tx
             try :
                 rdata = ujson.loads(dht_mqtt.received)
-                if rdata["from"] == "phone":
+                if rdata["from"] == "app":
+                    print(rdata)
+                    print("===================================")
                     print(rdata["type"])
                     if rdata["type"] == "ir_tx":
                         ir.send(rdata["data"])
@@ -80,7 +82,7 @@ async def main_task():
             await screen.text(64, 3, ir.result)
             await screen.text(64, 5, str(dht.hum)+" "+str(dht.temp))
             await screen.show()
-#             await ir.send("0x02")
+            await ir.send("0xff")
             await uasyncio.sleep_ms(100)
     else:
         await uasyncio.sleep_ms(2000)

@@ -172,7 +172,8 @@ class MQTTClient:
             if res is None:
                 return None
             if res == b"":
-                print(res)
+                pass
+#                 print(res)
 #                 raise OSError(-1)
             if res == b"\xd0":  # PINGRESP
                 sz = self.sock.read(1)[0]

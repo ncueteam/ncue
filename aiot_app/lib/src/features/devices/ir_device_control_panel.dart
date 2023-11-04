@@ -16,7 +16,10 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
 
   @override
   void initState() {
-    mqttService = MQTTService("AIOT_113/$id");
+    mqttService = MQTTService("AIOT_113/services");
+    mqttService.callback = () {
+      debugPrint("received: ${mqttService.value}");
+    };
     super.initState();
   }
 
@@ -88,7 +91,7 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                   child: ElevatedButton(
                     onPressed: () {
                       mqttService.send(
-                          '{"from":"phone","type":"ir_tx","data":"${button[keys[index]]!}","uuid":"$id"}');
+                          '{"from":"app","type":"ir_tx","data":"${button[keys[index]]!}","uuid":"$id"}');
                     },
                     child: FittedBox(
                       fit: BoxFit.fitHeight,
