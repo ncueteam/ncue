@@ -55,7 +55,10 @@ async def main_task():
         await dht_mqtt.connect()
         
         while True:
-            await web_api.send_ir_data(uuid, ir.result)
+            #紅外線
+            if(ir.result != "no data"):
+                await web_api.send_ir_data(uuid, ir.result)
+                ir.result = "no data"
             await dht_mqtt.wait()
             # ir_tx
             try :
@@ -75,7 +78,7 @@ async def main_task():
             await dht.detect()
             await dht_mqtt.routine(ujson.dumps({"from":"device","type":"dht11","uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
             #DHT_API
-            await web_api.sendDHTData(uuid, str(dht.hum), str(dht.temp))
+#             await web_api.sendDHTData(uuid, str(dht.hum), str(dht.temp))
             # OLED
             await screen.blank()
             await screen.drawSleepPage()
