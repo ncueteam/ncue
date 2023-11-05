@@ -55,10 +55,7 @@ async def main_task():
         await dht_mqtt.connect()
         
         while True:
-            #紅外線
-            if(ir.result != "no data"):
-                await web_api.send_ir_data(uuid, ir.result)
-                ir.result = "no data"
+#             await web_api.send_ir_data(uuid, ir.result)
             await dht_mqtt.wait()
             # ir_tx
             try :
