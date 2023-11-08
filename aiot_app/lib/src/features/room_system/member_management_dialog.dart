@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
 
@@ -29,8 +27,12 @@ class _MemberManagementDialogState extends State<MemberManagementDialog> {
 
     for (UserModel user in widget.userModels) {
       if (user.name.contains(searchBar.text)) {
-        temp.add(user);
-        user.debugData();
+        if (widget.room.members.contains(user.name) == true) {
+          temp.add(user);
+        } else {
+          temp.insert(0, user);
+          //debugPrint(temp[0].name);
+        }
       }
     }
 
@@ -61,9 +63,9 @@ class _MemberManagementDialogState extends State<MemberManagementDialog> {
             onChanged: (value) {
               setState(() {
                 debugPrint(searchBar.text);
-                for (UserModel user in temp) {
+                /*for (UserModel user in temp) {
                   debugPrint(user.name);
-                }
+                }*/
               });
             }),
       ),
@@ -76,16 +78,28 @@ class _MemberManagementDialogState extends State<MemberManagementDialog> {
               return ListTile(
                   leading: const CircleAvatar(child: Icon(Icons.people)),
                   title: Text(member.name),
-                  trailing: member.name == widget.room.owner.email
+                  trailing: widget.room.members.contains(member.name)
                       ? ElevatedButton(
                           onPressed: () {
-                            setState(() {});
+                            setState(() {
+                              widget.room.members.remove(member.name);
+                              widget.room.update();
+                              for (String name in widget.room.members) {
+                                debugPrint(name);
+                              }
+                            });
                           },
                           child: const Text("移除"),
                         )
                       : ElevatedButton(
                           onPressed: () {
-                            setState(() {});
+                            setState(() {
+                              widget.room.members.add(member.name);
+                              widget.room.update();
+                              for (String name in widget.room.members) {
+                                debugPrint(name);
+                              }
+                            });
                           },
                           child: const Text("增加"),
                         ));
