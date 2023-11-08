@@ -33,6 +33,10 @@ class RoomModel {
     initialize();
   }
 
+  RoomModel self() {
+    return this;
+  }
+
   Future<void> initialize() async {
     owner = (await RouteView.getUser())!;
   }
@@ -67,12 +71,12 @@ class RoomModel {
     }
   }
 
-  Future<RoomModel> getRoomFromUuid(String uuid) async {
+  Future<RoomModel> getRoomFromUuid(String roomID) async {
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection('rooms').get();
     for (QueryDocumentSnapshot document in querySnapshot.docs) {
       Map<String, dynamic> result = document.data() as Map<String, dynamic>;
-      if (result['uuid'] == uuid) {
+      if (result['uuid'] == roomID) {
         List<dynamic> memberData = result['members'];
         if (memberData.isNotEmpty) {
           members = memberData.map((item) => item.toString()).toList();

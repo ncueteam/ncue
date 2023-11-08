@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit.dart';
-import 'package:ncue.aiot_app/src/features/devices/add_device_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 
@@ -29,16 +28,8 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
           room.devices.map((e) {
             return e.toDataItem();
           }).toList(),
-          name: "房間內裝置 from devices"));
-      items.add(DataItem(
-          "addDevice",
-          [
-            AddDeviceView(
-              roomID: room.uuid,
-            ),
-            RouteView.model
-          ],
-          name: "註冊裝置"));
+          name: "房間內裝置"));
+      items.add(DataItem("addDevice", [room], name: "註冊裝置"));
       return Scaffold(
         appBar: AppBar(
           title: FittedBox(

@@ -101,8 +101,9 @@ class _UnitState extends State<Unit> {
         }
       case "addDevice":
         {
-          if (item.data.elementAt(0) is AddDeviceView) {
-            AddDeviceView view = item.data.elementAt(0);
+          if (item.data.elementAt(0) is RoomModel) {
+            AddDeviceView view =
+                AddDeviceView(roomData: item.data.elementAt(0));
             return ListTile(
                 key: ValueKey(item),
                 isThreeLine: true,
@@ -110,16 +111,13 @@ class _UnitState extends State<Unit> {
                 subtitle: Text(view.routeName),
                 leading: Icon(view.routeIcon),
                 onTap: () {
-                  Navigator.pushNamed(context, view.routeName, arguments: {
-                    "user": RouteView.model,
-                    "roomID": view.roomID
-                  });
+                  Navigator.pushNamed(context, view.routeName,
+                      arguments: {"roomData": item.data.elementAt(0)});
                 });
+          } else {
+            debugPrint("item.data.elementAt(0) is not roomModel");
+            return Container();
           }
-          return ListTile(
-            key: ValueKey(item),
-            title: const Text("load addDevice unit failed!"),
-          );
         }
       case "addRoom":
         {
