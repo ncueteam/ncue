@@ -7,8 +7,8 @@ import '../basic/views/route_view.dart';
 import 'device_service.dart';
 
 class AddDeviceView extends RouteView {
-  final String roomID;
-  const AddDeviceView({super.key, required this.roomID})
+  final RoomModel roomData;
+  const AddDeviceView({super.key, required this.roomData})
       : super(routeName: "/add-device-page", routeIcon: Icons.add_box);
   @override
   State<AddDeviceView> createState() => AddDeviceViewState();
@@ -32,7 +32,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
 
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
-      final String roomID = arguments['roomID'];
+      final RoomModel roomData = arguments['roomData'];
       return Scaffold(
         appBar: AppBar(
           title: const Text("裝置註冊頁面"),
@@ -44,11 +44,23 @@ class AddDeviceViewState extends State<AddDeviceView> {
             Row(
               children: [
                 const Text(
+                  "房間名稱 ",
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  roomData.name,
+                  style: const TextStyle(fontSize: 15),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Text(
                   "房間ID  ",
                   style: TextStyle(fontSize: 16),
                 ),
                 Text(
-                  roomID,
+                  roomData.uuid,
                   style: const TextStyle(fontSize: 15),
                 ),
               ],
@@ -135,15 +147,13 @@ class AddDeviceViewState extends State<AddDeviceView> {
             ),
             IconButton(
                 onPressed: () async {
-                  RoomModel roomModel =
-                      await RoomModel().getRoomFromUuid(roomID);
-                  roomModel.devices
+                  roomData.devices
                       .add(await DeviceService().getDeviceFromUuid(deviceUUID));
-                  await roomModel.update();
-                  DeviceService().addDevice(deviceUUID, deviceType,
-                      deviceName.text, deviceIconPath, false, 28.0);
-                  // ignore: use_build_context_synchronously
-                  Navigator.pop(context, true);
+                  await roomData.update();
+                  await DeviceService()
+                      .addDevice(deviceUUID, deviceType, deviceName.text,
+                          deviceIconPath, false, 28.0)
+                      .then((value) => Navigator.pop(context, true));
                 },
                 icon: const Icon(Icons.add)),
           ]),
@@ -165,7 +175,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
         leading: Icon(widget.routeIcon),
         onTap: () {
           Navigator.pushNamed(context, widget.routeName,
-              arguments: {"user": RouteView.model, "roomID": widget.roomID});
+              arguments: {"roomData": widget.roomData});
         });
   }
 
@@ -174,7 +184,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
         "addDevice",
         [
           AddDeviceView(
-            roomID: widget.roomID,
+            roomData: widget.roomData,
           ),
           RouteView.model
         ],

@@ -8,6 +8,7 @@ import 'package:ncue.aiot_app/src/features/room_system/add_room_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
+import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 
 import '../../auth_system/password_reset_view.dart';
 import '../../auth_system/phone_input_view.dart';
@@ -87,24 +88,24 @@ abstract class RouteView extends StatefulWidget {
     return items;
   }
 
-  static List<RouteView> pages = const [
-    Home(),
-    SignInView(),
-    ProfileView(),
-    DeviceDetailsView(),
-    PasswordResetView(),
-    PhoneView(),
-    SmsView(),
-    BluetoothView(),
-    SettingsView(),
+  static List<RouteView> pages = [
+    const Home(),
+    const SignInView(),
+    const ProfileView(),
+    const DeviceDetailsView(),
+    const PasswordResetView(),
+    const PhoneView(),
+    const SmsView(),
+    const BluetoothView(),
+    const SettingsView(),
     AddDeviceView(
-      roomID: '????',
+      roomData: RoomModel().self(),
     ),
-    IRDeviceControlPanel(),
-    NotifyView(),
-    RoomListView(),
-    RoomDetailsView(),
-    AddRoomView(),
-    ACPanel(),
+    const IRDeviceControlPanel(),
+    const NotifyView(),
+    const RoomListView(),
+    const RoomDetailsView(),
+    const AddRoomView(),
+    const ACPanel(),
   ];
 }
