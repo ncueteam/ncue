@@ -11,12 +11,12 @@ class IRDeviceControlPanel extends RouteView {
 }
 
 class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
-  String id = "8458774c-3a09-40ab-bb61-c4f541a29d84";
+  String id = "209586a7-61af-44a5-87e8-485fb1ff47c0";
   late MQTTService mqttService;
 
   @override
   void initState() {
-    mqttService = MQTTService("AIOT_113/$id");
+    mqttService = MQTTService("AIOT_113/services");
     super.initState();
   }
 
@@ -33,7 +33,7 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
     "head": "0x0c",
     "mode": "0x04",
   };
-  String protoco = "NEC8";
+  String protoco = "NEC16";
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +88,9 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                   child: ElevatedButton(
                     onPressed: () {
                       mqttService.send(
-                          "{'from':phone',type':'ir_tx','data':'${button[keys[index]]!}','uuid':'$id'}");
+                          '{"from":"phone", "type":"ir_tx","data":"${button[keys[index]]!}","uuid":"$id"}'
+                      );
+                      //mqttService.send("0x0e");
                     },
                     child: FittedBox(
                       fit: BoxFit.fitHeight,
