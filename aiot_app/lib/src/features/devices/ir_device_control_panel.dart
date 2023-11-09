@@ -17,6 +17,10 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
   @override
   void initState() {
     mqttService = MQTTService("NCUEMQTT");
+<<<<<<< HEAD
+=======
+
+>>>>>>> 849b71d24001c218c6d9c347b78b23bb53bec424
     super.initState();
   }
 
@@ -88,7 +92,9 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                   child: ElevatedButton(
                     onPressed: () {
                       mqttService.send(
-                          "{'from':phone',type':'ir_tx','data':'${button[keys[index]]!}','uuid':'$id'}");
+                          //'{"from":"phone", "type":"ir_tx","data":"${button[keys[index]]!}","uuid":"$id"}'
+                          "000");
+                      //mqttService.send("0x0e");
                     },
                     child: FittedBox(
                       fit: BoxFit.fitHeight,
