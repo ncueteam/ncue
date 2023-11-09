@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
+import 'member_management_dialog.dart';
 
 class RoomUnit extends StatefulWidget {
   const RoomUnit({super.key, required this.roomData, required this.onChanged});
@@ -33,70 +34,13 @@ class _RoomUnitState extends State<RoomUnit> {
   }
 
   Future<void> showListDialog() async {
-    // List<UserModel> roomMembers = room.members.map((id) {return await UserModel().fromID(id);}).toList();
-    List<UserModel> temp = [];
-
-    for (UserModel user in userModels) {
-      if (user.name.contains(searchBar.text)) {
-        temp.add(user);
-        user.debugData();
-      }
-    }
+    //List<UserModel> roomMembers = room.members.map((id) {return await UserModel().fromID(id);}).toList();
 
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         room.initialize();
-        return AlertDialog(
-          icon: const Text("管理房間成員"),
-          title: Container(
-            width: double.maxFinite,
-            height: 40,
-            padding: const EdgeInsets.only(left: 20),
-            alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), color: Colors.white),
-            child: TextField(
-                style: TextStyle(color: Theme.of(context).primaryColor),
-                controller: searchBar,
-                decoration: InputDecoration(
-                  hintText: "搜尋成員",
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  border: InputBorder.none,
-                  icon: Padding(
-                      padding: const EdgeInsets.only(left: 0, top: 0),
-                      child: Icon(
-                        Icons.search,
-                        size: 18,
-                        color: Theme.of(context).primaryColor,
-                      )),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    Navigator.of(context).pop();
-                    showListDialog();
-                  });
-                }),
-          ),
-          content: SizedBox(
-              width: double.maxFinite,
-              child: ListView.builder(
-                itemCount: temp.length,
-                itemBuilder: (BuildContext context, int index) {
-                  UserModel member = temp[index];
-                  return ListTile(
-                    leading: const CircleAvatar(child: Icon(Icons.people)),
-                    title: Text(member.name),
-                    trailing: ElevatedButton(
-                      onPressed: () {
-                        setState(() {});
-                      },
-                      child: const Text("移除"),
-                    ),
-                  );
-                },
-              )),
-        );
+        return MemberManagementDialog(room: room, userModels: userModels);
       },
     );
   }
@@ -105,11 +49,9 @@ class _RoomUnitState extends State<RoomUnit> {
   Widget build(BuildContext context) {
     return ListTile(
       isThreeLine: true,
-      title: Text(room.name),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("房間主人:${room.owner.displayName}"),
           Container(
             padding: const EdgeInsets.all(20.0),
             decoration: BoxDecoration(
@@ -118,11 +60,22 @@ class _RoomUnitState extends State<RoomUnit> {
             child: Image.asset(room.imagePath),
           ),
           Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0 / 4),
-              child: Text(room.name, style: const TextStyle(fontSize: 20))),
-          Text(
-            room.description,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20 / 4),
+                    child:
+                        Text(room.name, style: const TextStyle(fontSize: 20))),
+                Text("房間主人:${room.owner.displayName}"),
+                Text(
+                  room.description,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(7.0),
