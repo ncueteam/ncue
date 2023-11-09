@@ -17,10 +17,6 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
   @override
   void initState() {
     mqttService = MQTTService("NCUEMQTT");
-<<<<<<< HEAD
-=======
-
->>>>>>> 849b71d24001c218c6d9c347b78b23bb53bec424
     super.initState();
   }
 
