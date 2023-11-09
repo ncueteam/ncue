@@ -8,7 +8,7 @@ class MQTTService {
   String topic = "AIOT_113";
   void Function() callback = () {};
   MQTTService(String mqttTopic) {
-    port = MqttServerClient('test.mosquitto.org', 'ncue_app');
+    port = MqttServerClient('test.mosquitto.org', 'client');
     port.disconnect();
     topic = mqttTopic;
     port.port = 1883;
@@ -17,7 +17,6 @@ class MQTTService {
     port.onConnected = () {
       debugPrint("topic:$topic");
       port.subscribe(topic, MqttQos.exactlyOnce);
-      debugPrint("topic: $topic");
       port.subscribe('receive_topic', MqttQos.exactlyOnce);
     };
     port.onDisconnected = () {};

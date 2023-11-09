@@ -90,7 +90,6 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                       mqttService.send(
                           //'{"from":"phone", "type":"ir_tx","data":"${button[keys[index]]!}","uuid":"$id"}'
                           "000");
-                      //mqttService.send("0x0e");
                     },
                     child: FittedBox(
                       fit: BoxFit.fitHeight,

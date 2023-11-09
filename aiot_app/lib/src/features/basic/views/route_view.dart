@@ -80,7 +80,7 @@ abstract class RouteView extends StatefulWidget {
           DataItem("route", [const ACPanel()], name: "冷氣遙控"),
           DataItem("route", [const RoomListView()], name: "房間列表"),
           DataItem("route", [const IRDeviceControlPanel()], name: "紅外線控制器"),
-          DataItem("dht11", ["8458774c-3a09-40ab-bb61-c4f541a29d84"]),
+          //DataItem("dht11", ["8458774c-3a09-40ab-bb61-c4f541a29d84"]),
           // DataItem("dht11", []),
           // DataItem("route", [const NotifyView()], "提醒列表"),
         ],

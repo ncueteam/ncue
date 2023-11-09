@@ -86,3 +86,11 @@
 | GND | GND |
 | SDA | GPIO21 |
 | SCL | GPIO22 |
+
+#### MQTT架構
+
+  ##### ESP32端 
+  
+  client id-->本身的MAC_服務名稱
+
+  toipc-->AIOT_113/
