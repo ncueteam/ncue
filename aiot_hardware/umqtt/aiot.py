@@ -6,7 +6,7 @@ class AIOT():
         self.cycle = 0
         self.topic = MAIN_TOPIC+"/"+subtopic
         self.client = MQTTClient(
-            client_id="client",
+            client_id="ncue_app",
             keepalive=MAX_CYCLE*2,
 #             server="test.mosquitto.org",
             server = "broker.MQTTGO.io",
