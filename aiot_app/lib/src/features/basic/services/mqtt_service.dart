@@ -16,6 +16,7 @@ class MQTTService {
     port.autoReconnect = true;
     port.onConnected = () {
       port.subscribe(topic, MqttQos.exactlyOnce);
+      debugPrint("topic: $topic");
       port.subscribe('receive_topic', MqttQos.exactlyOnce);
     };
     port.onDisconnected = () {};
@@ -43,7 +44,7 @@ class MQTTService {
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       builder.addString(message);
       port.publishMessage(topic, MqttQos.atMostOnce, builder.payload!);
-      debugPrint("Mqtt send:$message");
+      debugPrint("[$topic]send:$message");
     } else {
       debugPrint("not connected!");
       port.connect();
