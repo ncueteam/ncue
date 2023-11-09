@@ -8,8 +8,10 @@ class AIOT():
         self.client = MQTTClient(
             client_id="client",
             keepalive=MAX_CYCLE*2,
-            server="test.mosquitto.org",
-            ssl=False)
+#             server="test.mosquitto.org",
+            server = "broker.MQTTGO.io",
+            port=1883
+            )
         self.received = "none"
     
     async def connect(self):
@@ -18,11 +20,21 @@ class AIOT():
         except:
             return None
         def get_msg(topic, msg):
+            if msg == b'':
+                await self.disconnect()
+                await self.connect()
             self.received = msg
-#             print(msg)
+            #print(msg)
         self.client.set_callback(get_msg)
         self.client.subscribe(self.topic)
-
+        print("topic:"+self.topic)
+    
+    async def disconnect(self):
+        try:
+            self.client.disconnect()
+        except:
+            return None
+        
     async def wait(self):
         try:
             self.client.check_msg()

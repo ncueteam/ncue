@@ -5,7 +5,7 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 class MQTTService {
   late MqttServerClient port;
   String value = "";
-  String topic = "NCUEMQTT";
+  String topic = "AIOT_113";
   void Function() callback = () {};
   MQTTService(String mqttTopic) {
     port = MqttServerClient('test.mosquitto.org', 'ncue_app');
@@ -15,6 +15,7 @@ class MQTTService {
     port.logging(on: false);
     port.autoReconnect = true;
     port.onConnected = () {
+      debugPrint("topic:$topic");
       port.subscribe(topic, MqttQos.exactlyOnce);
       port.subscribe('receive_topic', MqttQos.exactlyOnce);
     };
