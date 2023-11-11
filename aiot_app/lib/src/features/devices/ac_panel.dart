@@ -3,7 +3,8 @@ import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/mqtt_service.dart';
 
 class ACPanel extends RouteView {
-  const ACPanel({super.key})
+  final String uuid;
+  const ACPanel({super.key, this.uuid = ""})
       : super(routeIcon: Icons.air, routeName: "/AC-panel");
 
   @override
@@ -11,7 +12,14 @@ class ACPanel extends RouteView {
 }
 
 class _ACPanelState extends State<ACPanel> {
-  MQTTService mqttService = MQTTService("NCUEMQTT/AC");
+  late MQTTService mqttService;
+
+  @override
+  void initState() {
+    mqttService = MQTTService("NCUEMQTT/${widget.uuid}");
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -3,7 +3,8 @@ import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/mqtt_service.dart';
 
 class IRDeviceControlPanel extends RouteView {
-  const IRDeviceControlPanel({super.key})
+  final String uuid;
+  const IRDeviceControlPanel({super.key, this.uuid = ""})
       : super(routeIcon: Icons.speaker_phone, routeName: "/ir-controll");
 
   @override
@@ -11,12 +12,11 @@ class IRDeviceControlPanel extends RouteView {
 }
 
 class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
-  String id = "209586a7-61af-44a5-87e8-485fb1ff47c0";
   late MQTTService mqttService;
 
   @override
   void initState() {
-    mqttService = MQTTService("AppSend");
+    mqttService = MQTTService('${widget.uuid}_AppSend');
     super.initState();
   }
 
@@ -27,6 +27,7 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
   }
 
   Map<String, String> button = {
+    "on/off": "0x00",
     "light": "0x02",
     "wave +": "0x0e",
     "wave -": "0x12",
@@ -88,8 +89,7 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                   child: ElevatedButton(
                     onPressed: () {
                       mqttService.send(
-                          '{"from":"phone", "type":"ir_tx","data":"${button[keys[index]]!}","uuid":"$id"}');
-                      //mqttService.send("0x0e");
+                          '{"type":"ir_tx","data":"${button[keys[index]]!}"}');
                     },
                     child: FittedBox(
                       fit: BoxFit.fitHeight,
