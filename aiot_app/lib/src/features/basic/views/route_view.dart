@@ -9,6 +9,7 @@ import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../auth_system/password_reset_view.dart';
 import '../../auth_system/phone_input_view.dart';
@@ -79,7 +80,14 @@ abstract class RouteView extends StatefulWidget {
         [
           DataItem("route", [const ACPanel()], name: "冷氣遙控"),
           DataItem("route", [const RoomListView()], name: "房間列表"),
-          DataItem("route", [const IRDeviceControlPanel()], name: "紅外線控制器"),
+          DataItem(
+              "route",
+              [
+                IRDeviceControlPanel(
+                  uuid: const Uuid().v1().toString(),
+                )
+              ],
+              name: "紅外線控制器"),
           //DataItem("dht11", ["8458774c-3a09-40ab-bb61-c4f541a29d84"]),
           // DataItem("dht11", []),
           // DataItem("route", [const NotifyView()], "提醒列表"),

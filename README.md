@@ -87,9 +87,17 @@
 | SDA | GPIO21 |
 | SCL | GPIO22 |
 
+#### DHT11 (溫溼度感測器) pinout
+
+| DHT11 | esp32 |
+|-|-|
+| VCC | 3.3v |
+| GND | GND |
+| DATA | GPIO14 |
+
 #### MQTT架構
 
-  ##### ESP32端 
+##### ESP32端
   
   client id-->本身的MAC_服務名稱
 

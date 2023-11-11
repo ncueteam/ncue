@@ -1,15 +1,18 @@
 from umqtt.simple import MQTTClient
+import machine
+import ubinascii
+
 MAX_CYCLE = 100
 MAIN_TOPIC="AIOT_113"
+
 class AIOT():
     def __init__(self,subtopic) -> None:
         self.cycle = 0
         self.topic = MAIN_TOPIC+"/"+subtopic
         self.client = MQTTClient(
-            client_id="ncue_app",
+            client_id=ubinascii.hexlify(machine.unique_id()),
             keepalive=MAX_CYCLE*2,
-#             server="test.mosquitto.org",
-            server = "broker.MQTTGO.io",
+            server = "test.mosquitto.org",
             port=1883
             )
         self.received = "none"
@@ -27,7 +30,6 @@ class AIOT():
             #print(msg)
         self.client.set_callback(get_msg)
         self.client.subscribe(self.topic)
-        print("topic:"+self.topic)
     
     async def disconnect(self):
         try:
@@ -56,7 +58,7 @@ def test():
     import uasyncio
     loop = uasyncio.get_event_loop()
     net = connection.Network()
-    port = AIOT("services")
+    port = AIOT("AIOT_113/AppSend")
     async def main_task():
         await net.setUp()
         await port.connect()

@@ -8,7 +8,9 @@ def sub_cb(topic,msg):
 def main():
     print("start!")
     from umqtt.simple import MQTTClient
-    mqClient0 = MQTTClient('esp32_0419', 'test.mosquitto.org')
+    import machine
+    import ubinascii
+    mqClient0 = MQTTClient(ubinascii.hexlify(machine.unique_id()), 'test.mosquitto.org')
     mqClient0.connect()
     mqClient0.set_callback(sub_cb)
     mqClient0.subscribe(b"AIOT_113/AppSend")

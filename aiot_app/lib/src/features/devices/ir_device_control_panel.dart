@@ -16,7 +16,9 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
 
   @override
   void initState() {
-    mqttService = MQTTService('${widget.uuid}_AppSend');
+    mqttService = MQTTService(
+        // '${widget.uuid}_AppSend'
+        'AppSend');
     super.initState();
   }
 
@@ -61,7 +63,6 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                   setState(() {
                     protoco = value!;
                   });
-                  debugPrint("$protoco ${value!}");
                 },
                 value: protoco,
                 items: protocos.map((name) {
@@ -89,7 +90,7 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                   child: ElevatedButton(
                     onPressed: () {
                       mqttService.send(
-                          '{"type":"ir_tx","data":"${button[keys[index]]!}"}');
+                          '{"type":"ir_tx","data":"${button[keys[index]]!}","protocol":"$protoco","clientID":"${widget.uuid}"}');
                     },
                     child: FittedBox(
                       fit: BoxFit.fitHeight,
