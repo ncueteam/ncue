@@ -20,12 +20,13 @@ class AddRoomViewState extends State<AddRoomView> {
   TextEditingController roomName = TextEditingController();
   TextEditingController roomDiscription = TextEditingController();
   String roomUUID = const Uuid().v1();
+  String imagePath =
+      "assets/room/room1.jpg"; //"assets/room/room${Random().nextInt(2) + 1}.jpg";
 
   @override
   Widget build(BuildContext context) {
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
-      String imagePath = "assets/room/room${Random().nextInt(2) + 1}.jpg";
       return Scaffold(
         appBar: AppBar(
           title: const Text("房間選擇頁面"),
@@ -65,6 +66,32 @@ class AddRoomViewState extends State<AddRoomView> {
             ),
             const Spacer(),
             Image.asset(imagePath),
+            DropdownButton<String>(
+              onChanged: (value) {
+                setState(() {
+                  imagePath = value!;
+                });
+              },
+              value: imagePath,
+              items: const [
+                DropdownMenuItem(
+                  value: "assets/room/room1.jpg",
+                  child: Text("圖片一"),
+                ),
+                DropdownMenuItem(
+                  value: "assets/room/room2.jpg",
+                  child: Text("圖片二"),
+                ),
+                DropdownMenuItem(
+                  value: "assets/room/room3.jpg",
+                  child: Text("圖片三"),
+                ),
+                DropdownMenuItem(
+                  value: "assets/room/room4.jpg",
+                  child: Text("圖片四"),
+                ),
+              ],
+            ),
             IconButton(
                 onPressed: () async {
                   RoomModel room = RoomModel(
