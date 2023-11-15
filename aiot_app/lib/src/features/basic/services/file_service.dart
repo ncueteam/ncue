@@ -21,6 +21,7 @@ class FileService {
     final result = await FilePicker.platform.pickFiles();
     if (result == null) return;
     pickedFile = result.files.first;
+    pickedFile = result.files.first;
     callback();
   }
 
@@ -46,12 +47,15 @@ class FileService {
       child: Column(
         children: [
           if (pickedFile != null)
-            Expanded(
-                child: Image.file(
-              File(pickedFile!.path!),
-              width: double.infinity,
-              fit: BoxFit.contain,
-            )),
+            if (['jpg', 'jpeg', 'png'].contains(pickedFile!.extension))
+              Expanded(
+                  child: Image.file(
+                File(pickedFile!.path!),
+                width: double.infinity,
+                fit: BoxFit.contain,
+              ))
+            else
+              Text(pickedFile!.name),
           ElevatedButton(
               onPressed: selectImage,
               child: Text(AppLocalizations.of(context)!.selectFile)),
