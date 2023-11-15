@@ -111,8 +111,11 @@ class ScanResultTile extends StatelessWidget {
             (result.advertisementData.serviceUuids.isNotEmpty)
                 ? result.advertisementData.serviceUuids.join(', ').toUpperCase()
                 : 'N/A'),
-        _buildAdvRow(context, 'Service Data',
-            getNiceServiceData(result.advertisementData.serviceData)),
+        _buildAdvRow(
+            context,
+            'Service Data',
+            getNiceServiceData(result.advertisementData.serviceData
+                .cast<String, List<int>>())),
       ],
     );
   }

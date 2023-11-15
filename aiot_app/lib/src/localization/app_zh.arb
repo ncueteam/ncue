@@ -1,7 +1,4 @@
 {
   "appTitle": "彰師大物聯網系統",
-  "@appTitle": {
-    "description": "APP的名稱"
-  },
   "roomChoosePage": "房間選擇頁面"
 }

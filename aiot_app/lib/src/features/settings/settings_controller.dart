@@ -6,8 +6,11 @@ class SettingsController with ChangeNotifier {
   final SettingsService _settingsService;
   late ThemeMode _themeMode;
   ThemeMode get themeMode => _themeMode;
+  late String _locale;
+  String get locale => _locale;
   Future<void> loadSettings() async {
     _themeMode = await _settingsService.themeMode();
+    _locale = await _settingsService.locale();
     notifyListeners();
   }
 
@@ -17,6 +20,15 @@ class SettingsController with ChangeNotifier {
     _themeMode = newThemeMode;
     notifyListeners();
     await _settingsService.updateThemeMode(newThemeMode);
+    notifyListeners();
+  }
+
+  Future<void> updateLocale(String? newLocale) async {
+    if (newLocale == null) return;
+    if (newLocale == _locale) return;
+    _locale = newLocale;
+    notifyListeners();
+    await _settingsService.updateLocale(newLocale);
     notifyListeners();
   }
 }

@@ -45,7 +45,9 @@ class _SettingsViewState extends State<SettingsView> {
             padding: const EdgeInsets.all(16),
             child: DropdownButton<String>(
               value: "zh_tw",
-              onChanged: (value) {},
+              onChanged: (locale) async {
+                // await RouteView.settingsController;
+              },
               items: const [
                 DropdownMenuItem(
                   value: "en_us",

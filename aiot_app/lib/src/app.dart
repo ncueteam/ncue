@@ -25,13 +25,14 @@ class AppRoot extends StatelessWidget {
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           restorationScopeId: 'app',
-          locale: Locale(Platform.localeName),
+          locale: Locale(Platform.localeName == "zh_Hant_tw"
+              ? "zh_TW"
+              : Platform.localeName),
           supportedLocales: const [
-            Locale('zh', 'Hant_tw'),
+            Locale('zh', 'TW'),
             Locale('en', 'US'),
           ],
           localizationsDelegates: [
-            FirebaseUILocalizations.withDefaultOverrides(LabelOverrides()),
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
@@ -54,44 +55,4 @@ class AppRoot extends StatelessWidget {
       },
     );
   }
-}
-
-class LabelOverrides extends DefaultLocalizations {
-  LabelOverrides();
-  @override
-  String get registerHintText => '還沒註冊帳號?';
-  @override
-  String get emailInputLabel => '輸入你的email';
-  @override
-  String get isNotAValidEmailErrorText => '請輸入有效的電子郵件';
-  @override
-  String get passwordIsRequiredErrorText => '請輸入密碼';
-  @override
-  String get emailIsRequiredErrorText => '請輸入電子郵件';
-  @override
-  String get signInActionText => '登入';
-  @override
-  String get registerActionText => '註冊';
-  @override
-  String get passwordInputLabel => '密碼';
-  @override
-  String get signInWithPhoneButtonText => "手機登入";
-  @override
-  String get signInWithGoogleButtonText => "google 登入";
-  @override
-  String get signInWithFacebookButtonText => "facebook 登入";
-  @override
-  String get signInText => '登入';
-  @override
-  String get registerText => '註冊';
-  @override
-  String get forgotPasswordViewTitle => '忘記密碼';
-  @override
-  String get forgotPasswordButtonLabel => '忘記密碼?';
-  @override
-  String get resetPasswordButtonLabel => '重設密碼';
-  @override
-  String get goBackButtonLabel => '返回';
-  @override
-  String get unknownError => '未知錯誤';
 }
