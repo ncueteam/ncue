@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:flutter/material.dart';
@@ -25,9 +23,7 @@ class AppRoot extends StatelessWidget {
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           restorationScopeId: 'app',
-          locale: Locale(Platform.localeName == "zh_Hant_tw"
-              ? "zh_TW"
-              : Platform.localeName),
+          locale: Locale(RouteView.settingsController.locale),
           supportedLocales: const [
             Locale('zh', 'TW'),
             Locale('en', 'US'),

@@ -1,4 +1,11 @@
 {
   "appTitle": "彰師大物聯網系統",
-  "roomChoosePage": "房間選擇頁面"
+  "roomChoosePage": "房間選擇頁面",
+
+  "settingPageTitle": "設定",
+  "systemTheme":"系統佈景",
+  "lightTheme":"淺色佈景",
+  "darkTheme":"深色佈景",
+  "englishUS":"United State | English",
+  "chineseTW":"臺灣 | 繁體中文"
 }

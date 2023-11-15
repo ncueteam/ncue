@@ -1,4 +1,11 @@
 {
   "appTitle": "ncue_app",
-  "roomChoosePage": "roomChoosePage"
+  "roomChoosePage": "Room Choose Page",
+
+  "settingPageTitle": "Setting Page",
+  "systemTheme":"System Theme",
+  "lightTheme":"Light Theme",
+  "darkTheme":"Dark Theme",
+  "englishUS":"United State | English",
+  "chineseTW":"臺灣 | 繁體中文"
 }

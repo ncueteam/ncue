@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../basic/views/route_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsView extends RouteView {
   const SettingsView({super.key})
@@ -15,7 +16,7 @@ class _SettingsViewState extends State<SettingsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(AppLocalizations.of(context)!.settingPageTitle),
       ),
       body: Column(
         children: [
@@ -26,36 +27,37 @@ class _SettingsViewState extends State<SettingsView> {
               await RouteView.settingsController.updateThemeMode(themeMode);
               setState(() {});
             },
-            items: const [
+            items: [
               DropdownMenuItem(
                 value: ThemeMode.system,
-                child: Text('System Theme'),
+                child: Text(AppLocalizations.of(context)!.systemTheme),
               ),
               DropdownMenuItem(
                 value: ThemeMode.light,
-                child: Text('Light Theme'),
+                child: Text(AppLocalizations.of(context)!.lightTheme),
               ),
               DropdownMenuItem(
                 value: ThemeMode.dark,
-                child: Text('Dark Theme'),
+                child: Text(AppLocalizations.of(context)!.darkTheme),
               )
             ],
           ),
           Padding(
             padding: const EdgeInsets.all(16),
             child: DropdownButton<String>(
-              value: "zh_tw",
+              value: RouteView.settingsController.locale,
               onChanged: (locale) async {
-                // await RouteView.settingsController;
+                await RouteView.settingsController.updateLocale(locale);
+                setState(() {});
               },
-              items: const [
+              items: [
                 DropdownMenuItem(
-                  value: "en_us",
-                  child: Text("Language English US"),
+                  value: "en_US",
+                  child: Text(AppLocalizations.of(context)!.englishUS),
                 ),
                 DropdownMenuItem(
-                  value: "zh_tw",
-                  child: Text('Language 中文 台灣'),
+                  value: "zh_TW",
+                  child: Text(AppLocalizations.of(context)!.chineseTW),
                 ),
               ],
             ),

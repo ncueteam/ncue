@@ -100,7 +100,7 @@ class ScanResultTile extends StatelessWidget {
       ),
       children: <Widget>[
         _buildAdvRow(
-            context, 'Complete Local Name', result.advertisementData.localName),
+            context, 'Complete Local Name', result.advertisementData.advName),
         _buildAdvRow(context, 'Tx Power Level',
             '${result.advertisementData.txPowerLevel ?? 'N/A'}'),
         _buildAdvRow(context, 'Manufacturer Data',

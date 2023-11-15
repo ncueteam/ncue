@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/views/file_upload_view.dart';
 import 'package:ncue.aiot_app/src/features/devices/ac_panel.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
 import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
@@ -29,6 +30,7 @@ abstract class RouteView extends StatefulWidget {
   final IconData routeIcon;
   static UserModel model = RouteView.model;
   static User? user = FirebaseAuth.instance.currentUser;
+
   const RouteView({Key? key, required this.routeName, required this.routeIcon})
       : super(key: key);
 
@@ -78,6 +80,7 @@ abstract class RouteView extends StatefulWidget {
     items.add(DataItem(
         "extend",
         [
+          DataItem("route", [const FileUploadView()], name: "上傳檔案"),
           DataItem("route", [const ACPanel()], name: "冷氣遙控"),
           DataItem("route", [const RoomListView()], name: "房間列表"),
           DataItem(
@@ -115,5 +118,6 @@ abstract class RouteView extends StatefulWidget {
     const RoomDetailsView(),
     const AddRoomView(),
     const ACPanel(),
+    const FileUploadView(),
   ];
 }
