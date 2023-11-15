@@ -1,8 +1,5 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/services/file_service.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 
 class FileUploadView extends RouteView {
@@ -14,49 +11,30 @@ class FileUploadView extends RouteView {
 }
 
 class _FileUploadViewState extends State<FileUploadView> {
-  PlatformFile? pickedFile;
+  late FileService fileService;
 
-  UploadTask? uploadTask;
-
-  Future selectImage() async {
-    final result = await FilePicker.platform.pickFiles();
-    if (result == null) return;
-    setState(() {
-      pickedFile = result.files.first;
+  @override
+  void initState() {
+    fileService = FileService(() {
+      setState(() {});
     });
-  }
-
-  Future uploadFile() async {
-    if (pickedFile != null) {
-      final path = 'files/${pickedFile!.path!}';
-      final file = File(pickedFile!.path!);
-      final ref = FirebaseStorage.instance.ref().child(path);
-      uploadTask = ref.putFile(file);
-
-      final snapshot = await uploadTask!.whenComplete(() {});
-      final urlDownload = await snapshot.ref.getDownloadURL();
-      debugPrint('link: $urlDownload');
-    }
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          if (pickedFile != null)
+        appBar: AppBar(title: Text(widget.routeName)),
+        body: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text("選擇圖片並上傳!"),
+            ),
             Expanded(
-                child: Image.file(
-              File(pickedFile!.path!),
-              width: double.infinity,
-              fit: BoxFit.cover,
-            )),
-          ElevatedButton(
-              onPressed: selectImage, child: const Text("select file")),
-          ElevatedButton(
-              onPressed: uploadFile, child: const Text("upload file")),
-        ]),
-      ),
-    );
+              child: fileService.getInterface(context),
+            )
+          ],
+        ));
   }
 }
