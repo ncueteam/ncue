@@ -2,5 +2,6 @@
   "appTitle": "ncue_app",
   "@appTitle": {
     "description": "The title of the application"
-  }
+  },
+  "roomChoosePage": "roomChoosePage"
 }

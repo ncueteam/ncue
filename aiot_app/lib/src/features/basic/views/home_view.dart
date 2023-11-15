@@ -34,8 +34,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            "${AppLocalizations.of(context)!.appTitle} ${AppLocalizations.of(context)?.localeName.toString() ?? "sss"}"),
+        title: Text(AppLocalizations.of(context)!.appTitle),
         actions: [
           const SettingsView().getIconButton(context),
           const BluetoothView().getIconButton(context),

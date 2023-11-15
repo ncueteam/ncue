@@ -1,10 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
 import 'package:uuid/uuid.dart';
 import '../basic/views/home_view.dart';
 import '../basic/views/route_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddRoomView extends RouteView {
   const AddRoomView({super.key})
@@ -20,8 +19,7 @@ class AddRoomViewState extends State<AddRoomView> {
   TextEditingController roomName = TextEditingController();
   TextEditingController roomDiscription = TextEditingController();
   String roomUUID = const Uuid().v1();
-  String imagePath =
-      "assets/room/room1.jpg"; //"assets/room/room${Random().nextInt(2) + 1}.jpg";
+  String imagePath = "assets/room/room1.jpg";
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,7 @@ class AddRoomViewState extends State<AddRoomView> {
     if (arguments != null && arguments is Map<String, dynamic>) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text("房間選擇頁面"),
+          title: Text(AppLocalizations.of(context)!.roomChoosePage),
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),

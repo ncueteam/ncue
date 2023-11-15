@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_ui_localizations/firebase_ui_localizations.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +25,10 @@ class AppRoot extends StatelessWidget {
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           restorationScopeId: 'app',
-          locale: const Locale('tw'),
+          locale: Locale(Platform.localeName),
           supportedLocales: const [
-            Locale('en'),
-            Locale('zh_tw'),
+            Locale('zh', 'Hant_tw'),
+            Locale('en', 'US'),
           ],
           localizationsDelegates: [
             FirebaseUILocalizations.withDefaultOverrides(LabelOverrides()),
