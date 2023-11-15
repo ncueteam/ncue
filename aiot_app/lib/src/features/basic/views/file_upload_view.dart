@@ -27,15 +27,16 @@ class _FileUploadViewState extends State<FileUploadView> {
   }
 
   Future uploadFile() async {
-    final path = 'files/${pickedFile!.path!}';
-    final file = File(pickedFile!.path!);
+    if (pickedFile != null) {
+      final path = 'files/${pickedFile!.path!}';
+      final file = File(pickedFile!.path!);
+      final ref = FirebaseStorage.instance.ref().child(path);
+      uploadTask = ref.putFile(file);
 
-    final ref = FirebaseStorage.instance.ref().child(path);
-    ref.putFile(file);
-
-    final snapshot = await uploadTask!.whenComplete(() {});
-    final urlDownload = await snapshot.ref.getDownloadURL();
-    debugPrint('link: $urlDownload');
+      final snapshot = await uploadTask!.whenComplete(() {});
+      final urlDownload = await snapshot.ref.getDownloadURL();
+      debugPrint('link: $urlDownload');
+    }
   }
 
   @override
@@ -43,7 +44,13 @@ class _FileUploadViewState extends State<FileUploadView> {
     return Scaffold(
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          if (pickedFile != null) Expanded(child: Text(pickedFile!.name)),
+          if (pickedFile != null)
+            Expanded(
+                child: Image.file(
+              File(pickedFile!.path!),
+              width: double.infinity,
+              fit: BoxFit.cover,
+            )),
           ElevatedButton(
               onPressed: selectImage, child: const Text("select file")),
           ElevatedButton(
