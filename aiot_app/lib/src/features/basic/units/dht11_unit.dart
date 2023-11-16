@@ -34,7 +34,7 @@ class _Dht11UnitState extends State<Dht11Unit> {
   @override
   void initState() {
     super.initState();
-    mqtt = MQTTService('AIOT_113/${widget.uuid}');
+    mqtt = MQTTService('Esp32Send');
     mqtt.callback = () => setReceivedText();
   }
 
