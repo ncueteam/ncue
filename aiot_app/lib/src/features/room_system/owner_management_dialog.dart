@@ -27,12 +27,12 @@ class _OwnerManagementDialogState extends State<OwnerManagementDialog> {
 
     for (UserModel user in widget.userModels) {
       if (user.name.contains(searchBar.text)) {
-        if (widget.room.owner.displayName != user.name) {
+        if (widget.room.owner.uid != user.uuid) {
           temp.add(user);
-        } else {
+        } /*else {
           temp.insert(0, user);
           //debugPrint(temp[0].name);
-        }
+        }*/
       }
     }
 
@@ -79,12 +79,20 @@ class _OwnerManagementDialogState extends State<OwnerManagementDialog> {
                   leading: const CircleAvatar(child: Icon(Icons.people)),
                   title: Text(member.name),
                   trailing: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        //widget.room.owner.displayName=member.name;
-                        //widget.room.update();
-                        debugPrint(widget.room.owner.displayName);
-                      });
+                    onPressed: () async {
+                      UserModel owner =
+                          await UserModel().fromID(widget.room.owner.uid);
+                      owner.rooms.remove(widget.room.uuid);
+                      owner.update();
+                      member.rooms.add(widget.room.uuid);
+                      member.update().then((value) => setState(() {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+
+                            //widget.room.owner = member;
+                            //widget.room.update();
+                            //debugPrint(widget.room.owner.displayName);
+                          }));
                     },
                     child: const Text("轉移"),
                   ));
