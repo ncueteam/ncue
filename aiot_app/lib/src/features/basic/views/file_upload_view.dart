@@ -33,7 +33,12 @@ class _FileUploadViewState extends State<FileUploadView> {
             ),
             Expanded(
               child: fileService.getInterface(context),
-            )
+            ),
+            ElevatedButton(
+              onPressed: () =>
+                  fileService.displayImageFromFirestore('server-icon.png'),
+              child: const Text('Display Image'),
+            ),
           ],
         ));
   }

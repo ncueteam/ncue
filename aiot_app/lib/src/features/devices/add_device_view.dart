@@ -7,8 +7,8 @@ import '../basic/views/route_view.dart';
 import 'device_service.dart';
 
 class AddDeviceView extends RouteView {
-  final RoomModel roomData;
-  const AddDeviceView({super.key, required this.roomData})
+  final RoomModel? roomData;
+  const AddDeviceView({super.key, this.roomData})
       : super(routeName: "/add-device-page", routeIcon: Icons.add_box);
   @override
   State<AddDeviceView> createState() => AddDeviceViewState();

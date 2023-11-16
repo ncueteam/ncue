@@ -36,10 +36,32 @@ class FileService {
         callback();
       });
       final urlDownload = await snapshot.ref.getDownloadURL();
+
       debugPrint('link: $urlDownload');
       pickedFile = null;
     }
     callback();
+  }
+
+  Future<String> fetchImageUrl(String imageId) async {
+    final ref = FirebaseStorage.instance.ref().child('files/$imageId');
+
+    final urlDownload = await ref.getDownloadURL();
+
+    return urlDownload;
+  }
+
+  Widget displayImage(String imageUrl) {
+    return Image.network(
+      imageUrl,
+      width: double.infinity,
+      fit: BoxFit.contain,
+    );
+  }
+
+  Future<void> displayImageFromFirestore(String imageId) async {
+    final imageUrl = await fetchImageUrl(imageId);
+    displayImage(imageUrl);
   }
 
   Widget getInterface(BuildContext context) {
