@@ -58,3 +58,7 @@ class FileSet:
         uuid_str = ubinascii.hexlify(uuid_bytes).decode('utf-8')
         uuid = '-'.join((uuid_str[:8], uuid_str[8:12], uuid_str[12:16], uuid_str[16:20], uuid_str[20:]))
         return uuid
+    
+    def handle_json(self,message):
+        return ujson.loads(message)
+        

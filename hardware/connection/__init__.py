@@ -17,8 +17,7 @@ class Network():
         await self.DB.create("Yunitrish", "0937565253")
 
     async def setUp(self):
-        await self.DB.setUp()
-        for key,value in self.DB.Data.items():
+        for key,value in self.DB.data.items():
             if (self.oled):
                 await self.screen.blank()
                 await self.screen.centerText(2,"connecting")

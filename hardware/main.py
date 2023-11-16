@@ -1,9 +1,17 @@
-from aiot_hardware.primitives import switch
 import connection
 connection.bootLink()
 
+import file_system
+
+DB = file_system.FileSet("device_data")
+
 def sub_cb(topic,msg):
-        print(str(topic,"UTF-8")+","+str(msg,"UTF-8"))
+#         print(str(topic,"UTF-8")+","+str(msg,"UTF-8"))
+        temp = DB.handle_json(msg)
+        print(temp['type'])
+        print(temp['data'])
+        print(temp['protocol'])
+        print(temp['clientID'])
 
 def link():
     print("link")
