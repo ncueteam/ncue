@@ -35,6 +35,9 @@ class _RoomListViewState extends State<RoomListView> {
     for (String s in RouteView.model.rooms) {
       items.add((await RoomModel().getRoomFromUuid(s)).toDataItem());
     }
+    for (String s in RouteView.model.memberRooms) {
+      items.add((await RoomModel().getRoomFromUuid(s)).toDataItem());
+    }
     setState(() {});
   }
 
