@@ -60,7 +60,10 @@ class FileSet:
         return uuid
     
     def handle_json(self,message):
-        temp = ujson.loads(message)
+        try:
+            temp = ujson.loads(message)
+        except:
+            pass
         try:
             self.type = temp['type']
         except:
