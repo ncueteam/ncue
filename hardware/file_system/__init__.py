@@ -10,7 +10,7 @@ class FileSet:
         self.Folder = folder
         self.FileName = file_name
         self.initialize()
-        self.data = self.load()
+        self.database = self.load()
         self.save()
 
     def initialize(self):
@@ -21,26 +21,26 @@ class FileSet:
                 raise
 
     def create(self, key: str, value: str):
-        self.data[key] = value
+        self.database[key] = value
         self.save()
         
     def read(self, key: str) -> tuple[str, str]:
-        return key, self.data[key]
+        return key, self.database[key]
 
     def update(self, key: str, value: str):
-        self.data[key] = value
+        self.database[key] = value
         self.save()
 
     def delete(self, key: str):
-        del self.data[key]
+        del self.database[key]
         self.save()
 
     def list(self):
-        return self.data
+        return self.database
 
     def save(self):
         with open("/" + self.Folder + "/" + self.FileName, 'w') as f:
-            ujson.dump(self.data, f)
+            ujson.dump(self.database, f)
 
     def load(self):
         try:
@@ -60,5 +60,9 @@ class FileSet:
         return uuid
     
     def handle_json(self,message):
-        return ujson.loads(message)
+        temp = ujson.loads(message)
+        self.type = temp['type']
+        self.data = temp['data']
+        self.protocol = temp['protocol']
+        self.clientID = temp['clientID']
         

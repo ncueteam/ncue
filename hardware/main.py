@@ -7,11 +7,13 @@ DB = file_system.FileSet("device_data")
 
 def sub_cb(topic,msg):
 #         print(str(topic,"UTF-8")+","+str(msg,"UTF-8"))
-        temp = DB.handle_json(msg)
-        print(temp['type'])
-        print(temp['data'])
-        print(temp['protocol'])
-        print(temp['clientID'])
+        DB.handle_json(msg)
+        print(DB.type)
+        print(DB.clientID)
+        print(DB.protocol)
+        print(DB.data)
+        
+        
 
 def link():
     print("link")
