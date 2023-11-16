@@ -3,7 +3,7 @@ connection.bootLink()
 
 import file_system
 
-DB = file_system.FileSet("device_data")
+DB = file_system.FileSet("device_data.json")
 
 def sub_cb(topic,msg):
 #         print(str(topic,"UTF-8")+","+str(msg,"UTF-8"))

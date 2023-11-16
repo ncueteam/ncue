@@ -61,8 +61,20 @@ class FileSet:
     
     def handle_json(self,message):
         temp = ujson.loads(message)
-        self.type = temp['type']
-        self.data = temp['data']
-        self.protocol = temp['protocol']
-        self.clientID = temp['clientID']
+        try:
+            self.type = temp['type']
+        except:
+            self.type = "error"
+        try:
+            self.data = temp['data']
+        except:
+            self.data = "error"
+        try:
+            self.protocol = temp['protocol']
+        except:
+            self.protocol = "error"
+        try:
+            self.clientID = temp['clientID']
+        except:
+            self.clientID = "error"
         
