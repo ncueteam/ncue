@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
-import 'package:ncue.aiot_app/src/features/devices/device_model.dart';
-import 'package:ncue.aiot_app/src/features/devices/device_service.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/device_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
 
 class RoomModel {
@@ -67,7 +66,7 @@ class RoomModel {
     members = lst['members'];
 
     for (String s in lst['devices']) {
-      devices.add(await DeviceService().getDeviceFromUuid(s));
+      devices.add(await DeviceModel().read(s));
     }
   }
 
@@ -88,7 +87,7 @@ class RoomModel {
           List<String> temp =
               deviceData.map((item) => item.toString()).toList();
           for (String D in temp) {
-            devices.add(await DeviceService().getDeviceFromUuid(D));
+            devices.add(await DeviceModel().read(D));
           }
         } else {
           devices = [];

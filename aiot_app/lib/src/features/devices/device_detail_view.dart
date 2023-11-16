@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/devices/device_service.dart';
 
 import '../basic/views/route_view.dart';
-import 'device_model.dart';
+import '../basic/models/device_model.dart';
 
 class DeviceDetailsView extends RouteView {
   const DeviceDetailsView({super.key})
@@ -62,7 +61,7 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
                       onChanged: (value) {
                         setState(() {
                           item.temperature = value;
-                          DeviceService().updateDeviceData(item);
+                          item.update();
                         });
                       }),
                   Switch(
@@ -71,7 +70,7 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
                       setState(
                         () {
                           item.powerOn = value;
-                          DeviceService().updateDeviceData(item);
+                          item.update();
                         },
                       )
                     },

@@ -5,7 +5,7 @@ import 'package:ncue.aiot_app/src/features/basic/units/mqtt_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_unit.dart';
 
-import '../../devices/device_model.dart';
+import '../models/device_model.dart';
 import '../../devices/device_unit.dart';
 import '../data_item.dart';
 import '../models/user_model.dart';

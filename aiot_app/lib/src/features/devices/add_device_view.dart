@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/device_model.dart';
 import 'package:uuid/uuid.dart';
 import '../basic/views/home_view.dart';
 import '../basic/views/route_view.dart';
-import 'device_service.dart';
 
 class AddDeviceView extends RouteView {
   final RoomModel? roomData;
@@ -147,12 +147,18 @@ class AddDeviceViewState extends State<AddDeviceView> {
             ),
             IconButton(
                 onPressed: () async {
-                  roomData.devices
-                      .add(await DeviceService().getDeviceFromUuid(deviceUUID));
+                  roomData.devices.add(await DeviceModel().read(deviceUUID));
                   await roomData.update();
-                  await DeviceService()
-                      .addDevice(deviceUUID, deviceType, deviceName.text,
-                          deviceIconPath, false, 28.0)
+                  DeviceModel temp = DeviceModel();
+                  temp.uuid = deviceUUID;
+                  temp.type = deviceType;
+                  temp.name = deviceName.text;
+                  temp.iconPath = deviceIconPath;
+                  temp.powerOn = false;
+                  temp.temperature = 28;
+
+                  await temp
+                      .create()
                       .then((value) => Navigator.pop(context, true));
                 },
                 icon: const Icon(Icons.add)),

@@ -2,8 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/local_auth_service.dart';
 import 'device_detail_view.dart';
-import 'device_model.dart';
-import 'device_service.dart';
+import '../basic/models/device_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeviceUnit extends StatefulWidget {
@@ -51,10 +50,10 @@ class _DeviceUnitState extends State<DeviceUnit> {
               child: Switch(
                 value: device.powerOn,
                 onChanged: (bool value) => {
-                  setState(
-                    () {
-                      device.powerOn = value;
-                      DeviceService().updateDeviceData(device);
+                  device.powerOn = value,
+                  device.update().then(
+                    (value) {
+                      setState(() {});
                     },
                   )
                 },
