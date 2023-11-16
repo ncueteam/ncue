@@ -104,6 +104,23 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
               );
             }),
       ),
+      bottomNavigationBar: Row(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              mqttService.send(
+                  '{"type":"ir_rx","data":"none","protocol":"$protoco","clientID":"${RouteView.model.uuid.toString()}"}');
+            },
+            child: const FittedBox(
+              fit: BoxFit.fitHeight,
+              child: Text(
+                "IR 測試",
+                style: TextStyle(fontSize: 100),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
