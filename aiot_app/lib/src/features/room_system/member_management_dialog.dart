@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
 
 class MemberManagementDialog extends StatefulWidget {

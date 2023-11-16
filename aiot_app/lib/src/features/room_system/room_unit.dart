@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
-import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
 import 'member_management_dialog.dart';
 import 'owner_management_dialog.dart';

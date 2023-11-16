@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
-import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 
 import '../basic/views/route_view.dart';
 

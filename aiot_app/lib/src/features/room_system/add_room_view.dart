@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:uuid/uuid.dart';
 import '../basic/views/home_view.dart';
 import '../basic/views/route_view.dart';

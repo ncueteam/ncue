@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit.dart';
-import 'package:ncue.aiot_app/src/features/room_system/room_model.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import '../auth_system/profile_view.dart';
 import '../settings/settings_view.dart';
 import '../basic/data_item.dart';
