@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'settings_service.dart';
 
@@ -27,8 +25,8 @@ class SettingsController with ChangeNotifier {
 
   Future<void> updateLocale(String? newLocale) async {
     if (newLocale == null) {
-      newLocale =
-          Platform.localeName == "zh_Hant_tw" ? "zh_TW" : Platform.localeName;
+      // newLocale =
+      //     Platform.localeName == "zh_Hant_tw" ? "zh_TW" : Platform.localeName;
       return;
     }
     if (newLocale == _locale) return;

@@ -8,16 +8,19 @@ class UserModel {
     this.name = "Error",
     this.uuid = "Error",
     this.type = "",
+    this.language = "en_US",
     this.rooms = const [],
   });
 
   String uuid;
   String name;
   String type;
+  String language;
   List<dynamic> rooms;
   void debugData() {
     debugPrint("name:$name");
     debugPrint("uuid:$uuid");
+    debugPrint("language:$language");
     debugPrint("type:$type");
     debugPrint("rooms:$rooms");
   }
@@ -31,6 +34,7 @@ class UserModel {
       'name': name,
       "type": type,
       "uuid": uuid,
+      "language": language,
       "rooms": <String>[],
     });
     return this;
@@ -46,6 +50,7 @@ class UserModel {
       name = lst['name'];
       uuid = lst['uuid'];
       type = lst['type'];
+      language = lst['language'];
       rooms = lst['rooms'];
       return this;
     } else {
@@ -69,6 +74,7 @@ class UserModel {
         'name': name,
         "type": type,
         "uuid": uuid,
+        "language": language,
         'rooms': rooms
       };
       await documentReference.update(updatedData);
@@ -92,6 +98,7 @@ class UserModel {
     if (querySnapshot.docs.isNotEmpty) {
       UserModel model = UserModel();
       model.name = querySnapshot.docs[0].get('name');
+      model.language = querySnapshot.docs[0].get('language');
       model.type = querySnapshot.docs[0].get('type');
       model.uuid = uuid;
       model.rooms = querySnapshot.docs[0].get('rooms');
@@ -109,6 +116,7 @@ class UserModel {
       UserModel model = UserModel();
       model.name = doc.get('name');
       model.uuid = doc.get('uuid');
+      model.language = doc.get('language');
       model.type = doc.get('type');
       model.rooms = querySnapshot.docs[0].get('rooms');
       return model;
