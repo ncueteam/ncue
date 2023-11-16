@@ -6,12 +6,43 @@ import urandom
 DEFAULT_FOLDER = 'database'
 
 class FileSet:
-    
-    def __init__(self,fileName,databaseFolder = DEFAULT_FOLDER) -> None:
-        self.Folder = databaseFolder
-        self.FileName = fileName
-    
-    async def load(self) -> dict[str,str]:
+    def __init__(self, file_name, folder = DEFAULT_FOLDER):
+        self.Folder = folder
+        self.FileName = file_name
+        self.initialize()
+        self.data = self.load()
+        self.save()
+
+    def initialize(self):
+        try:
+            os.mkdir("/" + self.Folder)
+        except OSError as e:
+            if e.args[0] != 17:
+                raise
+
+    def create(self, key: str, value: str):
+        self.data[key] = value
+        self.save()
+        
+    def read(self, key: str) -> tuple[str, str]:
+        return key, self.data[key]
+
+    def update(self, key: str, value: str):
+        self.data[key] = value
+        self.save()
+
+    def delete(self, key: str):
+        del self.data[key]
+        self.save()
+
+    def list(self):
+        return self.data
+
+    def save(self):
+        with open("/" + self.Folder + "/" + self.FileName, 'w') as f:
+            ujson.dump(self.data, f)
+
+    def load(self):
         try:
             with open("/" + self.Folder + "/" + self.FileName, 'r') as f:
                 return ujson.load(f)
@@ -20,36 +51,7 @@ class FileSet:
                 return {}
             else:
                 raise
-    
-    async def save(self):
-        with open("/" + self.Folder + "/" + self.FileName, 'w') as f:
-            ujson.dump(self.Data, f)
-    
-    async def setUp(self):
-        try:
-            os.mkdir("/"+self.Folder)
-            self.Data:dict[str,str] = await self.load()
-        except OSError as e:
-            if e.args[0] != 17: raise
-        self.Data:dict[str,str] = await self.load()
-    
-    async def create(self, key: str, value: str):
-        self.Data[key] = value
-        await self.save()
-    
-    
-    async def read(self, key: str) -> tuple[str, str]:
-        return key, self.Data[key]
-
-    async def update(self, key: str, value: str):
-        self.Data[key] = value
-        await self.save()
-
-    async def delete(self, key: str):
-        del self.Data[key]
-        await self.save()
-
-    async def generate_uuid(self):
+    def generate_uuid(self):
         uuid_bytes = bytearray(urandom.getrandbits(8) for _ in range(16))
         uuid_bytes[6] = (uuid_bytes[6] & 0x0F) | 0x40
         uuid_bytes[8] = (uuid_bytes[8] & 0x3F) | 0x80
