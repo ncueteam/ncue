@@ -16,7 +16,7 @@ class _ACPanelState extends State<ACPanel> {
 
   @override
   void initState() {
-    mqttService = MQTTService("NCUEMQTT/${widget.uuid}");
+    mqttService = MQTTService("AppSend/${widget.uuid}");
     super.initState();
   }
 

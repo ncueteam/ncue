@@ -27,7 +27,7 @@ def get_msg(topic, msg):
     print(msg)
 
 client.set_callback(get_msg)
-client.subscribe("NCUEMQTT") #訂閱NCUE這個主題 
+client.subscribe("AIOT_113/AppSend") #訂閱NCUE這個主題 
 
 while True:
   try:

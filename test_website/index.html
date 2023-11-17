@@ -14,7 +14,7 @@
   client.on('connect', ()=>
     {
         console.log('connected.');
-        client.subscribe("NCUEMQTT")
+        client.subscribe("AIOT_113/Esp32Send")
         client.on("message", function (topic, payload) {
         //console.log(payload);
         var msgText = document.getElementsByClassName('msg-text')[0];
@@ -23,7 +23,7 @@
         // client.end()
         });
 
-        client.publish("NCUEMQTT", "hello");
+        client.publish("AIOT_113/AppSend/", "hello");
     }
   );
 </script>

@@ -1,15 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/file_upload_view.dart';
 import 'package:ncue.aiot_app/src/features/devices/ac_panel.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
-import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
 import 'package:ncue.aiot_app/src/features/notify_system/notify_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/add_room_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../auth_system/password_reset_view.dart';
 import '../../auth_system/phone_input_view.dart';
@@ -43,6 +42,21 @@ abstract class RouteView extends StatefulWidget {
     );
   }
 
+  DataItem getDataItemRoute({String customName = ""}) {
+    return DataItem("route", [this],
+        name: customName == "" ? routeName : customName);
+
+    // return ListTile(
+    //     key: ValueKey(this),
+    //     isThreeLine: true,
+    //     title: Text("前往頁面 : ${customName == "" ? routeName : customName}"),
+    //     subtitle: Text(routeName),
+    //     leading: Icon(routeIcon),
+    //     onTap: () {
+    //       // Navigator.pushNamed(, routeName);
+    //     });
+  }
+
   static final SettingsController settingsController =
       SettingsController(SettingsService());
   static Future<void> loadRouteViewSettings() async {
@@ -67,35 +81,6 @@ abstract class RouteView extends StatefulWidget {
     } else {
       return FirebaseAuth.instance.currentUser;
     }
-  }
-
-  static Future<List<DataItem>> loadUnits() async {
-    List<DataItem> items = [];
-    items.clear();
-    //items.add(DataItem("mqtt", []));
-    items.add(DataItem("removable", [
-      DataItem("addRoom", [const AddRoomView(), RouteView.model], name: "註冊房間")
-    ]));
-    items.add(DataItem(
-        "extend",
-        [
-          DataItem("route", [const FileUploadView()], name: "上傳檔案"),
-          DataItem("route", [const ACPanel()], name: "冷氣遙控"),
-          DataItem("route", [const RoomListView()], name: "房間列表"),
-          DataItem(
-              "route",
-              [
-                IRDeviceControlPanel(
-                  uuid: const Uuid().v1().toString(),
-                )
-              ],
-              name: "紅外線控制器"),
-          DataItem("dht11", ["8458774c-3a09-40ab-bb61-c4f541a29d84"]),
-          // DataItem("dht11", []),
-          // DataItem("route", [const NotifyView()], "提醒列表"),
-        ],
-        name: "捷徑"));
-    return items;
   }
 
   static const List<RouteView> pages = [

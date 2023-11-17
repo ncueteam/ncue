@@ -39,7 +39,7 @@ class DeviceModel {
   }
 
   DataItem toDataItem() {
-    return DataItem(type, [uuid], name: name, iconPath: iconPath, origin: this);
+    return DataItem(type, [this], name: name, iconPath: iconPath);
   }
 
   Future<DeviceModel> read(String uuidQuery) async {

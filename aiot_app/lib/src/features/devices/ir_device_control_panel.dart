@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/mqtt_service.dart';
+import 'package:uuid/uuid.dart';
 
 class IRDeviceControlPanel extends RouteView {
   final String uuid;
@@ -14,11 +15,12 @@ class IRDeviceControlPanel extends RouteView {
 class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
   late MQTTService mqttService;
 
+  late String uuid = const Uuid().v1().toString();
+
   @override
   void initState() {
-    mqttService = MQTTService(
-        // '${widget.uuid}_AppSend'
-        'AppSend');
+    mqttService = MQTTService('AppSend');
+    if (widget.uuid != "") uuid = widget.uuid;
     super.initState();
   }
 
@@ -90,7 +92,7 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                   child: ElevatedButton(
                     onPressed: () {
                       mqttService.send(
-                          '{"type":"ir_tx","data":"${button[keys[index]]!}","protocol":"$protoco","clientID":"${RouteView.model.uuid.toString()}"}');
+                          '{"type":"ir_tx","data":"${button[keys[index]]!}","protocol":"$protoco","clientID":"${RouteView.model.uuid.toString()}","uuid":"$uuid"}');
                     },
                     child: FittedBox(
                       fit: BoxFit.fitHeight,

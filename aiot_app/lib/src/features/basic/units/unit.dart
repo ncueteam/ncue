@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
+import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 import 'package:ncue.aiot_app/src/features/devices/add_device_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/mqtt_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
@@ -35,27 +36,18 @@ class _UnitState extends State<Unit> {
         }
       case "auto":
         {
-          return Container();
-        }
-      case "removable":
-        {
-          if (item.data[0] is DataItem) {
-            DataItem children = item.data[0];
-            return Dismissible(
-                key: ValueKey(children),
-                direction: DismissDirection.endToStart,
-                onDismissed: (direction) async {},
-                child: Unit(item: children));
-          }
-          return Container();
+          return UnitTile(
+            selected: true,
+            onTap: () {},
+          );
         }
       case "bio_device":
       case "device":
         {
-          if (item.origin is DeviceModel) {
+          if (item.data[0] is DeviceModel) {
             return DeviceUnit(
               key: ValueKey(item),
-              deviceData: item.origin,
+              deviceData: item.data[0],
               onChanged: (bool value) {},
             );
           } else {
@@ -124,7 +116,7 @@ class _UnitState extends State<Unit> {
           if (item.data.elementAt(0) is RouteView &&
               item.data.elementAt(1) is UserModel) {
             RouteView view = item.data.elementAt(0);
-            return ListTile(
+            return UnitTile(
                 key: ValueKey(item),
                 isThreeLine: true,
                 title: Text("前往頁面 : ${item.name}"),

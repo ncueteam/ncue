@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/local_auth_service.dart';
+import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 import 'device_detail_view.dart';
 import '../basic/models/device_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,8 +29,7 @@ class _DeviceUnitState extends State<DeviceUnit> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      isThreeLine: true,
+    return UnitTile(
       title: Text(device.name),
       subtitle: Text("裝置類型: ${device.type == "device" ? "一般裝置" : "生物解鎖裝置"}"),
       leading: CircleAvatar(
