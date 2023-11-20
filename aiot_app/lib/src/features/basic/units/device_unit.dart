@@ -2,8 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/local_auth_service.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
-import 'device_detail_view.dart';
-import '../basic/models/device_model.dart';
+import '../../devices/device_detail_view.dart';
+import '../models/device_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeviceUnit extends StatefulWidget {

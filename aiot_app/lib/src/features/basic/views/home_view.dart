@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/type_tile.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/file_upload_view.dart';
 import 'package:ncue.aiot_app/src/features/devices/ac_panel.dart';
@@ -40,6 +41,7 @@ class _HomeState extends State<Home> {
       const RoomListView().getDataItemRoute(context, customName: '房間列表'),
       const IRDeviceControlPanel()
           .getDataItemRoute(context, customName: '紅外線控制器'),
+      const Dht11Unit(),
     ]));
     return grids;
   }

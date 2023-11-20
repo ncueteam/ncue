@@ -82,7 +82,7 @@ class _Dht11UnitState extends State<Dht11Unit> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(uuid.split('-').toString()),
+      // title: Text(uuid.split('-').toString()),
       subtitle: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[

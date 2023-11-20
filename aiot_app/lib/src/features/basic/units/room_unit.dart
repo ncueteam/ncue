@@ -3,8 +3,8 @@ import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
-import 'member_management_dialog.dart';
-import 'owner_management_dialog.dart';
+import '../../room_system/member_management_dialog.dart';
+import '../../room_system/owner_management_dialog.dart';
 
 class RoomUnit extends UnitTile {
   const RoomUnit({super.key, required this.roomData, required this.onChanged});
