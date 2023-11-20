@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/basic/units/unit.dart';
-import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
+import 'package:ncue.aiot_app/src/features/basic/units/type_tile.dart';
+import 'package:ncue.aiot_app/src/features/devices/add_device_view.dart';
 
 import '../basic/views/route_view.dart';
 
@@ -21,15 +21,20 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
       final RoomModel room = arguments['data'];
-      final List<DataItem> items = [];
-      items.add(DataItem("text", [], name: room.uuid));
-      items.add(DataItem(
-          "extend",
-          room.devices.map((e) {
-            return e.toDataItem();
-          }).toList(),
-          name: "房間內裝置"));
-      items.add(DataItem("addDevice", [room], name: "註冊裝置"));
+      final List<Widget> items = [];
+      items.add(Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(room.name),
+      ));
+      items.add(Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(room.uuid),
+      ));
+      items.add(TypeTile(
+          name: "房間內裝置",
+          children: (room.devices.map((e) => e.getUnit(context))).toList()));
+      items.add(const AddDeviceView()
+          .getDataItemRoute(context, data: {'data': room}, customName: "註冊裝置"));
       return Scaffold(
         appBar: AppBar(
           title: FittedBox(
@@ -46,12 +51,11 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
         body: Align(
             alignment: Alignment.center,
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(0.0),
               child: ListView.builder(
                 itemCount: items.length,
                 itemBuilder: (BuildContext context, int index) {
-                  DataItem item = items[index];
-                  return Unit(item: item);
+                  return items[index];
                 },
               ),
             )),

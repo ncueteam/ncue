@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/device_model.dart';
 import 'package:uuid/uuid.dart';
@@ -32,7 +31,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
 
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
-      final RoomModel roomData = arguments['roomData'];
+      final RoomModel roomData = arguments['data'];
       return Scaffold(
         appBar: AppBar(
           title: const Text("裝置註冊頁面"),
@@ -185,15 +184,15 @@ class AddDeviceViewState extends State<AddDeviceView> {
         });
   }
 
-  DataItem toDataItem() {
-    return DataItem(
-        "addDevice",
-        [
-          AddDeviceView(
-            roomData: widget.roomData,
-          ),
-          RouteView.model
-        ],
-        name: "註冊裝置");
-  }
+  // DataItem toDataItem() {
+  //   return DataItem(
+  //       "addDevice",
+  //       [
+  //         AddDeviceView(
+  //           roomData: widget.roomData,
+  //         ),
+  //         RouteView.model
+  //       ],
+  //       name: "註冊裝置");
+  // }
 }

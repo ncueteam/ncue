@@ -38,6 +38,8 @@ class _UnitTileState extends State<UnitTile> {
   @override
   Widget build(BuildContext context) {
     Widget result = ListTile(
+      contentPadding: const EdgeInsets.all(10),
+      titleAlignment: ListTileTitleAlignment.center,
       title: widget.title,
       subtitle: widget.subtitle,
       leading: widget.leading,
@@ -48,7 +50,7 @@ class _UnitTileState extends State<UnitTile> {
       //     Random().nextInt(255), Random().nextDouble()),
       onTap: () {
         setState(() {
-          _selected = !_selected;
+          // _selected = !_selected;
         });
         if (widget.onTap != null) {
           widget.onTap!();

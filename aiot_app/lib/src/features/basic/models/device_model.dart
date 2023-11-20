@@ -1,8 +1,12 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/services/local_auth_service.dart';
+import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
+import 'package:ncue.aiot_app/src/features/devices/device_detail_view.dart';
 import 'package:uuid/uuid.dart';
-
-import '../data_item.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeviceModel {
   static FirebaseFirestore database = FirebaseFirestore.instance;
@@ -26,6 +30,7 @@ class DeviceModel {
   String uuid = const Uuid().v1();
   String type = 'device';
   String iconPath = 'assets/images/flutter_logo.png';
+  bool authenticated = false;
 
   void debugData() {
     debugPrint("=================================================");
@@ -38,8 +43,59 @@ class DeviceModel {
     debugPrint("=================================================");
   }
 
-  DataItem toDataItem() {
-    return DataItem(type, [this], name: name, iconPath: iconPath);
+  UnitTile getUnit(BuildContext context) {
+    return UnitTile(
+      title: Text(name),
+      subtitle: Text("裝置類型: $type}"),
+      leading: CircleAvatar(
+        foregroundImage: AssetImage(iconPath),
+        backgroundColor: Colors.white,
+      ),
+      trailing: type == "bio_device" && !authenticated
+          ? IconButton(
+              onPressed: () async {
+                final authenticate = await LocalAuth.authenticate();
+                authenticated = authenticate;
+              },
+              icon: const Icon(Icons.fingerprint))
+          : Transform.rotate(
+              angle: pi / 2,
+              child: Switch(
+                value: powerOn,
+                onChanged: (bool value) => {
+                  powerOn = value,
+                  update(),
+                },
+              )),
+      onTap: () {
+        if (type == "bio_device") {
+          if (authenticated) {
+            Navigator.pushNamed(context, const DeviceDetailsView().routeName,
+                arguments: {'data': this});
+          } else {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text(AppLocalizations.of(context)!.appTitle),
+                    content: const Text("請先通過生物認證!"),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('關閉'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                });
+          }
+        } else if (type == "device") {
+          Navigator.pushNamed(context, const DeviceDetailsView().routeName,
+              arguments: {'data': this});
+        }
+      },
+    );
   }
 
   Future<DeviceModel> read(String uuidQuery) async {

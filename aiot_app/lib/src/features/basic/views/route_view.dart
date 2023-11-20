@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/basic/data_item.dart';
+import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/file_upload_view.dart';
 import 'package:ncue.aiot_app/src/features/devices/ac_panel.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
@@ -42,19 +42,18 @@ abstract class RouteView extends StatefulWidget {
     );
   }
 
-  DataItem getDataItemRoute({String customName = ""}) {
-    return DataItem("route", [this],
-        name: customName == "" ? routeName : customName);
-
-    // return ListTile(
-    //     key: ValueKey(this),
-    //     isThreeLine: true,
-    //     title: Text("前往頁面 : ${customName == "" ? routeName : customName}"),
-    //     subtitle: Text(routeName),
-    //     leading: Icon(routeIcon),
-    //     onTap: () {
-    //       // Navigator.pushNamed(, routeName);
-    //     });
+  UnitTile getDataItemRoute(BuildContext context,
+      {String customName = "", Map<String, dynamic> data = const {}}) {
+    return UnitTile(
+        key: ValueKey(this),
+        isThreeLine: true,
+        title: Text("前往頁面 : ${customName == "" ? routeName : customName}"),
+        subtitle: Text(routeName),
+        leading: Icon(routeIcon),
+        trailing: const Text("U"),
+        onTap: () {
+          Navigator.pushNamed(context, routeName, arguments: data);
+        });
   }
 
   static final SettingsController settingsController =

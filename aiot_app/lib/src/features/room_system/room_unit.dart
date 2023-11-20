@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
 import 'member_management_dialog.dart';
 import 'owner_management_dialog.dart';
 
-class RoomUnit extends StatefulWidget {
+class RoomUnit extends UnitTile {
   const RoomUnit({super.key, required this.roomData, required this.onChanged});
 
   final void Function(bool)? onChanged;
@@ -35,8 +36,6 @@ class _RoomUnitState extends State<RoomUnit> {
   }
 
   Future<void> showListDialogMember() async {
-    //List<UserModel> roomMembers = room.members.map((id) {return await UserModel().fromID(id);}).toList();
-
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -47,8 +46,6 @@ class _RoomUnitState extends State<RoomUnit> {
   }
 
   Future<void> showListDialogOwner() async {
-    //List<UserModel> roomMembers = room.members.map((id) {return await UserModel().fromID(id);}).toList();
-
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -60,10 +57,10 @@ class _RoomUnitState extends State<RoomUnit> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return UnitTile(
       isThreeLine: true,
       subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
             padding: const EdgeInsets.all(20.0),
@@ -93,6 +90,7 @@ class _RoomUnitState extends State<RoomUnit> {
           Padding(
             padding: const EdgeInsets.all(7.0),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ElevatedButton(
                     onPressed: () {

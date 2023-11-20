@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
-import 'package:ncue.aiot_app/src/features/basic/units/unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
+import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import '../auth_system/profile_view.dart';
 import '../settings/settings_view.dart';
-import '../basic/data_item.dart';
 
 class RoomListView extends RouteView {
   const RoomListView({super.key})
@@ -16,7 +14,7 @@ class RoomListView extends RouteView {
 }
 
 class _RoomListViewState extends State<RoomListView> {
-  List<DataItem> items = [];
+  List<Widget> items = [];
 
   @override
   void initState() {
@@ -24,8 +22,8 @@ class _RoomListViewState extends State<RoomListView> {
     super.initState();
   }
 
-  static Future<List<DataItem>> loadUnits() async {
-    List<DataItem> items = [];
+  static Future<List<Widget>> loadUnits() async {
+    List<Widget> items = [];
     return items;
   }
 
@@ -33,10 +31,10 @@ class _RoomListViewState extends State<RoomListView> {
     await RouteView.loadAccount();
     items = await loadUnits();
     for (String s in RouteView.model.rooms) {
-      items.add((await RoomModel().getRoomFromUuid(s)).toDataItem());
+      items.add((await RoomModel().getRoomFromUuid(s)).getUnit());
     }
     for (String s in RouteView.model.memberRooms) {
-      items.add((await RoomModel().getRoomFromUuid(s)).toDataItem());
+      items.add((await RoomModel().getRoomFromUuid(s)).getUnit());
     }
     setState(() {});
   }
@@ -52,9 +50,11 @@ class _RoomListViewState extends State<RoomListView> {
       body: RefreshIndicator(
         onRefresh: () => reload(),
         child: ListView.builder(
+          addRepaintBoundaries: false,
+          padding: EdgeInsets.zero,
           itemCount: items.length,
           itemBuilder: (BuildContext context, int index) {
-            return Unit(item: items[index]);
+            return items[index];
           },
         ),
       ),
