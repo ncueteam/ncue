@@ -25,7 +25,6 @@ class Home extends RouteView {
 
 class _HomeState extends State<Home> {
   List<Widget> grids = [];
-
   @override
   void initState() {
     reload();

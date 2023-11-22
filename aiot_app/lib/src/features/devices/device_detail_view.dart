@@ -54,6 +54,12 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
                     "裝置類型: ${item.type == "device" ? "一般裝置" : "生物解鎖裝置"}",
                     style: const TextStyle(fontSize: 20),
                   ),
+                  ElevatedButton(
+                      onPressed: () {
+                        item.delete();
+                        Navigator.pop(context);
+                      },
+                      child: const Text("刪除裝置")),
                   Slider(
                       value: item.temperature,
                       min: 16.0,

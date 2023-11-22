@@ -4,6 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:http/http.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FileService {
   final storage =
@@ -20,7 +22,6 @@ class FileService {
   Future selectImage() async {
     final result = await FilePicker.platform.pickFiles();
     if (result == null) return;
-    pickedFile = result.files.first;
     pickedFile = result.files.first;
     callback();
   }
@@ -59,12 +60,33 @@ class FileService {
     );
   }
 
-  Future<void> displayImageFromFirestore(String imageId) async {
+  Future<void> displayImageFromFirestore(context, String imageId) async {
     final imageUrl = await fetchImageUrl(imageId);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return displayImage(imageUrl);
+      },
+    );
     displayImage(imageUrl);
+    callback();
   }
 
-  Widget getInterface(BuildContext context) {
+  Future<void> downloadImage(String imageId) async {
+    final imageUrl = await fetchImageUrl(imageId);
+    final response = await get(Uri.parse(imageUrl));
+    final bytes = response.bodyBytes;
+
+    final directory = await getApplicationDocumentsDirectory();
+    final fileName = '$imageId.png';
+    final file = File('${directory.path}/$fileName');
+
+    await file.writeAsBytes(bytes);
+
+    Image.file(file, width: double.infinity);
+  }
+
+  Widget getUnit(BuildContext context) {
     return Center(
       child: Column(
         children: [

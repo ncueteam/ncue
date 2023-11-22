@@ -27,6 +27,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
       "lib/src/icons/fan.png",
       "lib/src/icons/smart-tv.png",
       "lib/src/icons/air-conditioner.png",
+      "lib/src/icons/degree&wet.png",
     ];
 
     final arguments = ModalRoute.of(context)?.settings.arguments;
@@ -146,8 +147,6 @@ class AddDeviceViewState extends State<AddDeviceView> {
             ),
             IconButton(
                 onPressed: () async {
-                  roomData.devices.add(await DeviceModel().read(deviceUUID));
-                  await roomData.update();
                   DeviceModel temp = DeviceModel();
                   temp.uuid = deviceUUID;
                   temp.type = deviceType;
@@ -155,10 +154,14 @@ class AddDeviceViewState extends State<AddDeviceView> {
                   temp.iconPath = deviceIconPath;
                   temp.powerOn = false;
                   temp.temperature = 28;
+                  temp.roomId = room.uuid;
 
                   await temp
                       .create()
                       .then((value) => Navigator.pop(context, true));
+
+                  roomData.devices.add(temp);
+                  await roomData.update();
                 },
                 icon: const Icon(Icons.add)),
           ]),

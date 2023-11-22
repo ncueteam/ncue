@@ -15,6 +15,7 @@ class DeviceModel {
     this.name = "Unnamed",
     this.powerOn = false,
     this.uuid = "error uuid",
+    this.roomId = "error room id",
     this.type = 'device',
     this.iconPath = 'assets/images/flutter_logo.png',
     this.temperature = 28.0,
@@ -28,6 +29,7 @@ class DeviceModel {
   bool powerOn = false;
   double temperature = 28.0;
   String uuid = const Uuid().v1();
+  String roomId = const Uuid().v1();
   String type = 'device';
   String iconPath = 'assets/images/flutter_logo.png';
   bool authenticated = false;
@@ -38,6 +40,7 @@ class DeviceModel {
     debugPrint("powerOn: $powerOn");
     debugPrint("type: $type");
     debugPrint("uuid: $uuid");
+    debugPrint("roomId: $roomId");
     debugPrint("iconPath: $iconPath");
     debugPrint("temperature: ${temperature.toString()}");
     debugPrint("=================================================");
@@ -98,6 +101,18 @@ class DeviceModel {
     );
   }
 
+  Map<String, dynamic> getDocument() {
+    return {
+      'uuid': uuid,
+      'device_name': name,
+      'roomId': roomId,
+      'iconPath': iconPath,
+      'type': type,
+      'powerOn': powerOn,
+      "temperature": temperature,
+    };
+  }
+
   Future<DeviceModel> read(String uuidQuery) async {
     CollectionReference devices =
         FirebaseFirestore.instance.collection('devices');
@@ -108,22 +123,26 @@ class DeviceModel {
         name = result['device_name'];
         powerOn = result['powerOn'];
         uuid = result['uuid'];
+        roomId = result['roomId'] ?? "error";
         iconPath = result['iconPath'];
-        type = result['type'];
+        debugPrint(result['type']);
+        type = result['type'] ?? "device";
         temperature = result['temperature'] ?? 28;
       }
     }
     return this;
   }
 
-  Future<void> create() async {
-    await FirebaseFirestore.instance.collection('devices').add({
-      'uuid': uuid,
-      'device_name': name,
-      'iconPath': iconPath,
-      'powerOn': powerOn,
-      "temperature": temperature,
-    });
+  Future<void> delete() async {
+    CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection('devices');
+    DocumentReference documentReference = collectionReference.doc(uuid);
+    documentReference.delete();
+  }
+
+  Future<DeviceModel> create() async {
+    await FirebaseFirestore.instance.collection('devices').add(getDocument());
+    return this;
   }
 
   Future<void> update() async {
@@ -135,15 +154,7 @@ class DeviceModel {
     if (querySnapshot.size > 0) {
       DocumentSnapshot documentSnapshot = querySnapshot.docs[0];
       DocumentReference documentReference = devices.doc(documentSnapshot.id);
-
-      Map<String, dynamic> updatedData = {
-        'uuid': uuid,
-        'device_name': name,
-        'iconPath': iconPath,
-        'powerOn': powerOn,
-        "temperature": temperature,
-      };
-      await documentReference.update(updatedData);
+      await documentReference.update(getDocument());
     } else {
       create();
     }
@@ -162,6 +173,7 @@ class DeviceModel {
         powerOn: result['powerOn'],
         uuid: result['uuid'],
         iconPath: result['iconPath'],
+        roomId: result['roomId'] ?? "error",
         type: result['type'],
         temperature: result['temperature'] ?? 28,
       ));

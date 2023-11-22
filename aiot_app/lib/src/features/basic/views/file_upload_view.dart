@@ -32,11 +32,14 @@ class _FileUploadViewState extends State<FileUploadView> {
               child: Text("選擇圖片並上傳!"),
             ),
             Expanded(
-              child: fileService.getInterface(context),
+              child: fileService.getUnit(context),
             ),
             ElevatedButton(
-              onPressed: () =>
-                  fileService.displayImageFromFirestore('server-icon.png'),
+              onPressed: () {
+                fileService.displayImageFromFirestore(
+                    context, 'server-icon.png');
+                fileService.downloadImage('server-icon.png');
+              },
               child: const Text('Display Image'),
             ),
           ],
