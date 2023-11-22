@@ -27,8 +27,8 @@ class RoomModel {
     uuid = id;
     devices = [];
     devices.addAll(addDevices);
-    addMembers = [];
-    addMembers.addAll(addMembers);
+    members = [];
+    members.addAll(addMembers);
     imagePath = path;
     description = roomDescription;
     initialize();
@@ -84,7 +84,7 @@ class RoomModel {
     debugPrint(documentIds.toString());
   }
 
-  Future<RoomModel> newRead(String roomID) async {
+  Future<RoomModel> read(String roomID) async {
     DocumentReference documentReference =
         FirebaseFirestore.instance.collection('rooms').doc(roomID);
     DocumentSnapshot documentSnapshot = await documentReference.get();
@@ -114,38 +114,40 @@ class RoomModel {
     return this;
   }
 
-  Future<RoomModel> read(String roomID) async {
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('rooms').get();
-    for (QueryDocumentSnapshot document in querySnapshot.docs) {
-      Map<String, dynamic> result = document.data() as Map<String, dynamic>;
-      if (result['uuid'] == roomID) {
-        List<dynamic> memberData = result['members'];
-        if (memberData.isNotEmpty) {
-          members = memberData.map((item) => item.toString()).toList();
-        } else {
-          members = [];
-        }
-        List<dynamic> deviceData = result['devices'];
-        if (deviceData.isNotEmpty) {
-          List<String> temp =
-              deviceData.map((item) => item.toString()).toList();
-          for (String D in temp) {
-            devices.add(await DeviceModel().read(D));
-          }
-        } else {
-          devices = [];
-        }
-        name = result['name'];
-        uuid = result['uuid'];
-        description = result['description'];
-        imagePath = result['imagePath'];
-        // debugData();
-        return this;
-      }
-    }
-    return this;
-  }
+  // Future<RoomModel> read(String roomID) async {
+  //   QuerySnapshot querySnapshot =
+  //       await FirebaseFirestore.instance.collection('rooms').get();
+  //   for (QueryDocumentSnapshot document in querySnapshot.docs) {
+  //     Map<String, dynamic> result = document.data() as Map<String, dynamic>;
+  //     if (result['uuid'] == roomID) {
+  //       List<dynamic> memberData = result['members'];
+  //       if (memberData.isNotEmpty) {
+  //         members = memberData.map((item) => item.toString()).toList();
+  //       } else {
+  //         members = [];
+  //       }
+  //       List<dynamic> deviceData = result['devices'];
+  //       if (deviceData.isNotEmpty) {
+  //         List<String> temp =
+  //             deviceData.map((item) => item.toString()).toList();
+  //         for (String D in temp) {
+  //           devices.add(await DeviceModel().read(D));
+  //         }
+  //       } else {
+  //         devices = [];
+  //       }
+  //       name = result['name'];
+  //       uuid = result['uuid'];
+  //       description = result['description'];
+  //       imagePath = result['imagePath'];
+  //       // debugData();
+  //       return this;
+  //     } else {
+  //       debugPrint("Room not found with ID: $roomID");
+  //     }
+  //   }
+  //   return this;
+  // }
 
   Future<void> update() async {
     CollectionReference reference =

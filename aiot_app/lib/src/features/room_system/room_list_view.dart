@@ -42,22 +42,19 @@ class _RoomListViewState extends State<RoomListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("房間列表"),
-        actions: [const SettingsView().getIconButton(context)],
-      ),
-      drawer: const Drawer(child: ProfileView()),
-      body: RefreshIndicator(
-        onRefresh: () => reload(),
-        child: ListView.builder(
-          addRepaintBoundaries: false,
-          padding: EdgeInsets.zero,
-          itemCount: items.length,
-          itemBuilder: (BuildContext context, int index) {
-            return items[index];
-          },
+        appBar: AppBar(
+          title: const Text("房間列表"),
+          actions: [const SettingsView().getIconButton(context)],
         ),
-      ),
-    );
+        drawer: const Drawer(child: ProfileView()),
+        body: RefreshIndicator(
+          onRefresh: () => reload(),
+          child: ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (BuildContext context, int index) {
+              return items[index];
+            },
+          ),
+        ));
   }
 }

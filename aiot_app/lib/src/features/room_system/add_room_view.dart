@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
-import 'package:uuid/uuid.dart';
 import '../basic/views/route_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -17,19 +16,11 @@ class AddRoomView extends RouteView {
 class AddRoomViewState extends State<AddRoomView> {
   TextEditingController roomName = TextEditingController();
   TextEditingController roomDiscription = TextEditingController();
-  String roomUUID = const Uuid().v1();
+  TextEditingController roomUUID = TextEditingController();
   String imagePath = "assets/room/room1.jpg";
 
   @override
   Widget build(BuildContext context) {
-    // final arguments = ModalRoute.of(context)?.settings.arguments;
-    // if (arguments != null && arguments is Map<String, dynamic>) {
-    //   } else {
-    //   return Container(
-    //     child: const Home().getIconButton(context),
-    //   );
-    // }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.roomChoosePage),
@@ -45,7 +36,7 @@ class AddRoomViewState extends State<AddRoomView> {
                 style: TextStyle(fontSize: 16),
               ),
               Text(
-                roomUUID,
+                roomUUID.text,
                 style: const TextStyle(fontSize: 15),
               ),
             ],
@@ -98,15 +89,14 @@ class AddRoomViewState extends State<AddRoomView> {
               onPressed: () async {
                 RoomModel room = RoomModel(
                   roomName: roomName.text,
-                  id: roomUUID,
                   roomDescription: roomDiscription.text,
                   path: imagePath,
                 );
                 room.members.add(RouteView.user!.uid.toString());
-                await room.create();
+                await room.create().then((value) => null);
                 room.debugData();
                 await RouteView.model
-                    .addRoom(roomUUID)
+                    .addRoom(room.uuid)
                     .then((value) => Navigator.pop(context, true));
               },
               icon: const Icon(Icons.add)),

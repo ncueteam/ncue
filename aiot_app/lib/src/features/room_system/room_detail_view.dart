@@ -22,17 +22,13 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
     if (arguments != null && arguments is Map<String, dynamic>) {
       final RoomModel room = arguments['data'];
       final List<Widget> items = [];
-      items.add(Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(room.name),
-      ));
-      items.add(Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(room.uuid),
-      ));
+      items.add(Text(room.name));
+      items.add(Text(room.uuid));
       items.add(TypeTile(
           name: "房間內裝置",
-          children: (room.devices.map((e) => e.getUnit(context))).toList()));
+          children: (room.devices.map((e) => e.getUnit(context, () {
+                setState(() {});
+              }))).toList()));
       items.add(const AddDeviceView()
           .getDataItemRoute(context, data: {'data': room}, customName: "註冊裝置"));
       return Scaffold(
@@ -55,7 +51,10 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
               child: ListView.builder(
                 itemCount: items.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return items[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: items[index],
+                  );
                 },
               ),
             )),

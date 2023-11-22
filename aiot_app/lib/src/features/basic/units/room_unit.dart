@@ -57,35 +57,25 @@ class _RoomUnitState extends State<RoomUnit> {
 
   @override
   Widget build(BuildContext context) {
-    return UnitTile(
-      isThreeLine: true,
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
             ),
             child: Image.asset(room.imagePath),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20 / 4),
-                    child:
-                        Text(room.name, style: const TextStyle(fontSize: 20))),
-                Text("房間主人:${room.owner.displayName}"),
-                Text(
-                  room.description,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-              ],
-            ),
+              padding: const EdgeInsets.symmetric(horizontal: 20 / 4),
+              child: Text(room.name, style: const TextStyle(fontSize: 20))),
+          Text("房間主人:${room.owner.displayName}"),
+          Text(
+            room.description,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           Padding(
             padding: const EdgeInsets.all(7.0),

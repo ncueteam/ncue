@@ -46,59 +46,91 @@ class DeviceModel {
     debugPrint("=================================================");
   }
 
-  UnitTile getUnit(BuildContext context) {
-    return UnitTile(
-      title: Text(name),
-      subtitle: Text("裝置類型: $type}"),
-      leading: CircleAvatar(
-        foregroundImage: AssetImage(iconPath),
-        backgroundColor: Colors.white,
-      ),
-      trailing: type == "bio_device" && !authenticated
-          ? IconButton(
-              onPressed: () async {
-                final authenticate = await LocalAuth.authenticate();
-                authenticated = authenticate;
-              },
-              icon: const Icon(Icons.fingerprint))
-          : Transform.rotate(
+  UnitTile getUnit(BuildContext context, VoidCallback callback) {
+    switch (type) {
+      case "device":
+        return UnitTile(
+          title: Text(name),
+          subtitle: const Text("裝置類型: 一般裝置"),
+          leading: CircleAvatar(
+            foregroundImage: AssetImage(iconPath),
+            backgroundColor: Colors.white,
+          ),
+          trailing: Transform.rotate(
               angle: pi / 2,
               child: Switch(
                 value: powerOn,
                 onChanged: (bool value) => {
                   powerOn = value,
-                  update(),
+                  update().then(
+                    (value) {
+                      callback();
+                    },
+                  )
                 },
               )),
-      onTap: () {
-        if (type == "bio_device") {
-          if (authenticated) {
+          onTap: () {
             Navigator.pushNamed(context, const DeviceDetailsView().routeName,
                 arguments: {'data': this});
-          } else {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text(AppLocalizations.of(context)!.appTitle),
-                    content: const Text("請先通過生物認證!"),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('關閉'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
+          },
+        );
+      case "bio_device":
+        return UnitTile(
+          title: Text(name),
+          subtitle: const Text("裝置類型: 生物解鎖裝置"),
+          leading: CircleAvatar(
+            foregroundImage: AssetImage(iconPath),
+            backgroundColor: Colors.white,
+          ),
+          trailing: !authenticated
+              ? IconButton(
+                  onPressed: () async {
+                    final authenticate = await LocalAuth.authenticate();
+                    authenticated = authenticate;
+                    callback();
+                  },
+                  icon: const Icon(Icons.fingerprint))
+              : Transform.rotate(
+                  angle: pi / 2,
+                  child: Switch(
+                    value: powerOn,
+                    onChanged: (bool value) => {
+                      powerOn = value,
+                      update().then(
+                        (value) {
+                          callback();
                         },
-                      ),
-                    ],
-                  );
-                });
-          }
-        } else if (type == "device") {
-          Navigator.pushNamed(context, const DeviceDetailsView().routeName,
-              arguments: {'data': this});
-        }
-      },
-    );
+                      )
+                    },
+                  )),
+          onTap: () {
+            if (authenticated) {
+              Navigator.pushNamed(context, const DeviceDetailsView().routeName,
+                  arguments: {'data': this});
+            } else {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text(AppLocalizations.of(context)!.appTitle),
+                      content: const Text("請先通過生物認證!"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('關閉'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  });
+            }
+          },
+        );
+      default:
+        debugPrint("type:$type");
+        return const UnitTile();
+    }
   }
 
   Map<String, dynamic> getDocument() {

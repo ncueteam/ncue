@@ -52,33 +52,9 @@ class _DeviceUnitState extends State<DeviceUnit> {
                 },
               )),
           onTap: () {
-            if (device.type == "bio_device") {
-              if (authenticated) {
-                Navigator.pushNamed(
-                    context, const DeviceDetailsView().routeName,
-                    arguments: {'data': device});
-              } else {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text(AppLocalizations.of(context)!.appTitle),
-                        content: const Text("請先通過生物認證!"),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('關閉'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    });
-              }
-            } else if (device.type == "device") {
-              Navigator.pushNamed(context, const DeviceDetailsView().routeName,
-                  arguments: {'data': device});
-            }
+            debugPrint("onTap");
+            Navigator.pushNamed(context, const DeviceDetailsView().routeName,
+                arguments: {'data': device});
           },
         );
       case "bio_device":
