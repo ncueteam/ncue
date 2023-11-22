@@ -134,10 +134,15 @@ class DeviceModel {
   }
 
   Future<void> delete() async {
-    CollectionReference collectionReference =
+    CollectionReference devices =
         FirebaseFirestore.instance.collection('devices');
-    DocumentReference documentReference = collectionReference.doc(uuid);
-    documentReference.delete();
+    QuerySnapshot querySnapshot = await devices.get();
+    for (QueryDocumentSnapshot document in querySnapshot.docs) {
+      Map<String, dynamic> result = document.data() as Map<String, dynamic>;
+      if (result['uuid'] == uuid) {
+        document.reference.delete();
+      }
+    }
   }
 
   Future<DeviceModel> create() async {

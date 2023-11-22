@@ -18,7 +18,6 @@ class AddDeviceViewState extends State<AddDeviceView> {
   TextEditingController deviceName = TextEditingController();
   String deviceIconPath = "lib/src/icons/light-bulb.png";
   String deviceUUID = const Uuid().v1();
-  RoomModel room = RoomModel();
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +153,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
                   temp.iconPath = deviceIconPath;
                   temp.powerOn = false;
                   temp.temperature = 28;
-                  temp.roomId = room.uuid;
+                  temp.roomId = roomData.uuid;
 
                   await temp
                       .create()
