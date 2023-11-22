@@ -8,26 +8,27 @@ import 'package:ncue.aiot_app/src/features/basic/units/room_unit.dart';
 
 class RoomModel {
   static FirebaseFirestore database = FirebaseFirestore.instance;
-  String uuid = "Error";
-  String name = "Error";
-  String imagePath = "";
-  String description = "";
-  User owner = RouteView.user!;
-  List<String> members = [];
-  List<DeviceModel> devices = [];
+  late String uuid;
+  late String name;
+  late String imagePath;
+  late String description;
+  late User owner;
+  late List<String> members;
+  late List<DeviceModel> devices;
 
   RoomModel(
       {String roomName = "Error name",
       String id = "Error id",
       List<DeviceModel> addDevices = const [],
-      List<String> members = const [],
+      List<String> addMembers = const [],
       String path = "assets/room/room1.jpg",
       String roomDescription = "no description"}) {
     name = roomName;
     uuid = id;
     devices = [];
     devices.addAll(addDevices);
-    members = members;
+    addMembers = [];
+    addMembers.addAll(addMembers);
     imagePath = path;
     description = roomDescription;
     initialize();
@@ -54,24 +55,66 @@ class RoomModel {
     return RoomUnit(roomData: this, onChanged: (x) {});
   }
 
-  Future<void> loadRoomData(String uuid) async {
-    CollectionReference reference =
-        FirebaseFirestore.instance.collection('rooms');
-    QuerySnapshot querySnapshot =
-        await reference.where('uuid', isEqualTo: uuid).get();
-    QueryDocumentSnapshot lst = querySnapshot.docs.first;
-    name = lst['name'];
-    uuid = lst['uuid'];
-    description = lst['description'];
-    imagePath = lst['imagePath'];
-    members = lst['members'];
-
-    for (String s in lst['devices']) {
-      devices.add(await DeviceModel().read(s));
-    }
+  Map<String, dynamic> getDocument() {
+    return {
+      'name': name,
+      "uuid": uuid,
+      'description': description,
+      'imagePath': imagePath,
+      'members': members,
+      'devices': devices.map((item) => item.uuid),
+    };
   }
 
-  Future<RoomModel> getRoomFromUuid(String roomID) async {
+  Future<void> create() async {
+    DocumentReference documentReference =
+        await database.collection('rooms').add(getDocument());
+    uuid = documentReference.id;
+  }
+
+  static Future<void> getDocIds() async {
+    CollectionReference roomsRef =
+        FirebaseFirestore.instance.collection('rooms');
+    QuerySnapshot querySnapshot = await roomsRef.get();
+
+    List<String> documentIds = [];
+    for (DocumentSnapshot document in querySnapshot.docs) {
+      documentIds.add(document.id);
+    }
+    debugPrint(documentIds.toString());
+  }
+
+  Future<RoomModel> newRead(String roomID) async {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('rooms').doc(roomID);
+    DocumentSnapshot documentSnapshot = await documentReference.get();
+
+    if (documentSnapshot.exists) {
+      Map<String, dynamic> data =
+          documentSnapshot.data() as Map<String, dynamic>;
+      /* load member */
+      List<dynamic> memberData = data['members'];
+      if (memberData.isNotEmpty) {
+        members = memberData.map((item) => item.toString()).toList();
+      }
+      /* load device */
+      List<dynamic> deviceData = data['devices'];
+      if (deviceData.isNotEmpty) {
+        List<String> temp = deviceData.map((item) => item.toString()).toList();
+        for (String D in temp) {
+          devices.add(await DeviceModel().read(D));
+        }
+      }
+      /* others */
+      name = data['name'];
+      description = data['description'];
+      imagePath = data['imagePath'];
+      uuid = roomID;
+    }
+    return this;
+  }
+
+  Future<RoomModel> read(String roomID) async {
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection('rooms').get();
     for (QueryDocumentSnapshot document in querySnapshot.docs) {
@@ -113,56 +156,9 @@ class RoomModel {
     if (querySnapshot.size > 0) {
       DocumentSnapshot documentSnapshot = querySnapshot.docs[0];
       DocumentReference documentReference = reference.doc(documentSnapshot.id);
-
-      Map<String, dynamic> updatedData = {
-        'name': name,
-        "uuid": uuid,
-        'description': description,
-        'imagePath': imagePath,
-        'members': members,
-        'devices': devices.map((item) => item.uuid),
-      };
-      await documentReference.update(updatedData);
+      await documentReference.update(getDocument());
     } else {
       create();
     }
-  }
-
-  Future<void> addDevice(RoomModel model, String deviceUUID) async {
-    CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection('rooms');
-    QuerySnapshot querySnapshot =
-        await usersCollection.where('uuid', isEqualTo: model.uuid).get();
-    if (querySnapshot.docs.isNotEmpty) {
-      DocumentReference documentReference = querySnapshot.docs[0].reference;
-      List<dynamic> currentDevices = querySnapshot.docs[0].get('devices') ?? [];
-      currentDevices.add(deviceUUID);
-      await documentReference.update({'devices': currentDevices});
-    } else {
-      debugPrint('Document with uuid "${model.uuid}" not found.');
-    }
-  }
-
-  Future<void> createRoomData(RoomModel model) async {
-    database.collection('rooms').add({
-      'name': model.name,
-      "uuid": model.uuid,
-      'description': model.description,
-      'imagePath': model.imagePath,
-      'members': model.members,
-      "devices": <String>[],
-    });
-  }
-
-  Future<void> create() async {
-    database.collection('rooms').add({
-      'owner': owner.uid,
-      'name': name,
-      "uuid": uuid,
-      'description': description,
-      'imagePath': imagePath,
-      'members': members,
-      "devices": devices.map((item) => item.uuid),
-    });
   }
 }

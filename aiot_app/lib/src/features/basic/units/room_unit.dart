@@ -30,7 +30,7 @@ class _RoomUnitState extends State<RoomUnit> {
     getUsers();
     room = widget.roomData;
 
-    // room.initialize();
+    room.initialize();
     super.initState();
     setState(() {});
   }
