@@ -29,10 +29,7 @@ class _OwnerManagementDialogState extends State<OwnerManagementDialog> {
       if (user.name.contains(searchBar.text)) {
         if (widget.room.owner.uid != user.uuid) {
           temp.add(user);
-        } /*else {
-          temp.insert(0, user);
-          //debugPrint(temp[0].name);
-        }*/
+        }
       }
     }
 
@@ -63,9 +60,6 @@ class _OwnerManagementDialogState extends State<OwnerManagementDialog> {
             onChanged: (value) {
               setState(() {
                 debugPrint(searchBar.text);
-                /*for (UserModel user in temp) {
-                  debugPrint(user.name);
-                }*/
               });
             }),
       ),
@@ -88,10 +82,6 @@ class _OwnerManagementDialogState extends State<OwnerManagementDialog> {
                       member.update().then((value) => setState(() {
                             Navigator.pop(context);
                             Navigator.pop(context);
-
-                            //widget.room.owner = member;
-                            //widget.room.update();
-                            //debugPrint(widget.room.owner.displayName);
                           }));
                     },
                     child: const Text("轉移"),

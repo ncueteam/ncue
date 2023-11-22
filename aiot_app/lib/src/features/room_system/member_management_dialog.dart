@@ -27,7 +27,7 @@ class _MemberManagementDialogState extends State<MemberManagementDialog> {
 
     for (UserModel user in widget.userModels) {
       if (user.name.contains(searchBar.text)) {
-        if (widget.room.members.contains(user.name) == true) {
+        if (widget.room.members.contains(user.uuid) == true) {
           temp.add(user);
         } else {
           temp.insert(0, user);
@@ -78,12 +78,14 @@ class _MemberManagementDialogState extends State<MemberManagementDialog> {
               return ListTile(
                   leading: const CircleAvatar(child: Icon(Icons.people)),
                   title: Text(member.name),
-                  trailing: widget.room.members.contains(member.name)
+                  trailing: widget.room.members.contains(member.uuid)
                       ? ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              widget.room.members.remove(member.name);
+                              widget.room.members.remove(member.uuid);
+                              member.memberRooms.remove(widget.room.uuid);
                               widget.room.update();
+                              member.update();
                               for (String name in widget.room.members) {
                                 debugPrint(name);
                               }
@@ -94,8 +96,10 @@ class _MemberManagementDialogState extends State<MemberManagementDialog> {
                       : ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              widget.room.members.add(member.name);
+                              widget.room.members.add(member.uuid);
+                              member.memberRooms.add(widget.room.uuid);
                               widget.room.update();
+                              member.update();
                               for (String name in widget.room.members) {
                                 debugPrint(name);
                               }
