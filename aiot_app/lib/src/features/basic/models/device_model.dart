@@ -157,7 +157,6 @@ class DeviceModel {
         uuid = result['uuid'];
         roomId = result['roomId'] ?? "error";
         iconPath = result['iconPath'];
-        debugPrint(result['type']);
         type = result['type'] ?? "device";
         temperature = result['temperature'] ?? 28;
       }

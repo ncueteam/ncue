@@ -23,19 +23,19 @@ class _RoomListViewState extends State<RoomListView> {
   }
 
   static Future<List<Widget>> loadUnits() async {
-    List<Widget> items = [];
-    return items;
+    List<Widget> temp = [];
+    for (String s in RouteView.model.rooms) {
+      temp.add((await RoomModel().read(s)).getUnit());
+    }
+    for (String s in RouteView.model.memberRooms) {
+      temp.add((await RoomModel().read(s)).getUnit());
+    }
+    return temp;
   }
 
   Future<void> reload() async {
     await RouteView.loadAccount();
     items = await loadUnits();
-    for (String s in RouteView.model.rooms) {
-      items.add((await RoomModel().read(s)).getUnit());
-    }
-    for (String s in RouteView.model.memberRooms) {
-      items.add((await RoomModel().read(s)).getUnit());
-    }
     setState(() {});
   }
 
