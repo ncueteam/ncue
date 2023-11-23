@@ -101,7 +101,7 @@ class _RoomUnitState extends State<RoomUnit> {
                       onPressed: () {
                         Navigator.pushNamed(
                             context, const RoomDetailsView().routeName,
-                            arguments: {'data': room});
+                            arguments: {'data': room.uuid});
                       },
                       child: const Text("詳細資料")),
                 ],

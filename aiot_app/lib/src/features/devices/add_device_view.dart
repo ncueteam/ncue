@@ -122,6 +122,32 @@ class AddDeviceViewState extends State<AddDeviceView> {
             hintText: '裝置名稱',
           ),
         ),
+        if (temp.type == "ir_controller")
+          Row(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: Text("裝置類型", style: TextStyle(fontSize: 17)),
+              ),
+              DropdownButton<String>(
+                onChanged: (value) {
+                  temp.subType = value!;
+                  setState(() {});
+                },
+                value: temp.subType,
+                items: const [
+                  DropdownMenuItem(
+                    value: "fan",
+                    child: Text("風扇"),
+                  ),
+                  DropdownMenuItem(
+                    value: "tv",
+                    child: Text("電視"),
+                  ),
+                ],
+              ),
+            ],
+          ),
         Row(
           children: [
             const Padding(
