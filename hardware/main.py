@@ -44,7 +44,7 @@ def sub_cb(topic,msg):
         if(DB.type=="ir_tx"):
                 if(DB.protocol=="NEC16"):
                     ir_tx.transmit(0x0000, int(DB.data))
-                    web_api.send_ir_data(uuid, int(DB.data))
+#                     web_api.send_ir_data(uuid, int(DB.data))
                     #print("ir_tx:"+DB.data)
 #         else if(DB.type=="ir_rx"):
 #                 global ir_data
@@ -91,7 +91,7 @@ def main():
 #        mqClient0.routine(ujson.dumps({"type":"dht11","uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
         mqClient0.publish(b'AIOT_113/Esp32Send', ujson.dumps({"type":"dht11","uuid":'',"humidity":dht.hum,"temperature":dht.temp}))
         mqClient0.check_msg()
-        web_api.sendDHTData(uuid, str(dht.hum), str(dht.temp))
+#         web_api.sendDHTData(DB.generate_uuid(), str(dht.hum), str(dht.temp))
         
         screen.blank()
         screen.drawSleepPage()
