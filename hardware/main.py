@@ -51,8 +51,16 @@ def sub_cb(topic,msg):
 #                     if ir_data >= 0:
 #                     print(ir_data)
         if(DB.type=="register_device"):
-            if(DB.data=="switch"):
-                DB.create(DB.uuid,DB.data)            
+            if(DB.type_data=="switch"):
+                DB.create(DB.uuid,DB.type_data)
+            else if(DB.type_data=="bio_device"):
+                DB.create(DB.uuid,DB.type_datadata)
+            else if(DB.type_data=="slide_device"):
+                DB.create(DB.uuid,DB.type_data)
+            else if(DB.type_data=="wet_degree_sensor"):
+                DB.create(DB.uuid,DB.type_data)
+            else if(DB.type_data=="ir_controller"):
+                DB.create(DB.uuid,DB.type_data)
                         
 def link():
     print("link")

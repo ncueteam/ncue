@@ -84,4 +84,8 @@ class FileSet:
             self.uuid = temp['uuid']
         except:
             self.uuid = "error"
+        try:
+            self.type_data = temp['type_data']
+        except:
+            self.type_data = "error"
         
