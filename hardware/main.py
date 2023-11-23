@@ -35,15 +35,16 @@ dht = dht11.Sensor()
 def sub_cb(topic,msg):
         print(str(topic,"UTF-8")+","+str(msg,"UTF-8"))
         DB.handle_json(msg)
-#         print(DB.type)
-#         print(DB.clientID)
-#         print(DB.protocol)
-#         print(DB.data)
+#         print("type:"+DB.type)
+#         print("clientID:"+DB.clientID)
+#         print("protocol:"+DB.protocol)
+#         print("data:"+DB.data)
 #         if(DB.clientID=="N0UACuslmEQpDjrJCpaakwsWaLB3"):
 
         if(DB.type=="ir_tx"):
                 if(DB.protocol=="NEC16"):
                     ir_tx.transmit(0x0000, int(DB.data))
+                    web_api.send_ir_data(uuid, int(DB.data))
                     #print("ir_tx:"+DB.data)
 #         else if(DB.type=="ir_rx"):
 #                 global ir_data
@@ -53,13 +54,13 @@ def sub_cb(topic,msg):
         if(DB.type=="register_device"):
             if(DB.type_data=="switch"):
                 DB.create(DB.uuid,DB.type_data)
-            else if(DB.type_data=="bio_device"):
+            elif(DB.type_data=="bio_device"):
                 DB.create(DB.uuid,DB.type_datadata)
-            else if(DB.type_data=="slide_device"):
+            elif(DB.type_data=="slide_device"):
                 DB.create(DB.uuid,DB.type_data)
-            else if(DB.type_data=="wet_degree_sensor"):
+            elif(DB.type_data=="wet_degree_sensor"):
                 DB.create(DB.uuid,DB.type_data)
-            else if(DB.type_data=="ir_controller"):
+            elif(DB.type_data=="ir_controller"):
                 DB.create(DB.uuid,DB.type_data)
                         
 def link():
@@ -71,10 +72,18 @@ def main():
     import machine
     import ubinascii
     from file_system import ujson
+    import web_api
+    
     mqClient0 = MQTTClient(ubinascii.hexlify(machine.unique_id()), 'test.mosquitto.org')
     mqClient0.connect()
     mqClient0.set_callback(sub_cb)
     mqClient0.subscribe(b"AIOT_113/AppSend")
+    
+    import oled
+    screen = oled.OLED()#OLED顯示器
+    screen.blank()
+    screen.centerText(4,"NCUE AIOT")
+    screen.show()
     
     while True:
         dht.wait()
@@ -82,6 +91,16 @@ def main():
 #        mqClient0.routine(ujson.dumps({"type":"dht11","uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
         mqClient0.publish(b'AIOT_113/Esp32Send', ujson.dumps({"type":"dht11","uuid":'',"humidity":dht.hum,"temperature":dht.temp}))
         mqClient0.check_msg()
+        web_api.sendDHTData(uuid, str(dht.hum), str(dht.temp))
+        
+        screen.blank()
+        screen.drawSleepPage()
+        screen.displayTime()
+#         screen.text(64, 3, ir.result)
+        screen.text(64, 5, str(dht.hum)+" "+str(dht.temp))
+        screen.show()
+#         ir.send("0xff")
+
     mqClient0.disconnect()
 
 main()
