@@ -170,18 +170,36 @@ class AddDeviceViewState extends State<AddDeviceView> {
           children: [
             ElevatedButton(
                 onPressed: () async {
-                  temp.name = deviceName.text;
-                  temp.roomId = roomData.uuid;
+                  if (deviceName.text != "") {
+                    temp.name = deviceName.text;
+                    temp.roomId = roomData.uuid;
 
-                  await temp
-                      .create()
-                      .then((value) => roomData.devices.add(temp))
-                      .then((value) async => await roomData.update())
-                      .then((value) => mqttService.send(
-                          '{"type":"register_device","type_data":"${temp.type}","uuid":"${temp.uuid}"}'))
-                      // .then((value) => temp.debugData())
-                      // .then((value) => roomData.debugData())
-                      .then((value) => Navigator.pop(context, true));
+                    await temp
+                        .create()
+                        .then((value) => roomData.devices.add(temp))
+                        .then((value) async => await roomData.update())
+                        .then((value) => mqttService.send(
+                            '{"type":"register_device","type_data":"${temp.type}","uuid":"${temp.uuid}"}'))
+                        // .then((value) => temp.debugData())
+                        // .then((value) => roomData.debugData())
+                        .then((value) => Navigator.pop(context, true));
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (context) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                color: const Color.fromRGBO(200, 200, 200, 0.2),
+                                padding: const EdgeInsets.all(20.0),
+                                child: const FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      "請輸入裝置名稱",
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                              ),
+                            ));
+                  }
                 },
                 child: const Row(children: [Text("註冊裝置"), Icon(Icons.add)])),
           ],
