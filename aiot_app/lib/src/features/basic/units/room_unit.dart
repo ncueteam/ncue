@@ -57,55 +57,59 @@ class _RoomUnitState extends State<RoomUnit> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
+    if (room.uuid == "error uuid") {
+      return Container();
+    } else {
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Image.asset(room.imagePath),
             ),
-            child: Image.asset(room.imagePath),
-          ),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20 / 4),
-              child: Text(room.name, style: const TextStyle(fontSize: 20))),
-          Text("房間主人:${room.owner.displayName}"),
-          Text(
-            room.description,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(7.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ElevatedButton(
-                    onPressed: () {
-                      showListDialogOwner();
-                    },
-                    child: const Text("轉移房間主人")),
-                const Spacer(),
-                ElevatedButton(
-                    onPressed: () {
-                      showListDialogMember();
-                    },
-                    child: const Text("邀請")),
-                const Spacer(),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, const RoomDetailsView().routeName,
-                          arguments: {'data': room});
-                    },
-                    child: const Text("詳細資料")),
-              ],
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20 / 4),
+                child: Text(room.name, style: const TextStyle(fontSize: 20))),
+            Text("房間主人:${room.owner.displayName}"),
+            Text(
+              room.description,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
-          )
-        ],
-      ),
-    );
+            Padding(
+              padding: const EdgeInsets.all(7.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        showListDialogOwner();
+                      },
+                      child: const Text("轉移房間主人")),
+                  const Spacer(),
+                  ElevatedButton(
+                      onPressed: () {
+                        showListDialogMember();
+                      },
+                      child: const Text("邀請")),
+                  const Spacer(),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, const RoomDetailsView().routeName,
+                            arguments: {'data': room.uuid});
+                      },
+                      child: const Text("詳細資料")),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    }
   }
 }

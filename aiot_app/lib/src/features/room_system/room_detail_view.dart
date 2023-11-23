@@ -17,7 +17,6 @@ class RoomDetailsView extends RouteView {
 
 class _DeviceDetailsViewState extends State<RoomDetailsView> {
   List<Widget> items = [];
-  late RoomModel room;
   @override
   void initState() {
     super.initState();
@@ -27,30 +26,32 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
     items.clear();
     Map<String, dynamic> arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    room = arguments['data'];
-    items.add(Text(room.name));
-    items.add(Text(room.uuid));
-    items.add(TypeTile(
-        name: "房間內裝置",
-        children: (room.devices.map((e) => e.getUnit(context, () {
-              setState(() {});
-            }))).toList()));
-    items.add(const AddDeviceView()
-        .getDataItemRoute(context, data: {'data': room}, customName: "註冊裝置"));
+    await RoomModel().read(arguments['data'] as String).then((room) async {
+      items.add(Text(room.name));
+      items.add(Text(room.uuid));
+      items.add(TypeTile(
+          name: "房間內裝置",
+          children: (room.devices.map((e) => e.getUnit(context, () {
+                setState(() {});
+              }))).toList()));
+      items.add(const AddDeviceView()
+          .getUnit(context, data: {'data': room}, customName: "註冊裝置"));
+    }).then((value) {
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    reload(context);
     return Scaffold(
         appBar: AppBar(
-          title: FittedBox(
+          title: const FittedBox(
             fit: BoxFit.scaleDown,
             child: Row(children: [
               Center(
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
-                  child: Text(room.name, style: const TextStyle(fontSize: 30)),
+                  child: Text("房間內容", style: TextStyle(fontSize: 30)),
                 ),
               )
             ]),
@@ -59,6 +60,7 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
         body: RefreshIndicator(
           onRefresh: () async {
             await reload(context);
+            setState(() {});
           },
           child: ListView.builder(
             padding: const EdgeInsets.all(20.0),

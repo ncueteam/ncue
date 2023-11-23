@@ -4,7 +4,6 @@ import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/mqtt_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/type_tile.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/file_upload_view.dart';
-import 'package:ncue.aiot_app/src/features/devices/ac_panel.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
 import 'package:ncue.aiot_app/src/features/room_system/add_room_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
@@ -17,8 +16,6 @@ import 'route_view.dart';
 
 class Home extends RouteView {
   const Home({super.key}) : super(routeName: '/home', routeIcon: Icons.home);
-
-  // static BuildContext homeContext;
 
   @override
   State<Home> createState() => _HomeState();
@@ -36,12 +33,10 @@ class _HomeState extends State<Home> {
     grids.clear();
     grids.add(TypeTile(name: "捷徑", children: [
       const MqttUnit(uuid: "302"),
-      const AddRoomView().getDataItemRoute(context, customName: "註冊房間"),
-      const ACPanel().getDataItemRoute(context, customName: '冷氣遙控'),
-      const FileUploadView().getDataItemRoute(context, customName: '上傳檔案'),
-      const RoomListView().getDataItemRoute(context, customName: '房間列表'),
-      const IRDeviceControlPanel()
-          .getDataItemRoute(context, customName: '紅外線控制器'),
+      const AddRoomView().getUnit(context, customName: "註冊房間"),
+      const FileUploadView().getUnit(context, customName: '上傳檔案'),
+      const RoomListView().getUnit(context, customName: '房間列表'),
+      const IRDeviceControlPanel().getUnit(context, customName: '紅外線控制器'),
       const Dht11Unit(),
     ]));
     return grids;

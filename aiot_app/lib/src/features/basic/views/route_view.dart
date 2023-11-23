@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/file_upload_view.dart';
-import 'package:ncue.aiot_app/src/features/devices/ac_panel.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
 import 'package:ncue.aiot_app/src/features/notify_system/notify_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/add_room_view.dart';
@@ -42,7 +41,7 @@ abstract class RouteView extends StatefulWidget {
     );
   }
 
-  UnitTile getDataItemRoute(BuildContext context,
+  UnitTile getUnit(BuildContext context,
       {String customName = "", Map<String, dynamic> data = const {}}) {
     return UnitTile(
         key: ValueKey(this),
@@ -98,7 +97,6 @@ abstract class RouteView extends StatefulWidget {
     RoomListView(),
     RoomDetailsView(),
     AddRoomView(),
-    ACPanel(),
     FileUploadView(),
   ];
 }

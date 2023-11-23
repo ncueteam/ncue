@@ -6,21 +6,22 @@ import 'package:ncue.aiot_app/src/features/basic/services/local_auth_service.dar
 import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 import 'package:ncue.aiot_app/src/features/devices/device_detail_view.dart';
+import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeviceModel {
   static FirebaseFirestore database = FirebaseFirestore.instance;
 
-  DeviceModel({
-    this.name = "Unnamed",
-    this.powerOn = false,
-    this.uuid = "error uuid",
-    this.roomId = "error room id",
-    this.type = 'device',
-    this.iconPath = 'assets/images/flutter_logo.png',
-    this.temperature = 28.0,
-  });
+  DeviceModel(
+      {this.name = "Unnamed",
+      this.powerOn = false,
+      this.uuid = "error uuid",
+      this.roomId = "error room id",
+      this.type = 'device',
+      this.iconPath = 'assets/images/flutter_logo.png',
+      this.temperature = 28.0,
+      this.subType = "fan"});
 
   DeviceModel self() {
     return this;
@@ -31,7 +32,8 @@ class DeviceModel {
   double temperature = 28.0;
   String uuid = const Uuid().v1();
   String roomId = const Uuid().v1();
-  String type = 'device';
+  String type = 'switch';
+  String subType = 'fan';
   String iconPath = 'assets/images/flutter_logo.png';
   bool authenticated = false;
   bool bioLocked = false;
@@ -41,6 +43,7 @@ class DeviceModel {
     debugPrint("name: $name");
     debugPrint("powerOn: $powerOn");
     debugPrint("type: $type");
+    debugPrint("subType: $subType");
     debugPrint("uuid: $uuid");
     debugPrint("roomId: $roomId");
     debugPrint("iconPath: $iconPath");
@@ -134,6 +137,33 @@ class DeviceModel {
             }
           },
         );
+      case "ir_controller":
+        debugData();
+        return UnitTile(
+          title: Text(name),
+          subtitle: const Text("裝置類型:開關"),
+          leading: CircleAvatar(
+            foregroundImage: AssetImage(iconPath),
+            backgroundColor: Colors.white,
+          ),
+          trailing: Transform.rotate(
+              angle: pi / 2,
+              child: Switch(
+                value: powerOn,
+                onChanged: (bool value) => {
+                  powerOn = value,
+                  update().then(
+                    (value) {
+                      callback();
+                    },
+                  )
+                },
+              )),
+          onTap: () {
+            Navigator.pushNamed(context, const IRDeviceControlPanel().routeName,
+                arguments: {'data': this});
+          },
+        );
       default:
         debugPrint("type:$type");
         return const UnitTile();
@@ -150,6 +180,7 @@ class DeviceModel {
       'powerOn': powerOn,
       'temperature': temperature,
       'bioLocked': bioLocked,
+      'subType': subType,
     };
   }
 
@@ -173,6 +204,7 @@ class DeviceModel {
         type = result['type'] ?? "device";
         temperature = result['temperature'] ?? 28;
         bioLocked = result['bioLocked'] ?? false;
+        subType = result['subType'] ?? "fan";
       }
     }
     return this;
@@ -222,6 +254,7 @@ class DeviceModel {
       temp.type = result['type'];
       temp.temperature = result['temperature'] ?? 28;
       temp.bioLocked = result['bioLocked'] ?? false;
+      temp.subType = result['subType'] ?? "fan";
       data.add(temp);
     }
     return data;
