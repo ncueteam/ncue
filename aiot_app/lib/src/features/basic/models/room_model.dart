@@ -44,7 +44,7 @@ class RoomModel {
 
   void debugData() {
     debugPrint("name:$name");
-    debugPrint("name:$name");
+    debugPrint("uuid:$uuid");
     debugPrint("description:$description");
     debugPrint("imagePath:$imagePath");
     debugPrint("members:$members");
@@ -58,7 +58,6 @@ class RoomModel {
   Map<String, dynamic> getDocument() {
     return {
       'name': name,
-      "uuid": uuid,
       'description': description,
       'imagePath': imagePath,
       'members': members,
@@ -73,25 +72,24 @@ class RoomModel {
   }
 
   static Future<void> getDocIds() async {
-    CollectionReference roomsRef =
+    CollectionReference reference =
         FirebaseFirestore.instance.collection('rooms');
-    QuerySnapshot querySnapshot = await roomsRef.get();
+    QuerySnapshot snapshot = await reference.get();
 
     List<String> documentIds = [];
-    for (DocumentSnapshot document in querySnapshot.docs) {
+    for (DocumentSnapshot document in snapshot.docs) {
       documentIds.add(document.id);
     }
     debugPrint(documentIds.toString());
   }
 
   Future<RoomModel> read(String roomID) async {
-    DocumentReference documentReference =
+    DocumentReference reference =
         FirebaseFirestore.instance.collection('rooms').doc(roomID);
-    DocumentSnapshot documentSnapshot = await documentReference.get();
+    DocumentSnapshot snapshot = await reference.get();
 
-    if (documentSnapshot.exists) {
-      Map<String, dynamic> data =
-          documentSnapshot.data() as Map<String, dynamic>;
+    if (snapshot.exists) {
+      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
       /* load member */
       List<dynamic> memberData = data['members'];
       if (memberData.isNotEmpty) {
@@ -115,13 +113,24 @@ class RoomModel {
   }
 
   Future<void> update() async {
+    DocumentReference reference =
+        FirebaseFirestore.instance.collection('rooms').doc(uuid);
+    DocumentSnapshot snapshot = await reference.get();
+    if (snapshot.exists) {
+      snapshot.reference.update(getDocument());
+    } else {
+      create();
+    }
+  }
+
+  Future<void> oldUpdate() async {
     CollectionReference reference =
         FirebaseFirestore.instance.collection('rooms');
-    QuerySnapshot querySnapshot =
+    QuerySnapshot snapshot =
         await reference.where('uuid', isEqualTo: uuid).get();
 
-    if (querySnapshot.size > 0) {
-      DocumentSnapshot documentSnapshot = querySnapshot.docs[0];
+    if (snapshot.size > 0) {
+      DocumentSnapshot documentSnapshot = snapshot.docs[0];
       DocumentReference documentReference = reference.doc(documentSnapshot.id);
       await documentReference.update(getDocument());
     } else {

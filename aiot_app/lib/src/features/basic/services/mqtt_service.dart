@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
+import 'package:uuid/uuid.dart';
 
 class MQTTService {
   late MqttServerClient port;
@@ -9,8 +9,7 @@ class MQTTService {
   String topic = "AIOT_113";
   void Function() callback = () {};
   MQTTService(String mqttTopic) {
-    port = MqttServerClient(
-        'test.mosquitto.org', "${RouteView.user!.uid}_$mqttTopic");
+    port = MqttServerClient('test.mosquitto.org', const Uuid().v1().toString());
     port.disconnect();
     topic += "/$mqttTopic";
     port.port = 1883;

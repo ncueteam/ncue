@@ -17,7 +17,7 @@ class _MqttUnitState extends State<MqttUnit> {
   @override
   void initState() {
     super.initState();
-    mqttService = MQTTService("AIOT_113/${widget.uuid}");
+    mqttService = MQTTService("AppSend");
     textFocus.addListener(() {
       if (textFocus.hasFocus) {
         setState(() {});
@@ -28,9 +28,7 @@ class _MqttUnitState extends State<MqttUnit> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () => setState(() {
-        debugPrint("trigger!");
-      }),
+      onTap: () => setState(() {}),
       leading: Icon(mqttService.isConnected()
           ? Icons.wifi_tethering
           : Icons.wifi_tethering_off),
@@ -48,6 +46,7 @@ class _MqttUnitState extends State<MqttUnit> {
       subtitle: Text("Received: ${mqttService.value}"),
       trailing: IconButton(
         onPressed: () => setState(() {
+          mqttService.send(messageToSend.text);
           messageToSend.text = "";
         }),
         icon: const Icon(Icons.send),

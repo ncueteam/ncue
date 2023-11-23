@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/mqtt_service.dart';
+import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 
-class Dht11Unit extends StatefulWidget {
+class Dht11Unit extends UnitTile {
   final String uuid;
   const Dht11Unit({super.key, this.uuid = ""});
 

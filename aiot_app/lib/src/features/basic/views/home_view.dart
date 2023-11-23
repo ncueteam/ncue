@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
+import 'package:ncue.aiot_app/src/features/basic/units/mqtt_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/type_tile.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/file_upload_view.dart';
 import 'package:ncue.aiot_app/src/features/devices/ac_panel.dart';
@@ -34,6 +35,7 @@ class _HomeState extends State<Home> {
   Future<List<Widget>> loadUnits() async {
     grids.clear();
     grids.add(TypeTile(name: "捷徑", children: [
+      const MqttUnit(uuid: "302"),
       const AddRoomView().getDataItemRoute(context, customName: "註冊房間"),
       const ACPanel().getDataItemRoute(context, customName: '冷氣遙控'),
       const FileUploadView().getDataItemRoute(context, customName: '上傳檔案'),

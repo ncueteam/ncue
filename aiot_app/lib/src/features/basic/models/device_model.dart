@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/local_auth_service.dart';
+import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 import 'package:ncue.aiot_app/src/features/devices/device_detail_view.dart';
 import 'package:uuid/uuid.dart';
@@ -33,6 +34,7 @@ class DeviceModel {
   String type = 'device';
   String iconPath = 'assets/images/flutter_logo.png';
   bool authenticated = false;
+  bool bioLocked = false;
 
   void debugData() {
     debugPrint("=================================================");
@@ -42,16 +44,21 @@ class DeviceModel {
     debugPrint("uuid: $uuid");
     debugPrint("roomId: $roomId");
     debugPrint("iconPath: $iconPath");
+    debugPrint("bioLocked: $bioLocked");
     debugPrint("temperature: ${temperature.toString()}");
     debugPrint("=================================================");
   }
 
   UnitTile getUnit(BuildContext context, VoidCallback callback) {
     switch (type) {
-      case "device":
+      case "wet_degree_sensor":
+        return Dht11Unit(
+          uuid: uuid,
+        );
+      case "switch":
         return UnitTile(
           title: Text(name),
-          subtitle: const Text("裝置類型: 一般裝置"),
+          subtitle: const Text("裝置類型:開關"),
           leading: CircleAvatar(
             foregroundImage: AssetImage(iconPath),
             backgroundColor: Colors.white,
@@ -141,8 +148,14 @@ class DeviceModel {
       'iconPath': iconPath,
       'type': type,
       'powerOn': powerOn,
-      "temperature": temperature,
+      'temperature': temperature,
+      'bioLocked': bioLocked,
     };
+  }
+
+  Future<DeviceModel> create() async {
+    await FirebaseFirestore.instance.collection('devices').add(getDocument());
+    return this;
   }
 
   Future<DeviceModel> read(String uuidQuery) async {
@@ -159,25 +172,9 @@ class DeviceModel {
         iconPath = result['iconPath'];
         type = result['type'] ?? "device";
         temperature = result['temperature'] ?? 28;
+        bioLocked = result['bioLocked'] ?? false;
       }
     }
-    return this;
-  }
-
-  Future<void> delete() async {
-    CollectionReference devices =
-        FirebaseFirestore.instance.collection('devices');
-    QuerySnapshot querySnapshot = await devices.get();
-    for (QueryDocumentSnapshot document in querySnapshot.docs) {
-      Map<String, dynamic> result = document.data() as Map<String, dynamic>;
-      if (result['uuid'] == uuid) {
-        document.reference.delete();
-      }
-    }
-  }
-
-  Future<DeviceModel> create() async {
-    await FirebaseFirestore.instance.collection('devices').add(getDocument());
     return this;
   }
 
@@ -196,6 +193,18 @@ class DeviceModel {
     }
   }
 
+  Future<void> delete() async {
+    CollectionReference devices =
+        FirebaseFirestore.instance.collection('devices');
+    QuerySnapshot querySnapshot = await devices.get();
+    for (QueryDocumentSnapshot document in querySnapshot.docs) {
+      Map<String, dynamic> result = document.data() as Map<String, dynamic>;
+      if (result['uuid'] == uuid) {
+        document.reference.delete();
+      }
+    }
+  }
+
   Future<List<DeviceModel>> queryAll() async {
     List<DeviceModel> data = [];
     CollectionReference devices =
@@ -204,15 +213,16 @@ class DeviceModel {
 
     for (QueryDocumentSnapshot document in querySnapshot.docs) {
       Map<String, dynamic> result = document.data() as Map<String, dynamic>;
-      data.add(DeviceModel(
-        name: result['device_name'],
-        powerOn: result['powerOn'],
-        uuid: result['uuid'],
-        iconPath: result['iconPath'],
-        roomId: result['roomId'] ?? "error",
-        type: result['type'],
-        temperature: result['temperature'] ?? 28,
-      ));
+      DeviceModel temp = DeviceModel();
+      temp.name = result['device_name'];
+      temp.powerOn = result['powerOn'];
+      temp.uuid = result['uuid'];
+      temp.iconPath = result['iconPath'];
+      temp.roomId = result['roomId'] ?? "error";
+      temp.type = result['type'];
+      temp.temperature = result['temperature'] ?? 28;
+      temp.bioLocked = result['bioLocked'] ?? false;
+      data.add(temp);
     }
     return data;
   }
