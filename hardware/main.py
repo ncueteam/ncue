@@ -39,7 +39,8 @@ def sub_cb(topic,msg):
 #         print(DB.clientID)
 #         print(DB.protocol)
 #         print(DB.data)
-        #if(DB.clientID=="N0UACuslmEQpDjrJCpaakwsWaLB3"):
+#         if(DB.clientID=="N0UACuslmEQpDjrJCpaakwsWaLB3"):
+
         if(DB.type=="ir_tx"):
                 if(DB.protocol=="NEC16"):
                     ir_tx.transmit(0x0000, int(DB.data))
@@ -49,6 +50,9 @@ def sub_cb(topic,msg):
 #                 if(DB.protocol=="NEC16"):
 #                     if ir_data >= 0:
 #                     print(ir_data)
+        if(DB.type=="register_device"):
+            if(DB.data=="switch"):
+                DB.create(DB.uuid,DB.data)            
                         
 def link():
     print("link")
@@ -58,6 +62,7 @@ def main():
     from umqtt.simple import MQTTClient
     import machine
     import ubinascii
+    from file_system import ujson
     mqClient0 = MQTTClient(ubinascii.hexlify(machine.unique_id()), 'test.mosquitto.org')
     mqClient0.connect()
     mqClient0.set_callback(sub_cb)
@@ -66,8 +71,8 @@ def main():
     while True:
         dht.wait()
         dht.detect()
-        mqClient0.routine(ujson.dumps({"type":"dht11","uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
-#         mqClient0.publish(b'AIOT_113/Esp32Send', b'test message from Ayun')
+#        mqClient0.routine(ujson.dumps({"type":"dht11","uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
+        mqClient0.publish(b'AIOT_113/Esp32Send', ujson.dumps({"type":"dht11","uuid":'',"humidity":dht.hum,"temperature":dht.temp}))
         mqClient0.check_msg()
     mqClient0.disconnect()
 

@@ -80,4 +80,8 @@ class FileSet:
             self.clientID = temp['clientID']
         except:
             self.clientID = "error"
+        try:
+            self.uuid = temp['uuid']
+        except:
+            self.uuid = "error"
         
