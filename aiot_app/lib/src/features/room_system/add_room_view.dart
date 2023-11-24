@@ -87,14 +87,13 @@ class AddRoomViewState extends State<AddRoomView> {
           ),
           IconButton(
               onPressed: () async {
-                RoomModel room = RoomModel(
-                  roomName: roomName.text,
-                  roomDescription: roomDiscription.text,
-                  path: imagePath,
-                );
+                RoomModel room = RoomModel();
+                room.imagePath = imagePath;
+                room.description = roomDiscription.text;
+                room.name = roomName.text;
                 room.members.add(RouteView.user!.uid.toString());
                 await room.create().then((value) => null);
-                room.debugData();
+                // room.debugData();
                 await RouteView.model
                     .addRoom(room.uuid)
                     .then((value) => Navigator.pop(context, true));

@@ -138,27 +138,13 @@ class DeviceModel {
           },
         );
       case "ir_controller":
-        debugData();
         return UnitTile(
           title: Text(name),
-          subtitle: const Text("裝置類型:開關"),
+          subtitle: const Text("裝置類型:遙控器"),
           leading: CircleAvatar(
             foregroundImage: AssetImage(iconPath),
             backgroundColor: Colors.white,
           ),
-          trailing: Transform.rotate(
-              angle: pi / 2,
-              child: Switch(
-                value: powerOn,
-                onChanged: (bool value) => {
-                  powerOn = value,
-                  update().then(
-                    (value) {
-                      callback();
-                    },
-                  )
-                },
-              )),
           onTap: () {
             Navigator.pushNamed(context, const IRDeviceControlPanel().routeName,
                 arguments: {'data': this});

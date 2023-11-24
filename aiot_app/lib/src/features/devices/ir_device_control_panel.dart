@@ -146,20 +146,8 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
       bottomNavigationBar: SizedBox(
         height: 200,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                mqttService.send(
-                    '{"type":"ir_rx","data":"none","protocol":"$protoco","clientID":"${RouteView.model.uuid.toString()}"}');
-              },
-              child: const FittedBox(
-                fit: BoxFit.fitWidth,
-                child: Text(
-                  "IR 測試",
-                  style: TextStyle(fontSize: 100),
-                ),
-              ),
-            ),
             FittedBox(fit: BoxFit.scaleDown, child: Text("UUID: $uuid"))
           ],
         ),
