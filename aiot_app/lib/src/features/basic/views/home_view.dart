@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
-import 'package:ncue.aiot_app/src/features/basic/units/mqtt_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/type_tile.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/file_upload_view.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
@@ -22,7 +20,7 @@ class Home extends RouteView {
 }
 
 class _HomeState extends State<Home> {
-  List<Widget> grids = [];
+  List<Widget> items = [];
   @override
   void initState() {
     reload();
@@ -30,20 +28,20 @@ class _HomeState extends State<Home> {
   }
 
   Future<List<Widget>> loadUnits() async {
-    grids.clear();
-    grids.add(TypeTile(name: "捷徑", children: [
-      const MqttUnit(uuid: "302"),
+    items.clear();
+    items.add(TypeTile(name: "捷徑", children: [
+      // const MqttUnit(uuid: "302"),
       const AddRoomView().getUnit(context, customName: "註冊房間"),
       const FileUploadView().getUnit(context, customName: '上傳檔案'),
       const RoomListView().getUnit(context, customName: '房間列表'),
       const IRDeviceControlPanel().getUnit(context, customName: '紅外線控制器'),
-      const Dht11Unit(),
+      // const Dht11Unit(),
     ]));
-    return grids;
+    return items;
   }
 
   Future<void> reload() async {
-    grids = await loadUnits();
+    items = await loadUnits();
     setState(() {});
   }
 
@@ -62,9 +60,9 @@ class _HomeState extends State<Home> {
         onRefresh: () => reload(),
         child: ListView.builder(
           restorationId: 'homeView',
-          itemCount: grids.length,
+          itemCount: items.length,
           itemBuilder: (BuildContext context, int index) {
-            return grids[index];
+            return items[index];
           },
         ),
       ),

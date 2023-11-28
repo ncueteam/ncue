@@ -28,26 +28,14 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
   }
 
   Future<void> reload(BuildContext context) async {
-    // Map<String, dynamic> arguments =
-    //     ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-
-    // //等等從這邊開始
-    // await DeviceModel().read(arguments['data'] as DeviceModel).then((value) => null);
-    mqttService = MQTTService('AppSend');
-    // debugPrint("ID: " + widget.uuid);
-    // if (widget.uuid != "") {
-    //   uuid = widget.uuid;
-    //   await device.read(uuid).then((value) {
-    //     debugPrint("%%%" + value.type);
-    //   });
-    // }
-    debugPrint("# ${device.subType}");
-    keys =
-        // buttonSet[device.type] == null
-        //     ? []
-        //     :
-        (buttonSet[device.subType])!.keys.toList();
+    Map<String, dynamic> arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    if (arguments['data'] is DeviceModel) {
+      device = arguments['data'] as DeviceModel;
+    }
+    keys = (buttonSet[device.subType])!.keys.toList();
     device.type = "fan";
+    mqttService = MQTTService('AppSend');
     setState(() {});
   }
 
@@ -73,14 +61,16 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
 
   String protoco = "NEC16";
 
+  List<String> protocos = [
+    "NEC8",
+    "NEC16",
+    "sony",
+    "Philip",
+  ];
+
   @override
   Widget build(BuildContext context) {
-    List<String> protocos = [
-      "NEC8",
-      "NEC16",
-      "sony",
-      "Philip",
-    ];
+    reload(context);
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -146,20 +136,8 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
       bottomNavigationBar: SizedBox(
         height: 200,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                mqttService.send(
-                    '{"type":"ir_rx","data":"none","protocol":"$protoco","clientID":"${RouteView.model.uuid.toString()}"}');
-              },
-              child: const FittedBox(
-                fit: BoxFit.fitWidth,
-                child: Text(
-                  "IR 測試",
-                  style: TextStyle(fontSize: 100),
-                ),
-              ),
-            ),
             FittedBox(fit: BoxFit.scaleDown, child: Text("UUID: $uuid"))
           ],
         ),

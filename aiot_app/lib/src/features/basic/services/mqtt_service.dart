@@ -45,7 +45,7 @@ class MQTTService {
       final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
       builder.addString(message);
       port.publishMessage(topic, MqttQos.atMostOnce, builder.payload!);
-      debugPrint("[$topic]send:$message");
+      // debugPrint("[$topic]send:$message");
     } else {
       debugPrint("not connected!");
       port.connect();

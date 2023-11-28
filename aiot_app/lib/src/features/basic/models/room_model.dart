@@ -16,21 +16,13 @@ class RoomModel {
   late List<String> members;
   late List<DeviceModel> devices;
 
-  RoomModel(
-      {String roomName = "Error name",
-      String id = "Error id",
-      List<DeviceModel> addDevices = const [],
-      List<String> addMembers = const [],
-      String path = "assets/room/room1.jpg",
-      String roomDescription = "no description"}) {
-    name = roomName;
+  RoomModel({String id = "Error id"}) {
+    name = "ErrorName";
     uuid = id;
     devices = [];
-    devices.addAll(addDevices);
     members = [];
-    members.addAll(addMembers);
-    imagePath = path;
-    description = roomDescription;
+    imagePath = "assets/room/room1.jpg";
+    description = "empty description";
     initialize();
   }
 
@@ -69,18 +61,6 @@ class RoomModel {
     DocumentReference documentReference =
         await database.collection('rooms').add(getDocument());
     uuid = documentReference.id;
-  }
-
-  static Future<void> getDocIds() async {
-    CollectionReference reference =
-        FirebaseFirestore.instance.collection('rooms');
-    QuerySnapshot snapshot = await reference.get();
-
-    List<String> documentIds = [];
-    for (DocumentSnapshot document in snapshot.docs) {
-      documentIds.add(document.id);
-    }
-    debugPrint(documentIds.toString());
   }
 
   Future<RoomModel> read(String roomID) async {
@@ -123,18 +103,15 @@ class RoomModel {
     }
   }
 
-  Future<void> oldUpdate() async {
+  static Future<void> getDocIds() async {
     CollectionReference reference =
         FirebaseFirestore.instance.collection('rooms');
-    QuerySnapshot snapshot =
-        await reference.where('uuid', isEqualTo: uuid).get();
+    QuerySnapshot snapshot = await reference.get();
 
-    if (snapshot.size > 0) {
-      DocumentSnapshot documentSnapshot = snapshot.docs[0];
-      DocumentReference documentReference = reference.doc(documentSnapshot.id);
-      await documentReference.update(getDocument());
-    } else {
-      create();
+    List<String> documentIds = [];
+    for (DocumentSnapshot document in snapshot.docs) {
+      documentIds.add(document.id);
     }
+    debugPrint(documentIds.toString());
   }
 }
