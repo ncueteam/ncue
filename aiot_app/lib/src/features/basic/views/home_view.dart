@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
-import 'package:ncue.aiot_app/src/features/basic/units/mqtt_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/type_tile.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/file_upload_view.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
@@ -32,12 +30,12 @@ class _HomeState extends State<Home> {
   Future<List<Widget>> loadUnits() async {
     grids.clear();
     grids.add(TypeTile(name: "捷徑", children: [
-      const MqttUnit(uuid: "302"),
+      // const MqttUnit(uuid: "302"),
       const AddRoomView().getUnit(context, customName: "註冊房間"),
       const FileUploadView().getUnit(context, customName: '上傳檔案'),
       const RoomListView().getUnit(context, customName: '房間列表'),
       const IRDeviceControlPanel().getUnit(context, customName: '紅外線控制器'),
-      const Dht11Unit(),
+      // const Dht11Unit(),
     ]));
     return grids;
   }
