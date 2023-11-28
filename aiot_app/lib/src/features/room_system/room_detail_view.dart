@@ -17,6 +17,7 @@ class RoomDetailsView extends RouteView {
 
 class _DeviceDetailsViewState extends State<RoomDetailsView> {
   List<Widget> items = [];
+  RoomModel model = RoomModel();
   @override
   void initState() {
     super.initState();
@@ -26,6 +27,21 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
     items.clear();
     Map<String, dynamic> arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    // if (arguments['data'] is String) {
+    //   model = await model.read(arguments['data']);
+    // }
+    // items = [
+    //   Text(model.name),
+    //   Text(model.uuid),
+    //   TypeTile(
+    //       name: "房間內裝置",
+    //       children: (model.devices.map((e) => e.getUnit(context, () {
+    //             setState(() {});
+    //           }))).toList()),
+    // ];
+    // items.add(const AddDeviceView()
+    //     .getUnit(context, data: {'data': model}, customName: "註冊裝置"));
+    /*---------------------------------------------------------------------*/
     await RoomModel().read(arguments['data'] as String).then((room) async {
       items.add(Text(room.name));
       items.add(Text(room.uuid));
@@ -40,10 +56,12 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
     }).then((value) {
       setState(() {});
     });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    reload(context);
     return Scaffold(
         appBar: AppBar(
           title: const FittedBox(

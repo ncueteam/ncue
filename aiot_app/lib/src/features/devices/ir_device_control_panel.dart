@@ -61,14 +61,16 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
 
   String protoco = "NEC16";
 
+  List<String> protocos = [
+    "NEC8",
+    "NEC16",
+    "sony",
+    "Philip",
+  ];
+
   @override
   Widget build(BuildContext context) {
-    List<String> protocos = [
-      "NEC8",
-      "NEC16",
-      "sony",
-      "Philip",
-    ];
+    reload(context);
     return Scaffold(
       appBar: AppBar(
         title: Row(

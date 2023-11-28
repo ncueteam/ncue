@@ -20,7 +20,7 @@ class Home extends RouteView {
 }
 
 class _HomeState extends State<Home> {
-  List<Widget> grids = [];
+  List<Widget> items = [];
   @override
   void initState() {
     reload();
@@ -28,8 +28,8 @@ class _HomeState extends State<Home> {
   }
 
   Future<List<Widget>> loadUnits() async {
-    grids.clear();
-    grids.add(TypeTile(name: "捷徑", children: [
+    items.clear();
+    items.add(TypeTile(name: "捷徑", children: [
       // const MqttUnit(uuid: "302"),
       const AddRoomView().getUnit(context, customName: "註冊房間"),
       const FileUploadView().getUnit(context, customName: '上傳檔案'),
@@ -37,11 +37,11 @@ class _HomeState extends State<Home> {
       const IRDeviceControlPanel().getUnit(context, customName: '紅外線控制器'),
       // const Dht11Unit(),
     ]));
-    return grids;
+    return items;
   }
 
   Future<void> reload() async {
-    grids = await loadUnits();
+    items = await loadUnits();
     setState(() {});
   }
 
@@ -60,9 +60,9 @@ class _HomeState extends State<Home> {
         onRefresh: () => reload(),
         child: ListView.builder(
           restorationId: 'homeView',
-          itemCount: grids.length,
+          itemCount: items.length,
           itemBuilder: (BuildContext context, int index) {
-            return grids[index];
+            return items[index];
           },
         ),
       ),
