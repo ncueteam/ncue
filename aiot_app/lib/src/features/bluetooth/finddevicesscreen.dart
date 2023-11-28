@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:ncue.aiot_app/src/features/bluetooth/tiles/scan_result_tile.dart';
 import 'flutterblueapp.dart';
 import 'devicescreen.dart';
-import 'widgets.dart';
 
 class FindDevicesScreen extends StatefulWidget {
   const FindDevicesScreen({Key? key}) : super(key: key);
@@ -205,4 +205,12 @@ class _FindDevicesScreenState extends State<FindDevicesScreen> {
       ),
     );
   }
+}
+
+SnackBar snackBarGood(String message) {
+  return SnackBar(content: Text(message), backgroundColor: Colors.blue);
+}
+
+SnackBar snackBarFail(String message) {
+  return SnackBar(content: Text(message), backgroundColor: Colors.red);
 }

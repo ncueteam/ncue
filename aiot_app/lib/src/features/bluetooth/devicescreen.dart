@@ -5,8 +5,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:ncue.aiot_app/src/features/bluetooth/Tiles/characteristic_tile.dart';
+import 'package:ncue.aiot_app/src/features/bluetooth/Tiles/descriptor_tile.dart';
+import 'package:ncue.aiot_app/src/features/bluetooth/Tiles/service_tile.dart';
 import 'flutterblueapp.dart';
-import 'widgets.dart';
 
 class DeviceScreen extends StatelessWidget {
   final BluetoothDevice device;
@@ -300,7 +302,6 @@ class DeviceScreen extends StatelessWidget {
                                     ?.removeCurrentSnackBar();
                                 snackBarKeyC.currentState
                                     ?.showSnackBar(snackBar);
-                                
                               } catch (e) {
                                 final snackBar = snackBarFail(prettyException(
                                     "Discover Services Error:", e));
@@ -372,4 +373,12 @@ String prettyException(String prefix, dynamic e) {
     return "$prefix ${e.message}";
   }
   return prefix + e.toString();
+}
+
+SnackBar snackBarGood(String message) {
+  return SnackBar(content: Text(message), backgroundColor: Colors.blue);
+}
+
+SnackBar snackBarFail(String message) {
+  return SnackBar(content: Text(message), backgroundColor: Colors.red);
 }
