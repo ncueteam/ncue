@@ -131,7 +131,7 @@ class ServiceTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (service.serviceUuid.toString().toUpperCase() == serviceuuid) {
+    //if (service.serviceUuid.toString().toUpperCase() == serviceuuid) {
       return ExpansionTile(
         title: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -145,9 +145,9 @@ class ServiceTile extends StatelessWidget {
         ),
         children: characteristicTiles,
       );
-    } else {
-      return const SizedBox.shrink();
-    }
+    //} else {
+      //return const SizedBox.shrink();
+    //}
   }
 }
 
@@ -179,8 +179,8 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
       initialData: widget.characteristic.lastValue,
       builder: (context, snapshot) {
         // final List<int>? value = snapshot.data;
-        if (widget.characteristic.characteristicUuid.toString().toUpperCase() ==
-            characteristicuuid) {
+        //if (widget.characteristic.characteristicUuid.toString().toUpperCase() ==
+            //characteristicuuid) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,9 +209,9 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
               )
             ],
           );
-        } else {
-          return const SizedBox.shrink();
-        }
+        //} else {
+          //return const SizedBox.shrink();
+        //}
       },
     );
   }

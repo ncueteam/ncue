@@ -300,6 +300,7 @@ class DeviceScreen extends StatelessWidget {
                                     ?.removeCurrentSnackBar();
                                 snackBarKeyC.currentState
                                     ?.showSnackBar(snackBar);
+                                
                               } catch (e) {
                                 final snackBar = snackBarFail(prettyException(
                                     "Discover Services Error:", e));
