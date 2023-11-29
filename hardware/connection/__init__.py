@@ -1,5 +1,6 @@
 import network
 import uasyncio
+import time
 from file_system import FileSet
 
 sta_if = network.WLAN(network.STA_IF)    
@@ -15,10 +16,15 @@ class Network():
     def getData(self):
         return sta_if.ifconfig()
     
+    def isConnected(self):
+        return sta_if.isconnected()
+    
     def addDefaultWifi(self):
         await self.DB.create("Yunitrish", "0937565253")
 
     def setUp(self):
+        if self.isConnected():
+            sta_if.disconnect()
         for key,value in self.DB.database.items():
             if (self.oled):
                 self.screen.blank()
@@ -28,7 +34,7 @@ class Network():
                 self.screen.show()
             else:
                 print("connecting.. "+key)
-            uasyncio.sleep_ms(1000)
+            time.sleep(1)
             if self.connector(key,value):
                 if(self.oled):
                     self.screen.blank()
