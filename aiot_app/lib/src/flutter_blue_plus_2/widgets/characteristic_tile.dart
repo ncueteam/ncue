@@ -8,11 +8,16 @@ import "../utils/snackbar.dart";
 
 import "descriptor_tile.dart";
 
+const String characteristicuuid = "9012";
+//"0x9012"; //00009012-0000-1000-8000-00805f9b34fb
+
 class CharacteristicTile extends StatefulWidget {
   final BluetoothCharacteristic characteristic;
   final List<DescriptorTile> descriptorTiles;
 
-  const CharacteristicTile({Key? key, required this.characteristic, required this.descriptorTiles}) : super(key: key);
+  const CharacteristicTile(
+      {Key? key, required this.characteristic, required this.descriptorTiles})
+      : super(key: key);
 
   @override
   State<CharacteristicTile> createState() => _CharacteristicTileState();
@@ -26,7 +31,8 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
   @override
   void initState() {
     super.initState();
-    _lastValueSubscription = widget.characteristic.lastValueStream.listen((value) {
+    _lastValueSubscription =
+        widget.characteristic.lastValueStream.listen((value) {
       _value = value;
       setState(() {});
     });
@@ -42,7 +48,12 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
 
   List<int> _getRandomBytes() {
     final math = Random();
-    return [math.nextInt(255), math.nextInt(255), math.nextInt(255), math.nextInt(255)];
+    return [
+      math.nextInt(255),
+      math.nextInt(255),
+      math.nextInt(255),
+      math.nextInt(255)
+    ];
   }
 
   Future onReadPressed() async {
@@ -56,7 +67,8 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
 
   Future onWritePressed() async {
     try {
-      await c.write(_getRandomBytes(), withoutResponse: c.properties.writeWithoutResponse);
+      await c.write(_getRandomBytes(),
+          withoutResponse: c.properties.writeWithoutResponse);
       Snackbar.show(ABC.c, "Write: Success", success: true);
       if (c.properties.read) {
         await c.read();
@@ -76,7 +88,8 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
       }
       setState(() {});
     } catch (e) {
-      Snackbar.show(ABC.c, prettyException("Subscribe Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("Subscribe Error:", e),
+          success: false);
     }
   }
 
@@ -136,21 +149,26 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: ListTile(
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const Text('Characteristic'),
-            buildUuid(context),
-            buildValue(context),
-          ],
+    if (widget.characteristic.characteristicUuid.toString().toLowerCase() ==
+        characteristicuuid.toLowerCase()) {
+      return ExpansionTile(
+        title: ListTile(
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text('Characteristic'),
+              buildUuid(context),
+              buildValue(context),
+            ],
+          ),
+          subtitle: buildButtonRow(context),
+          contentPadding: const EdgeInsets.all(0.0),
         ),
-        subtitle: buildButtonRow(context),
-        contentPadding: const EdgeInsets.all(0.0),
-      ),
-      children: widget.descriptorTiles,
-    );
+        //children: widget.descriptorTiles,
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }
