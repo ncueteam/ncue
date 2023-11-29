@@ -77,7 +77,12 @@ class _OwnerManagementDialogState extends State<OwnerManagementDialog> {
                       UserModel owner =
                           await UserModel().fromID(widget.room.owner.uid);
                       owner.rooms.remove(widget.room.uuid);
+                      owner.memberRooms.add(widget.room.uuid);
+                      debugPrint("owner uuid : ${widget.room.owner.uid}");
+                      debugPrint("uuid : ${widget.room.uuid}");
                       owner.update();
+                      widget.room.members.add(member.uuid);
+                      widget.room.update();
                       member.rooms.add(widget.room.uuid);
                       member.update().then((value) => setState(() {
                             Navigator.pop(context);
