@@ -265,7 +265,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
                       const InputDecoration(labelText: 'Wifi Password'),
                 ),
               ),
-              buildMtuTile(context),
+              //buildMtuTile(context),
               ..._buildServiceTiles(context, widget.device),
             ],
           ),
