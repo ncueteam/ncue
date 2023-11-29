@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:ncue.aiot_app/src/flutter_blue_plus_2/FlutterBlueApp.dart';
 
 import "../utils/snackbar.dart";
 
@@ -47,13 +49,9 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
   BluetoothCharacteristic get c => widget.characteristic;
 
   List<int> _getRandomBytes() {
-    final math = Random();
-    return [
-      math.nextInt(255),
-      math.nextInt(255),
-      math.nextInt(255),
-      math.nextInt(255)
-    ];
+    var wifiData = '${wifiNameController.text},${wifiPasswordController.text}';
+    List<int> bytes = utf8.encode(wifiData);
+    return bytes;
   }
 
   Future onReadPressed() async {

@@ -16,6 +16,9 @@ import 'screens/scan_screen.dart';
 //   runApp(const FlutterBlueApp());
 // }
 
+TextEditingController wifiNameController = TextEditingController();
+TextEditingController wifiPasswordController = TextEditingController();
+
 class FlutterBlueApp extends RouteView {
   const FlutterBlueApp({Key? key})
       : super(key, routeIcon: Icons.bluetooth, routeName: "/oldbt");
