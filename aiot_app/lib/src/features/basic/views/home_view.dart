@@ -2,12 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/type_tile.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/file_upload_view.dart';
-import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
+import 'package:ncue.aiot_app/src/features/bluetooth/flutterblueapp.dart';
 import 'package:ncue.aiot_app/src/features/room_system/add_room_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
-import 'package:ncue.aiot_app/src/flutter_blue_plus_2/FlutterBlueApp.dart';
 import '../../auth_system/profile_view.dart';
-// import '../../bluetooth/flutterblueapp.dart';
 import '../../settings/settings_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -35,8 +33,7 @@ class _HomeState extends State<Home> {
       const AddRoomView().getUnit(context, customName: "註冊房間"),
       const FileUploadView().getUnit(context, customName: '上傳檔案'),
       const RoomListView().getUnit(context, customName: '房間列表'),
-      const IRDeviceControlPanel().getUnit(context, customName: '紅外線控制器'),
-      const FlutterBlueApp().getIconButton(context)
+      // const IRDeviceControlPanel().getUnit(context, customName: '紅外線控制器'),
       // const Dht11Unit(),
     ]));
     return items;
@@ -54,7 +51,7 @@ class _HomeState extends State<Home> {
         title: Text(AppLocalizations.of(context)!.appTitle),
         actions: [
           const SettingsView().getIconButton(context),
-          // const BluetoothView().getIconButton(context),
+          const BluetoothView().getIconButton(context),
         ],
       ),
       drawer: const Drawer(child: ProfileView()),
