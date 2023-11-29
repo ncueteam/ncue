@@ -9,6 +9,7 @@ import 'package:ncue.aiot_app/src/features/room_system/add_room_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
+import 'package:ncue.aiot_app/src/flutter_blue_plus_2/FlutterBlueApp.dart';
 
 import '../../auth_system/password_reset_view.dart';
 import '../../auth_system/phone_input_view.dart';
@@ -99,5 +100,6 @@ abstract class RouteView extends StatefulWidget {
     RoomDetailsView(),
     AddRoomView(),
     FileUploadView(),
+    FlutterBlueApp(),
   ];
 }
