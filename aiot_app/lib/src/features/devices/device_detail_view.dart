@@ -4,8 +4,8 @@ import '../basic/views/route_view.dart';
 import '../basic/models/device_model.dart';
 
 class DeviceDetailsView extends RouteView {
-  const DeviceDetailsView({super.key})
-      : super(
+  const DeviceDetailsView({key})
+      : super(key,
             routeName: '/device_detail_view',
             routeIcon: Icons.medical_information);
 

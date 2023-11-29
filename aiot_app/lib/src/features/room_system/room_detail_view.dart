@@ -6,8 +6,8 @@ import 'package:ncue.aiot_app/src/features/devices/add_device_view.dart';
 import '../basic/views/route_view.dart';
 
 class RoomDetailsView extends RouteView {
-  const RoomDetailsView({super.key})
-      : super(
+  const RoomDetailsView({key})
+      : super(key,
             routeName: '/room_detail_view',
             routeIcon: Icons.medical_information);
 

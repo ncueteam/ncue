@@ -4,8 +4,8 @@ import '../basic/views/route_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddRoomView extends RouteView {
-  const AddRoomView({super.key})
-      : super(
+  const AddRoomView({key})
+      : super(key,
             routeName: "/add-room-view",
             routeIcon: Icons.meeting_room_outlined);
 

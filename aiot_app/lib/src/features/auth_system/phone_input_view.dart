@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../basic/views/route_view.dart';
 
 class PhoneView extends RouteView {
-  const PhoneView({super.key})
-      : super(routeName: '/phone', routeIcon: Icons.abc);
+  const PhoneView({key})
+      : super(key, routeName: '/phone', routeIcon: Icons.abc);
 
   @override
   State<PhoneView> createState() => _PhoneInputViewState();

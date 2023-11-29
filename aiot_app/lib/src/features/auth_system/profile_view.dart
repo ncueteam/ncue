@@ -6,8 +6,8 @@ import '../settings/settings_view.dart';
 import 'sign_in_view.dart';
 
 class ProfileView extends RouteView {
-  const ProfileView({super.key})
-      : super(routeName: '/profile', routeIcon: Icons.account_circle);
+  const ProfileView({key})
+      : super(key, routeName: '/profile', routeIcon: Icons.account_circle);
 
   @override
   State<ProfileView> createState() => _ProfileViewState();

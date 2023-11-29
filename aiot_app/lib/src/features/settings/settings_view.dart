@@ -4,8 +4,8 @@ import '../basic/views/route_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsView extends RouteView {
-  const SettingsView({super.key})
-      : super(routeName: '/settings', routeIcon: Icons.settings);
+  const SettingsView({key})
+      : super(key, routeName: '/settings', routeIcon: Icons.settings);
 
   @override
   State<SettingsView> createState() => _SettingsViewState();

@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 
 class NotifyView extends RouteView {
-  const NotifyView({super.key})
-      : super(routeIcon: Icons.notifications, routeName: "/notification-view");
+  const NotifyView({key})
+      : super(key,
+            routeIcon: Icons.notifications, routeName: "/notification-view");
 
   @override
   State<StatefulWidget> createState() => _NotifyPage();

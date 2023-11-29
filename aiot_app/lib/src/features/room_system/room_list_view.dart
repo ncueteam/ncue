@@ -5,8 +5,9 @@ import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import '../auth_system/profile_view.dart';
 
 class RoomListView extends RouteView {
-  const RoomListView({super.key})
-      : super(routeName: '/room-list', routeIcon: Icons.meeting_room_sharp);
+  const RoomListView({key})
+      : super(key,
+            routeName: '/room-list', routeIcon: Icons.meeting_room_sharp);
 
   @override
   State<RoomListView> createState() => _RoomListViewState();

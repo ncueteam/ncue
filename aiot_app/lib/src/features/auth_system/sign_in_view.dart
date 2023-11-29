@@ -4,8 +4,8 @@ import '../basic/views/route_view.dart';
 import '../settings/settings_view.dart';
 
 class SignInView extends RouteView {
-  const SignInView({super.key})
-      : super(routeName: '/sign-in', routeIcon: Icons.login);
+  const SignInView({key})
+      : super(key, routeName: '/sign-in', routeIcon: Icons.login);
 
   @override
   State<SignInView> createState() => _SignInViewState();

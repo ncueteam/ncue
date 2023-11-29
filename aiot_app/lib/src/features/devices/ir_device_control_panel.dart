@@ -6,8 +6,8 @@ import 'package:uuid/uuid.dart';
 
 class IRDeviceControlPanel extends RouteView {
   final String uuid;
-  const IRDeviceControlPanel({super.key, this.uuid = ""})
-      : super(routeIcon: Icons.speaker_phone, routeName: "/ir-controll");
+  const IRDeviceControlPanel({key, this.uuid = ""})
+      : super(key, routeIcon: Icons.speaker_phone, routeName: "/ir-controll");
 
   @override
   State<IRDeviceControlPanel> createState() => _IRDeviceControlPanelState();

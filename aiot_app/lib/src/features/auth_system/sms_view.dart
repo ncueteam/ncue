@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../basic/views/route_view.dart';
 
 class SmsView extends RouteView {
-  const SmsView({super.key})
-      : super(routeName: '/sms', routeIcon: Icons.message);
+  const SmsView({key})
+      : super(key, routeName: '/sms', routeIcon: Icons.message);
   @override
   State<SmsView> createState() => _PhoneInputViewState();
 }
