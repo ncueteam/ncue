@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:ncue.aiot_app/src/flutter_blue_plus_2/flutter_blue_app.dart';
+import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
 
 import '../widgets/service_tile.dart';
 import '../widgets/characteristic_tile.dart';
@@ -142,11 +141,11 @@ class _DeviceScreenState extends State<DeviceScreen> {
     }
   }
 
-  List<int> _getRandomBytes() {
-    var wifiData = '${wifiNameController.text},${wifiPasswordController.text}';
-    List<int> bytes = utf8.encode(wifiData);
-    return bytes;
-  }
+  // List<int> _getRandomBytes() {
+  //   var wifiData = '${wifiNameController.text},${wifiPasswordController.text}';
+  //   List<int> bytes = utf8.encode(wifiData);
+  //   return bytes;
+  // }
 
   List<Widget> _buildServiceTiles(BuildContext context, BluetoothDevice d) {
     return _services

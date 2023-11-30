@@ -1,24 +1,22 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
-
 import 'screens/bluetooth_off_screen.dart';
 import 'screens/scan_screen.dart';
 
 TextEditingController wifiNameController = TextEditingController();
 TextEditingController wifiPasswordController = TextEditingController();
 
-class FlutterBlueApp extends RouteView {
-  const FlutterBlueApp({Key? key})
+class BlueToothView extends RouteView {
+  const BlueToothView({Key? key})
       : super(key, routeIcon: Icons.bluetooth, routeName: "/oldbt");
 
   @override
-  State<FlutterBlueApp> createState() => _FlutterBlueAppState();
+  State<BlueToothView> createState() => _FlutterBlueAppState();
 }
 
-class _FlutterBlueAppState extends State<FlutterBlueApp> {
+class _FlutterBlueAppState extends State<BlueToothView> {
   BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
 
   late StreamSubscription<BluetoothAdapterState> _adapterStateStateSubscription;
@@ -45,11 +43,7 @@ class _FlutterBlueAppState extends State<FlutterBlueApp> {
         ? const ScanScreen()
         : BluetoothOffScreen(adapterState: _adapterState);
 
-    return MaterialApp(
-      color: Colors.lightBlue,
-      home: screen,
-      navigatorObservers: [BluetoothAdapterStateObserver()],
-    );
+    return screen;
   }
 }
 

@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:ncue.aiot_app/src/flutter_blue_plus_2/flutter_blue_app.dart';
+import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
 
 import "../utils/snackbar.dart";
 

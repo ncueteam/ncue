@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:ncue.aiot_app/src/features/settings/settings_view.dart';
 
 import 'device_screen.dart';
 import '../utils/snackbar.dart';
@@ -145,6 +146,7 @@ class _ScanScreenState extends State<ScanScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Find Devices'),
+          actions: [const SettingsView().getIconButton(context)],
         ),
         body: RefreshIndicator(
           onRefresh: onRefresh,
