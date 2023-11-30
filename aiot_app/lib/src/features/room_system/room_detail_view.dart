@@ -18,6 +18,7 @@ class RoomDetailsView extends RouteView {
 class _DeviceDetailsViewState extends State<RoomDetailsView> {
   List<Widget> items = [];
   RoomModel model = RoomModel();
+  bool isFirstLoad = true;
   @override
   void initState() {
     super.initState();
@@ -27,22 +28,8 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
     items.clear();
     Map<String, dynamic> arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    // if (arguments['data'] is String) {
-    //   model = await model.read(arguments['data']);
-    // }
-    // items = [
-    //   Text(model.name),
-    //   Text(model.uuid),
-    //   TypeTile(
-    //       name: "房間內裝置",
-    //       children: (model.devices.map((e) => e.getUnit(context, () {
-    //             setState(() {});
-    //           }))).toList()),
-    // ];
-    // items.add(const AddDeviceView()
-    //     .getUnit(context, data: {'data': model}, customName: "註冊裝置"));
-    /*---------------------------------------------------------------------*/
     await RoomModel().read(arguments['data'] as String).then((room) async {
+      room.debugData();
       items.add(Text(room.name));
       items.add(Text(room.uuid));
       items.add(TypeTile(
@@ -53,15 +40,20 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
               }))).toList()));
       items.add(const AddDeviceView()
           .getUnit(context, data: {'data': room}, customName: "註冊裝置"));
-    }).then((value) {
-      setState(() {});
     });
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    reload(context);
+    if (isFirstLoad) {
+      Future.delayed(const Duration(seconds: 1), () async {
+        await reload(context).then((value) {
+          setState(() {
+            isFirstLoad = false;
+          });
+        });
+      });
+    }
     return Scaffold(
         appBar: AppBar(
           title: const FittedBox(
@@ -77,9 +69,12 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
           ),
         ),
         body: RefreshIndicator(
-          onRefresh: () async {
-            await reload(context);
-            setState(() {});
+          onRefresh: () {
+            return Future.delayed(const Duration(seconds: 1), () async {
+              await reload(context).then((value) {
+                setState(() {});
+              });
+            });
           },
           child: ListView.builder(
             padding: const EdgeInsets.all(20.0),
