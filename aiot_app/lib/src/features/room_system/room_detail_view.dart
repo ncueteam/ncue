@@ -35,7 +35,6 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
           name: "房間內裝置",
           children: (room.devices.map((e) => e.getUnit(context, () {
                 setState(() {});
-                debugPrint("ssss");
               }))).toList()));
       items.add(const AddDeviceView()
           .getUnit(context, data: {'data': room}, customName: "註冊裝置"));
