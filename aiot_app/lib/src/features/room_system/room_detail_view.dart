@@ -29,7 +29,6 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
     Map<String, dynamic> arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     await RoomModel().read(arguments['data'] as String).then((room) async {
-      room.debugData();
       items.add(Text(room.name));
       items.add(Text(room.uuid));
       items.add(TypeTile(
