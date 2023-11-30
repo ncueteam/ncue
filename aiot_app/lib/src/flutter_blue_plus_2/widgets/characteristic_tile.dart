@@ -111,8 +111,8 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
 
   Widget buildWriteButton(BuildContext context) {
     bool withoutResp = widget.characteristic.properties.writeWithoutResponse;
-    return TextButton(
-        child: Text(withoutResp ? "WriteNoResp" : "Write"),
+    return ElevatedButton(
+        child: Text(withoutResp ? "WriteNoResp" : "Submit"),
         onPressed: () async {
           await onWritePressed();
           setState(() {});
@@ -137,9 +137,9 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (read) buildReadButton(context),
+        //if (read) buildReadButton(context),
         if (write) buildWriteButton(context),
-        if (notify || indicate) buildSubscribeButton(context),
+        //if (notify || indicate) buildSubscribeButton(context),
       ],
     );
   }
@@ -155,8 +155,8 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Text('Characteristic'),
-              buildUuid(context),
-              buildValue(context),
+              //buildUuid(context),
+              //buildValue(context),
             ],
           ),
           subtitle: buildButtonRow(context),
