@@ -15,7 +15,7 @@ class ServiceTile extends StatelessWidget {
 
   Widget buildUuid(BuildContext context) {
     String uuid = '0x${service.uuid.str.toUpperCase()}';
-    return Text(uuid, style: TextStyle(fontSize: 13));
+    return Text(uuid, style: const TextStyle(fontSize: 13));
   }
 
   @override
@@ -23,11 +23,11 @@ class ServiceTile extends StatelessWidget {
     if (service.serviceUuid.toString().toUpperCase() == serviceuuid) {
       return characteristicTiles.isNotEmpty
           ? ExpansionTile(
-              title: Column(
+              title: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Text('Service', style: TextStyle(color: Colors.blue)),
+                  Text('Service', style: TextStyle(color: Colors.blue)),
                   //buildUuid(context),
                 ],
               ),

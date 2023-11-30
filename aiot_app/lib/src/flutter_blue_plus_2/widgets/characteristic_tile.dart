@@ -130,10 +130,10 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
   }
 
   Widget buildButtonRow(BuildContext context) {
-    bool read = widget.characteristic.properties.read;
+    // bool read = widget.characteristic.properties.read;
     bool write = widget.characteristic.properties.write;
-    bool notify = widget.characteristic.properties.notify;
-    bool indicate = widget.characteristic.properties.indicate;
+    // bool notify = widget.characteristic.properties.notify;
+    // bool indicate = widget.characteristic.properties.indicate;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -150,11 +150,11 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
         characteristicuuid.toLowerCase()) {
       return ExpansionTile(
         title: ListTile(
-          title: Column(
+          title: const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text('Characteristic'),
+              Text('Characteristic'),
               //buildUuid(context),
               //buildValue(context),
             ],

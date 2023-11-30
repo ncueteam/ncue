@@ -59,9 +59,12 @@ class _ScanScreenState extends State<ScanScreen> {
       // so instead we only ask for 1/8 of them
       int divisor = Platform.isAndroid ? 8 : 1;
       await FlutterBluePlus.startScan(
-          timeout: const Duration(seconds: 15), continuousUpdates: true, continuousDivisor: divisor);
+          timeout: const Duration(seconds: 15),
+          continuousUpdates: true,
+          continuousDivisor: divisor);
     } catch (e) {
-      Snackbar.show(ABC.b, prettyException("Start Scan Error:", e), success: false);
+      Snackbar.show(ABC.b, prettyException("Start Scan Error:", e),
+          success: false);
     }
     setState(() {}); // force refresh of systemDevices
   }
@@ -70,16 +73,19 @@ class _ScanScreenState extends State<ScanScreen> {
     try {
       FlutterBluePlus.stopScan();
     } catch (e) {
-      Snackbar.show(ABC.b, prettyException("Stop Scan Error:", e), success: false);
+      Snackbar.show(ABC.b, prettyException("Stop Scan Error:", e),
+          success: false);
     }
   }
 
   void onConnectPressed(BluetoothDevice device) {
     device.connectAndUpdateStream().catchError((e) {
-      Snackbar.show(ABC.c, prettyException("Connect Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("Connect Error:", e),
+          success: false);
     });
     MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) => DeviceScreen(device: device), settings: RouteSettings(name: '/DeviceScreen'));
+        builder: (context) => DeviceScreen(device: device),
+        settings: const RouteSettings(name: '/DeviceScreen'));
     Navigator.of(context).push(route);
   }
 
@@ -88,18 +94,19 @@ class _ScanScreenState extends State<ScanScreen> {
       FlutterBluePlus.startScan(timeout: const Duration(seconds: 15));
     }
     setState(() {});
-    return Future.delayed(Duration(milliseconds: 500));
+    return Future.delayed(const Duration(milliseconds: 500));
   }
 
   Widget buildScanButton(BuildContext context) {
     if (FlutterBluePlus.isScanningNow) {
       return FloatingActionButton(
-        child: const Icon(Icons.stop),
         onPressed: onStopPressed,
         backgroundColor: Colors.red,
+        child: const Icon(Icons.stop),
       );
     } else {
-      return FloatingActionButton(child: const Text("SCAN"), onPressed: onScanPressed);
+      return FloatingActionButton(
+          onPressed: onScanPressed, child: const Text("SCAN"));
     }
   }
 
@@ -111,7 +118,7 @@ class _ScanScreenState extends State<ScanScreen> {
             onOpen: () => Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => DeviceScreen(device: d),
-                settings: RouteSettings(name: '/DeviceScreen'),
+                settings: const RouteSettings(name: '/DeviceScreen'),
               ),
             ),
             onConnect: () => onConnectPressed(d),

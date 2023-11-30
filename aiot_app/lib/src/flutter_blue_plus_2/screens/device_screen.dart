@@ -170,8 +170,8 @@ class _DeviceScreenState extends State<DeviceScreen> {
   }
 
   Widget buildSpinner(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(14.0),
+    return const Padding(
+      padding: EdgeInsets.all(14.0),
       child: AspectRatio(
         aspectRatio: 1.0,
         child: CircularProgressIndicator(
@@ -207,16 +207,16 @@ class _DeviceScreenState extends State<DeviceScreen> {
       index: (_isDiscoveringServices) ? 1 : 0,
       children: <Widget>[
         TextButton(
-          child: const Text("Get Services"),
           onPressed: onDiscoverServicesPressed,
+          child: const Text("Get Services"),
         ),
         const IconButton(
           icon: SizedBox(
+            width: 18.0,
+            height: 18.0,
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation(Colors.grey),
             ),
-            width: 18.0,
-            height: 18.0,
           ),
           onPressed: null,
         )
