@@ -27,8 +27,9 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-tasks.register("clean", Delete) {
-    delete rootProject.buildDir
-}
+// tasks.register("clean", Delete) {
+//     delete rootProject.buildDir
+// }
 
-apply plugin: 'com.google.gms.google-services'
+// apply plugin: 'com.android.application'
+// apply plugin: 'com.google.gms.google-services'
