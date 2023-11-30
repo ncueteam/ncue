@@ -23,7 +23,6 @@ class AddRoomViewState extends State<AddRoomView> {
   @override
   void initState() {
     items.addAll([
-      const Spacer(),
       Row(
         children: [
           const Text(

@@ -5,7 +5,7 @@ import 'package:ncue.aiot_app/src/features/basic/views/file_upload_view.dart';
 import 'package:ncue.aiot_app/src/features/bluetooth/flutterblueapp.dart';
 import 'package:ncue.aiot_app/src/features/room_system/add_room_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
-import 'package:ncue.aiot_app/src/flutter_blue_plus_2/FlutterBlueApp.dart';
+import 'package:ncue.aiot_app/src/flutter_blue_plus_2/flutter_blue_app.dart';
 import '../../auth_system/profile_view.dart';
 import '../../settings/settings_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

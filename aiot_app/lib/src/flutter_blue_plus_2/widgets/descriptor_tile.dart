@@ -1,14 +1,11 @@
-
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:ncue.aiot_app/src/flutter_blue_plus_2/FlutterBlueApp.dart';
+import 'package:ncue.aiot_app/src/flutter_blue_plus_2/flutter_blue_app.dart';
 
 import "../utils/snackbar.dart";
-
 
 class DescriptorTile extends StatefulWidget {
   final BluetoothDescriptor descriptor;
@@ -52,7 +49,8 @@ class _DescriptorTileState extends State<DescriptorTile> {
       await d.read();
       Snackbar.show(ABC.c, "Descriptor Read : Success", success: true);
     } catch (e) {
-      Snackbar.show(ABC.c, prettyException("Descriptor Read Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("Descriptor Read Error:", e),
+          success: false);
     }
   }
 
@@ -61,31 +59,32 @@ class _DescriptorTileState extends State<DescriptorTile> {
       await d.write(_getRandomBytes());
       Snackbar.show(ABC.c, "Descriptor Write : Success", success: true);
     } catch (e) {
-      Snackbar.show(ABC.c, prettyException("Descriptor Write Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("Descriptor Write Error:", e),
+          success: false);
     }
   }
 
   Widget buildUuid(BuildContext context) {
     String uuid = '0x${widget.descriptor.uuid.str.toUpperCase()}';
-    return Text(uuid, style: TextStyle(fontSize: 13));
+    return Text(uuid, style: const TextStyle(fontSize: 13));
   }
 
   Widget buildValue(BuildContext context) {
     String data = _value.toString();
-    return Text(data, style: TextStyle(fontSize: 13, color: Colors.grey));
+    return Text(data, style: const TextStyle(fontSize: 13, color: Colors.grey));
   }
 
   Widget buildReadButton(BuildContext context) {
     return TextButton(
-      child: Text("Read"),
       onPressed: onReadPressed,
+      child: const Text("Read"),
     );
   }
 
   Widget buildWriteButton(BuildContext context) {
     return TextButton(
-      child: Text("Write"),
       onPressed: onWritePressed,
+      child: const Text("Write"),
     );
   }
 

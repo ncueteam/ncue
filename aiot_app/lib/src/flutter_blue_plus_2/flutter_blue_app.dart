@@ -1,7 +1,3 @@
-// Copyright 2017-2023, Charles Weinberger & Paul DeMarco.
-// All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -10,11 +6,6 @@ import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 
 import 'screens/bluetooth_off_screen.dart';
 import 'screens/scan_screen.dart';
-
-// void main() {
-//   FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
-//   runApp(const FlutterBlueApp());
-// }
 
 TextEditingController wifiNameController = TextEditingController();
 TextEditingController wifiPasswordController = TextEditingController();
