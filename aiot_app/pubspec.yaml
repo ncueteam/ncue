@@ -43,15 +43,6 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
 
-
-  # webview
-  webview_flutter: ^4.2.4
-  provider: ^6.0.5
-  encrypt: ^5.0.1
-  shared_preferences: ^2.2.1
-  json_model: 1.0.0
-  json_annotation: ^4.8.1
-
   #bluetooth
   flutter_blue_plus: ^1.11.8
   permission_handler: ^10.4.3
