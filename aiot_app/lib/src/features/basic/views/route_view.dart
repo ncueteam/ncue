@@ -66,7 +66,7 @@ abstract class RouteView extends StatefulWidget {
   static Future<void> loadAccount() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      model = await UserModel().load(user);
+      model = await UserModel().read();
     } else {
       debugPrint("error loading user!");
     }

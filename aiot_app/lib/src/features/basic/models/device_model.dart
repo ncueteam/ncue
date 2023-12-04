@@ -70,10 +70,10 @@ class DeviceModel {
               angle: pi / 2,
               child: Switch(
                 value: powerOn,
-                onChanged: (bool value) => {
-                  powerOn = value,
-                  update().then(
-                    (value) {
+                onChanged: (bool value) async => {
+                  powerOn = !powerOn,
+                  await update().then(
+                    (e) {
                       callback();
                     },
                   )

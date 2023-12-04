@@ -27,7 +27,7 @@ class _OwnerManagementDialogState extends State<OwnerManagementDialog> {
 
     for (UserModel user in widget.userModels) {
       if (user.name.contains(searchBar.text)) {
-        if (widget.room.owner.uid != user.uuid) {
+        if (widget.room.owner.uuid != user.uuid) {
           temp.add(user);
         }
       }
@@ -75,10 +75,10 @@ class _OwnerManagementDialogState extends State<OwnerManagementDialog> {
                   trailing: ElevatedButton(
                     onPressed: () async {
                       UserModel owner =
-                          await UserModel().fromID(widget.room.owner.uid);
+                          await UserModel().read(id: widget.room.owner.uuid);
                       owner.rooms.remove(widget.room.uuid);
                       owner.memberRooms.add(widget.room.uuid);
-                      debugPrint("owner uuid : ${widget.room.owner.uid}");
+                      debugPrint("owner uuid : ${widget.room.owner.uuid}");
                       debugPrint("uuid : ${widget.room.uuid}");
                       owner.update();
                       widget.room.members.add(member.uuid);

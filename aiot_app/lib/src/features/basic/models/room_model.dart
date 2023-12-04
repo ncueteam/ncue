@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/device_model.dart';
@@ -12,7 +12,7 @@ class RoomModel {
   late String name;
   late String imagePath;
   late String description;
-  late User owner;
+  late UserModel owner;
   late List<String> members;
   late List<DeviceModel> devices;
 
@@ -23,20 +23,17 @@ class RoomModel {
     members = [];
     imagePath = "assets/room/room1.jpg";
     description = "empty description";
-    initialize();
+    owner = RouteView.model;
   }
 
   RoomModel self() {
     return this;
   }
 
-  Future<void> initialize() async {
-    owner = (await RouteView.getUser())!;
-  }
-
   void debugData() {
     debugPrint("name:$name");
     debugPrint("uuid:$uuid");
+    debugPrint("owner: ${owner.name}");
     debugPrint("description:$description");
     debugPrint("imagePath:$imagePath");
     debugPrint("members:$members");
@@ -54,6 +51,7 @@ class RoomModel {
       'imagePath': imagePath,
       'members': members,
       'devices': devices.map((item) => item.uuid),
+      'owner': owner.uuid,
     };
   }
 
@@ -88,6 +86,7 @@ class RoomModel {
       description = data['description'];
       imagePath = data['imagePath'];
       uuid = roomID;
+      owner = await UserModel().read(id: data['owner']);
     }
     return this;
   }

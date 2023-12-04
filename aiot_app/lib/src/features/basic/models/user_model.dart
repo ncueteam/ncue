@@ -1,23 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 
 class UserModel {
   static FirebaseFirestore database = FirebaseFirestore.instance;
-  UserModel(
-      {this.name = "Error",
-      this.uuid = "Error",
-      this.type = "",
-      this.language = "en_US",
-      this.rooms = const <String>[],
-      this.memberRooms = const <String>[]});
+  late String uuid;
+  late String name;
+  late String type;
+  late String language;
+  late List<String> rooms;
+  late List<String> memberRooms;
 
-  String uuid;
-  String name;
-  String type;
-  String language;
-  List<String> rooms;
-  List<String> memberRooms;
+  UserModel({String id = "Error"}) {
+    name = RouteView.user!.displayName ??
+        RouteView.user!.email ??
+        RouteView.user!.uid;
+    uuid = id != "Error" ? id : RouteView.user!.uid;
+    type = "user";
+    language = "en_US";
+    rooms = [];
+    memberRooms = [];
+  }
+
+  UserModel self() {
+    return this;
+  }
+
   void debugData() {
     debugPrint("name:$name");
     debugPrint("uuid:$uuid");
@@ -31,108 +39,92 @@ class UserModel {
     return (lst).map((item) => item as String).toList();
   }
 
-  UserModel self() {
-    return this;
+  Map<String, dynamic> getDocument() {
+    return {
+      'name': name,
+      // 'uuid': uuid,
+      'type': type,
+      'language': language,
+      'rooms': rooms, //.map((item) => item.uuid),
+      'memberRooms': memberRooms, //.map((item) => item.uuid),
+    };
   }
 
   Future<UserModel> create() async {
-    await database.collection('users').add({
-      'name': name,
-      "type": type,
-      "uuid": uuid,
-      "language": language,
-      "rooms": <String>[],
-      "memberRooms": <String>[],
-    });
+    await database.collection('users').doc(uuid).set(getDocument());
     return this;
   }
 
-  Future<UserModel> load(User user) async {
-    CollectionReference reference =
-        FirebaseFirestore.instance.collection('users');
-    QuerySnapshot querySnapshot =
-        await reference.where('uuid', isEqualTo: user.uid).get();
-    if (querySnapshot.size == 1) {
-      QueryDocumentSnapshot lst = querySnapshot.docs.first;
-      name = lst['name'];
-      uuid = lst['uuid'];
-      type = lst['type'];
-      language = lst['language'];
-      rooms = dynamicToStringList(lst['rooms']);
-      memberRooms = dynamicToStringList(lst['memberRooms']);
-      return this;
-    } else {
-      name = user.displayName ?? user.email ?? user.phoneNumber ?? user.uid;
-      uuid = user.uid;
-      type = "user";
-      return this;
+  Future<UserModel> read({String id = ""}) async {
+    if (id != "") uuid = id;
+    try {
+      Map<String, dynamic> data =
+          (await database.collection('users').doc(uuid).get()).data()
+              as Map<String, dynamic>;
+      name = data['name'];
+      type = data['type'];
+      language = data['language'];
+      rooms = dynamicToStringList(data['rooms']);
+      // List<dynamic> roomsData = data['rooms'];
+      // if (roomsData.isNotEmpty) {
+      //   for (String temp in roomsData) {
+      //     rooms.add(await RoomModel().read(temp.toString()));
+      //   }
+      // }
+      memberRooms = dynamicToStringList(data['memberRooms']);
+
+      // List<dynamic> memberRoomsData = data['memberRooms'];
+      // if (memberRoomsData.isNotEmpty) {
+      //   for (String temp in memberRoomsData) {
+      //     memberRooms.add(await RoomModel().read(temp.toString()));
+      //   }
+      // }
+    } catch (e) {
+      create();
     }
+
+    return this;
   }
 
   Future<UserModel> update() async {
-    CollectionReference reference =
-        FirebaseFirestore.instance.collection('users');
-    QuerySnapshot querySnapshot =
-        await reference.where('uuid', isEqualTo: uuid).get();
-    if (querySnapshot.size > 0) {
-      DocumentSnapshot documentSnapshot = querySnapshot.docs[0];
-      DocumentReference documentReference = reference.doc(documentSnapshot.id);
-
-      Map<String, dynamic> updatedData = {
-        'name': name,
-        "type": type,
-        "uuid": uuid,
-        "language": language,
-        'rooms': rooms,
-        'memberRooms': memberRooms
-      };
-      await documentReference.update(updatedData);
-    } else {
-      await create();
+    DocumentReference data = database.collection('users').doc(uuid);
+    try {
+      data.update(getDocument());
+    } catch (e) {
+      create();
     }
     return this;
-  }
-
-  Future<UserModel> addRoom(String roomUUID) async {
-    rooms.add(roomUUID);
-    update();
-    return this;
-  }
-
-  Future<UserModel> fromID(String uuid) async {
-    CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection('users');
-    QuerySnapshot querySnapshot =
-        await usersCollection.where('uuid', isEqualTo: uuid).get();
-    if (querySnapshot.docs.isNotEmpty) {
-      name = querySnapshot.docs[0].get('name');
-      language = querySnapshot.docs[0].get('language');
-      type = querySnapshot.docs[0].get('type');
-      uuid = uuid;
-      rooms = dynamicToStringList(querySnapshot.docs[0].get('rooms'));
-      memberRooms =
-          dynamicToStringList(querySnapshot.docs[0].get('memberRooms'));
-      return this;
-    } else {
-      debugPrint("uuid found no user!");
-      return this;
-    }
   }
 
   Future<List<UserModel>> loadAll() async {
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection('users').get();
-    List<UserModel> users = querySnapshot.docs.map((doc) {
+    List<UserModel> users = [];
+    for (QueryDocumentSnapshot doc in querySnapshot.docs) {
       UserModel model = UserModel();
       model.name = doc.get('name');
-      model.uuid = doc.get('uuid');
+      model.uuid = doc.id;
       model.language = doc.get('language');
       model.type = doc.get('type');
-      model.rooms = dynamicToStringList(querySnapshot.docs[0].get('rooms'));
-      model.memberRooms =
-          dynamicToStringList(querySnapshot.docs[0].get('memberRooms'));
-      return model;
-    }).toList();
+      model.rooms = dynamicToStringList(doc.get('rooms'));
+      // List<dynamic> roomsData = doc.get('rooms');
+      // if (roomsData.isNotEmpty) {
+      //   debugPrint("owns: ${roomsData.length}");
+      //   for (String temp in roomsData) {
+      //     model.rooms.add(await RoomModel().read(temp.toString()));
+      //   }
+      // }
+      model.memberRooms = dynamicToStringList(doc.get('memberRooms'));
+      // List<dynamic> memberRoomsData = doc.get('memberRooms');
+      // if (memberRoomsData.isNotEmpty) {
+      //   debugPrint("owns: ${memberRoomsData.length}");
+      //   for (String temp in memberRoomsData) {
+      //     model.memberRooms.add(await RoomModel().read(temp.toString()));
+      //   }
+      // }
+      users.add(model);
+    }
+
     return users;
   }
 }

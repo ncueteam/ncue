@@ -29,8 +29,6 @@ class _RoomUnitState extends State<RoomUnit> {
   void initState() {
     getUsers();
     room = widget.roomData;
-
-    room.initialize();
     super.initState();
     setState(() {});
   }
@@ -39,7 +37,6 @@ class _RoomUnitState extends State<RoomUnit> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        room.initialize();
         return MemberManagementDialog(room: room, userModels: userModels);
       },
     );
@@ -49,7 +46,6 @@ class _RoomUnitState extends State<RoomUnit> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        room.initialize();
         return OwnerManagementDialog(room: room, userModels: userModels);
       },
     );
@@ -75,7 +71,7 @@ class _RoomUnitState extends State<RoomUnit> {
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20 / 4),
                 child: Text(room.name, style: const TextStyle(fontSize: 20))),
-            Text("房間主人:${room.owner.displayName}"),
+            Text("房間主人:${room.owner.name}"),
             Text(
               room.description,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),

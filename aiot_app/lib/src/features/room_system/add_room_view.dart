@@ -85,8 +85,9 @@ class AddRoomViewState extends State<AddRoomView> {
             room.members.add(RouteView.user!.uid.toString());
             await room.create().then((value) => null);
             // room.debugData();
+            RouteView.model.rooms.add(room.uuid);
             await RouteView.model
-                .addRoom(room.uuid)
+                .update()
                 .then((value) => Navigator.pop(context, true));
           },
           icon: const Icon(Icons.add)),
