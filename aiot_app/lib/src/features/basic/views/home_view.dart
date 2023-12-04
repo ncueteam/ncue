@@ -13,7 +13,6 @@ import 'route_view.dart';
 
 class Home extends RouteView {
   const Home({key}) : super(key, routeName: '/home', routeIcon: Icons.home);
-
   @override
   State<Home> createState() => _HomeState();
 }

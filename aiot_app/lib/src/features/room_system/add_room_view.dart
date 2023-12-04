@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
+import 'package:ncue.aiot_app/src/features/basic/services/file_service.dart';
 import '../basic/views/route_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -19,9 +20,20 @@ class AddRoomViewState extends State<AddRoomView> {
   TextEditingController roomUUID = TextEditingController();
   String imagePath = "assets/room/room1.jpg";
   List<Widget> items = [];
+  late FileService fileService;
 
   @override
   void initState() {
+    fileService = FileService(() {
+      setState(() {});
+    });
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    items.clear();
     items.addAll([
       Row(
         children: [
@@ -76,6 +88,16 @@ class AddRoomViewState extends State<AddRoomView> {
           ),
         ],
       ),
+      fileService.getUnit(context),
+      SizedBox(
+        child: ElevatedButton(
+          onPressed: () {
+            fileService.displayImageFromFirestore(context, 'server-icon.png');
+            fileService.downloadImage('server-icon.png');
+          },
+          child: const Text('Display Image'),
+        ),
+      ),
       IconButton(
           onPressed: () async {
             RoomModel room = RoomModel();
@@ -92,12 +114,6 @@ class AddRoomViewState extends State<AddRoomView> {
           },
           icon: const Icon(Icons.add)),
     ]);
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.roomChoosePage),

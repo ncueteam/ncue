@@ -53,10 +53,13 @@ class FileService {
   }
 
   Widget displayImage(String imageUrl) {
-    return Image.network(
-      imageUrl,
-      width: double.infinity,
-      fit: BoxFit.contain,
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Image.network(
+        imageUrl,
+        width: double.infinity,
+        fit: BoxFit.contain,
+      ),
     );
   }
 
@@ -87,26 +90,29 @@ class FileService {
   }
 
   Widget getUnit(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          if (pickedFile != null)
-            if (['jpg', 'jpeg', 'png'].contains(pickedFile!.extension))
-              Expanded(
-                  child: Image.file(
-                File(pickedFile!.path!),
-                width: double.infinity,
-                fit: BoxFit.contain,
-              ))
-            else
-              Text(pickedFile!.name),
-          ElevatedButton(
-              onPressed: selectImage,
-              child: Text(AppLocalizations.of(context)!.selectFile)),
-          ElevatedButton(
-              onPressed: uploadFile,
-              child: Text(AppLocalizations.of(context)!.uploadFile)),
-        ],
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Center(
+        child: Column(
+          children: [
+            if (pickedFile != null)
+              if (['jpg', 'jpeg', 'png'].contains(pickedFile!.extension))
+                Expanded(
+                    child: Image.file(
+                  File(pickedFile!.path!),
+                  width: double.infinity,
+                  fit: BoxFit.contain,
+                ))
+              else
+                Text(pickedFile!.name),
+            ElevatedButton(
+                onPressed: selectImage,
+                child: Text(AppLocalizations.of(context)!.selectFile)),
+            ElevatedButton(
+                onPressed: uploadFile,
+                child: Text(AppLocalizations.of(context)!.uploadFile)),
+          ],
+        ),
       ),
     );
   }
