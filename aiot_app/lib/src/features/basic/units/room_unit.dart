@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
+import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
@@ -81,18 +82,20 @@ class _RoomUnitState extends State<RoomUnit> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        showListDialogOwner();
-                      },
-                      child: const Text("轉移房間主人")),
-                  const Spacer(),
-                  ElevatedButton(
-                      onPressed: () {
-                        showListDialogMember();
-                      },
-                      child: const Text("邀請")),
-                  const Spacer(),
+                  if (room.owner.uuid == RouteView.model.uuid)
+                    ElevatedButton(
+                        onPressed: () {
+                          showListDialogOwner();
+                        },
+                        child: const Text("轉移房間主人")),
+                  if (room.owner.uuid == RouteView.model.uuid) const Spacer(),
+                  if (room.owner.uuid == RouteView.model.uuid)
+                    ElevatedButton(
+                        onPressed: () {
+                          showListDialogMember();
+                        },
+                        child: const Text("邀請")),
+                  if (room.owner.uuid == RouteView.model.uuid) const Spacer(),
                   ElevatedButton(
                       onPressed: () {
                         Navigator.pushNamed(

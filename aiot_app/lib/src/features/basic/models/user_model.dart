@@ -12,9 +12,7 @@ class UserModel {
   late List<String> memberRooms;
 
   UserModel({String id = "Error"}) {
-    name = RouteView.user!.displayName ??
-        RouteView.user!.email ??
-        RouteView.user!.uid;
+    name = "User temp name";
     uuid = id != "Error" ? id : RouteView.user!.uid;
     type = "user";
     language = "en_US";
@@ -124,7 +122,6 @@ class UserModel {
       // }
       users.add(model);
     }
-
     return users;
   }
 }
