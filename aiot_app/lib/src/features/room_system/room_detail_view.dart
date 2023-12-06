@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/device_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/type_tile.dart';
 import 'package:ncue.aiot_app/src/features/devices/add_device_view.dart';
@@ -31,14 +32,18 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
     await RoomModel().read(arguments['data'] as String).then((room) async {
       items.add(Text(room.name));
       items.add(Text(room.uuid));
+      List<DeviceModel> devices = [];
+      items.add(const AddDeviceView()
+          .getUnit(context, data: {'data': room}, customName: "註冊裝置"));
+      for (String s in room.devices) {
+        devices.add(await DeviceModel().read(s));
+      }
       items.add(TypeTile(
           name: "房間內裝置",
-          children: (room.devices.map((e) => e.getUnit(context, () {
+          children: (devices.map((e) => e.getUnit(context, () {
                 setState(() {});
                 room.update();
               }))).toList()));
-      items.add(const AddDeviceView()
-          .getUnit(context, data: {'data': room}, customName: "註冊裝置"));
     });
   }
 
@@ -80,7 +85,7 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
             itemCount: items.length,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 1),
                 child: items[index],
               );
             },

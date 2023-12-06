@@ -202,7 +202,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
 
                     await temp
                         .create()
-                        .then((value) => roomData.devices.add(temp))
+                        .then((value) => roomData.devices.add(temp.uuid))
                         .then((value) async => await roomData.update())
                         .then((value) => mqttService.send(
                             '{"type":"register_device","type_data":"${temp.type}","uuid":"${temp.uuid}"}'))

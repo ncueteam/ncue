@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
-import 'package:ncue.aiot_app/src/features/basic/views/file_upload_view.dart';
 import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
 import 'package:ncue.aiot_app/src/features/notify_system/notify_view.dart';
@@ -96,7 +95,6 @@ abstract class RouteView extends StatefulWidget {
     RoomListView(),
     RoomDetailsView(),
     AddRoomView(),
-    FileUploadView(),
     BlueToothView(),
   ];
 }
