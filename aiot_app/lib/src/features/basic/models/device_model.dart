@@ -57,7 +57,7 @@ class DeviceModel {
     switch (type) {
       case "wet_degree_sensor":
         return Dht11Unit(
-          uuid: uuid,
+          uuid: roomId,
         );
       case "switch":
         return UnitTile(

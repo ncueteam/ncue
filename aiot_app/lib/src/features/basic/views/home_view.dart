@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/type_tile.dart';
-import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
-import 'package:ncue.aiot_app/src/features/room_system/add_room_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
 import '../../auth_system/profile_view.dart';
 import '../../settings/settings_view.dart';
@@ -27,11 +25,8 @@ class _HomeState extends State<Home> {
   Future<List<Widget>> loadUnits() async {
     items.clear();
     items.add(TypeTile(name: "捷徑", children: [
-      // const MqttUnit(uuid: "302"),
-      const AddRoomView().getUnit(context, customName: "註冊房間"),
       const RoomListView().getUnit(context, customName: '房間列表'),
       // const IRDeviceControlPanel().getUnit(context, customName: '紅外線控制器'),
-      // const Dht11Unit(),
     ]));
     return items;
   }

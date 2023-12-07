@@ -124,7 +124,7 @@ def main():
             dht.wait()
             dht.detect()
     #        mqClient0.routine(ujson.dumps({"type":"dht11","uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
-            mqClient0.publish(b'AIOT_113/Esp32Send', ujson.dumps({"type":"dht11","uuid":'',"humidity":dht.hum,"temperature":dht.temp}))
+            mqClient0.publish(b'AIOT_113/Esp32Send', ujson.dumps({"type":"dht11","uuid":DB.read("uuid")[1],"humidity":dht.hum,"temperature":dht.temp}))
             mqClient0.check_msg()
             
             screen.blank()
