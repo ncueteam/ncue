@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/file_service.dart';
 import '../basic/views/route_view.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddRoomView extends RouteView {
   const AddRoomView({key})
@@ -107,7 +106,7 @@ class AddRoomViewState extends State<AddRoomView> {
     ]);
     return Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.roomChoosePage),
+          title: Text(RouteView.language.roomChoosePage),
         ),
         body: ListView.builder(
           padding: const EdgeInsets.all(20),

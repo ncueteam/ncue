@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart';
+import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileService {
@@ -47,7 +47,7 @@ class FileService {
                         onPressed: () {
                           uploadFile();
                         },
-                        child: Text(AppLocalizations.of(context)!.uploadFile)),
+                        child: Text(RouteView.language.uploadFile)),
                   ],
                 ),
               ));
@@ -127,10 +127,7 @@ class FileService {
           children: [
             ElevatedButton(
                 onPressed: () => selectImage(context),
-                child: Text(AppLocalizations.of(context)!.selectFile)),
-            // ElevatedButton(
-            //     onPressed: uploadFile,
-            //     child: Text(AppLocalizations.of(context)!.uploadFile)),
+                child: Text(RouteView.language.selectFile)),
           ],
         ),
       ),

@@ -2,9 +2,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/local_auth_service.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
+import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import '../../devices/device_detail_view.dart';
 import '../models/device_model.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeviceUnit extends StatefulWidget {
   const DeviceUnit(
@@ -96,7 +96,7 @@ class _DeviceUnitState extends State<DeviceUnit> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text(AppLocalizations.of(context)!.appTitle),
+                      title: Text(RouteView.language.appTitle),
                       content: const Text("請先通過生物認證!"),
                       actions: <Widget>[
                         TextButton(

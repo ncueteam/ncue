@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/app.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
@@ -8,6 +9,7 @@ import 'package:ncue.aiot_app/src/features/room_system/add_room_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../auth_system/password_reset_view.dart';
 import '../../auth_system/phone_input_view.dart';
@@ -19,13 +21,14 @@ import '../../devices/device_detail_view.dart';
 import '../../settings/settings_controller.dart';
 import '../../settings/settings_service.dart';
 import '../../settings/settings_view.dart';
-import 'home_view.dart';
 
 abstract class RouteView extends StatefulWidget {
   final String routeName;
   final IconData routeIcon;
   static UserModel model = RouteView.model;
   static User? user = FirebaseAuth.instance.currentUser;
+  static AppLocalizations language =
+      AppLocalizations.of(navigatorKey.currentContext!)!;
 
   const RouteView(Key? key, {required this.routeName, required this.routeIcon})
       : super(key: key);
@@ -34,7 +37,7 @@ abstract class RouteView extends StatefulWidget {
     return IconButton(
       onPressed: () {
         Navigator.pushNamed(context, routeName,
-            arguments: const Home().routeName);
+            arguments: const RoomListView().routeName);
       },
       icon: Icon(routeIcon),
     );
@@ -81,7 +84,6 @@ abstract class RouteView extends StatefulWidget {
   }
 
   static const List<RouteView> pages = [
-    Home(),
     SignInView(),
     ProfileView(),
     DeviceDetailsView(),
