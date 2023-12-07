@@ -48,7 +48,7 @@ class _HomeState extends State<Home> {
         title: Text(AppLocalizations.of(context)!.appTitle),
         actions: [
           const SettingsView().getIconButton(context),
-          const BlueToothView().getIconButton(context),
+          //const BlueToothView().getIconButton(context),
         ],
       ),
       drawer: const Drawer(child: ProfileView()),
