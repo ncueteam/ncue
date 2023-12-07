@@ -45,6 +45,12 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
                 setState(() {});
                 room.update();
               }))).toList()));
+      items.add(ElevatedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, const BlueToothView().routeName,
+                arguments: {'data': room});
+          },
+          child: const Text("透過藍芽新增wifi帳號密碼")));
     });
   }
 
@@ -72,9 +78,9 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
               )
             ]),
           ),
-          actions: [
-            const BlueToothView().getIconButton(context),
-          ],
+          // actions: [
+          //   const BlueToothView().getIconButton(context),
+          // ],
         ),
         body: RefreshIndicator(
           onRefresh: () {

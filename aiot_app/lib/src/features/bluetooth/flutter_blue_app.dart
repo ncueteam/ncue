@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import 'screens/bluetooth_off_screen.dart';
 import 'screens/scan_screen.dart';
@@ -39,8 +40,15 @@ class _FlutterBlueAppState extends State<BlueToothView> {
 
   @override
   Widget build(BuildContext context) {
+    final arguments = ModalRoute.of(context)?.settings.arguments;
+    RoomModel roomData = RoomModel();
+    if (arguments != null && arguments is Map<String, dynamic>) {
+      roomData = arguments['data'];
+    }
     Widget screen = _adapterState == BluetoothAdapterState.on
-        ? const ScanScreen()
+        ? ScanScreen(
+            roomID: roomData.uuid,
+          )
         : BluetoothOffScreen(adapterState: _adapterState);
 
     return MaterialApp(
