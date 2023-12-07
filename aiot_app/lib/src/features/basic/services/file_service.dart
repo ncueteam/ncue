@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:ncue.aiot_app/src/app.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -19,16 +20,16 @@ class FileService {
 
   FileService(this.callback);
 
-  Future selectImage(BuildContext context) async {
+  Future selectImage() async {
     await FilePicker.platform.pickFiles().then((value) {
       if (value == null) return;
       pickedFile = value.files.first;
       callback();
       if (['jpg', 'jpeg', 'png'].contains(pickedFile!.extension)) {
-        displayImageFromFirestore(context, pickedFile!.name);
+        displayImageFromFirestore(pickedFile!.name);
       } else {
         showDialog(
-            context: context,
+            context: navigatorKey.currentContext!,
             builder: (context) {
               return GestureDetector(
                   child: Center(
@@ -82,10 +83,10 @@ class FileService {
     return urlDownload;
   }
 
-  Future<void> displayImageFromFirestore(context, String imageId) async {
+  Future<void> displayImageFromFirestore(String imageId) async {
     final imageUrl = await fetchImageUrl(imageId);
     showDialog(
-      context: context,
+      context: navigatorKey.currentContext!,
       builder: (context) {
         return GestureDetector(
             onTapUp: (details) {
@@ -119,14 +120,14 @@ class FileService {
     Image.file(file, width: double.infinity);
   }
 
-  Widget getUnit(BuildContext context) {
+  Widget getUnit() {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Center(
         child: Column(
           children: [
             ElevatedButton(
-                onPressed: () => selectImage(context),
+                onPressed: () => selectImage(),
                 child: Text(RouteView.language.selectFile)),
           ],
         ),

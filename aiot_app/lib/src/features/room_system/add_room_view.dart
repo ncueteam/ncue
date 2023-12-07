@@ -87,7 +87,7 @@ class AddRoomViewState extends State<AddRoomView> {
           ),
         ],
       ),
-      fileService.getUnit(context),
+      fileService.getUnit(),
       IconButton(
           onPressed: () async {
             RoomModel room = RoomModel();
