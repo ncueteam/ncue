@@ -231,7 +231,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
           ],
         ),
         const Row(children: [Text('預覽裝置:')]),
-        Container(child: temp.getUnit(context, () {})),
+        Container(child: temp.getUnit(() {})),
       ];
 
       return Scaffold(
@@ -248,7 +248,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
       );
     } else {
       return Container(
-        child: const RoomListView().getIconButton(context),
+        child: const RoomListView().getIconButton(),
       );
     }
   }

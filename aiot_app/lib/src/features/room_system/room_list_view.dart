@@ -49,7 +49,7 @@ class _RoomListViewState extends State<RoomListView> {
     return Scaffold(
         appBar: AppBar(
           title: Text(RouteView.language.roomListPageTitle),
-          actions: [const SettingsView().getIconButton(context)],
+          actions: [const SettingsView().getIconButton()],
         ),
         drawer: const Drawer(child: ProfileView()),
         body: RefreshIndicator(

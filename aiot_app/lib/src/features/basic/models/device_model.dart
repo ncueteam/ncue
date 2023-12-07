@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/app.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/local_auth_service.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
@@ -53,7 +54,8 @@ class DeviceModel {
     debugPrint("=================================================");
   }
 
-  UnitTile getUnit(BuildContext context, VoidCallback callback) {
+  UnitTile getUnit(VoidCallback callback) {
+    BuildContext context = navigatorKey.currentContext!;
     switch (type) {
       case "wet_degree_sensor":
         return Dht11Unit(

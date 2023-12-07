@@ -31,7 +31,7 @@ class _ProfileViewState extends State<ProfileView> {
       children: [
         Align(
           alignment: Alignment.centerRight,
-          child: const SettingsView().getIconButton(context),
+          child: const SettingsView().getIconButton(),
         ),
       ],
     );

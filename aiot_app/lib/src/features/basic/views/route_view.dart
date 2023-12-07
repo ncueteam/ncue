@@ -33,10 +33,10 @@ abstract class RouteView extends StatefulWidget {
   const RouteView(Key? key, {required this.routeName, required this.routeIcon})
       : super(key: key);
 
-  IconButton getIconButton(BuildContext context) {
+  IconButton getIconButton() {
     return IconButton(
       onPressed: () {
-        Navigator.pushNamed(context, routeName,
+        Navigator.pushNamed(navigatorKey.currentContext!, routeName,
             arguments: const RoomListView().routeName);
       },
       icon: Icon(routeIcon),

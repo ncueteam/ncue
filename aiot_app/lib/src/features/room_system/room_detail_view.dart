@@ -41,7 +41,7 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
       }
       items.add(TypeTile(
           name: "房間內裝置",
-          children: (devices.map((e) => e.getUnit(context, () {
+          children: (devices.map((e) => e.getUnit(() {
                 setState(() {});
                 room.update();
               }))).toList()));
