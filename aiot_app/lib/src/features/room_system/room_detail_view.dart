@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/device_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/type_tile.dart';
+import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
 import 'package:ncue.aiot_app/src/features/devices/add_device_view.dart';
 
 import '../basic/views/route_view.dart';
@@ -71,6 +72,9 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
               )
             ]),
           ),
+          actions: [
+            const BlueToothView().getIconButton(context),
+          ],
         ),
         body: RefreshIndicator(
           onRefresh: () {
