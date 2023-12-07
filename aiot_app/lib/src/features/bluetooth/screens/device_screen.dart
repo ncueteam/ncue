@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/device_model.dart';
 import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
 
 import '../widgets/service_tile.dart';
@@ -35,10 +36,12 @@ class _DeviceScreenState extends State<DeviceScreen> {
   late StreamSubscription<bool> _isDisconnectingSubscription;
   late StreamSubscription<int> _mtuSubscription;
 
+  late DeviceModel decviceModel;
+
   @override
   void initState() {
     super.initState();
-
+    loadDeviceModel();
     _connectionStateSubscription =
         widget.device.connectionState.listen((state) async {
       _connectionState = state;
@@ -66,6 +69,11 @@ class _DeviceScreenState extends State<DeviceScreen> {
       _isDisconnecting = value;
       setState(() {});
     });
+  }
+
+  void loadDeviceModel() async {
+    decviceModel = await DeviceModel().create();
+    setState(() {});
   }
 
   @override
@@ -288,6 +296,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
             ],
           ),
         ),
+        bottomNavigationBar: Text("uuid: ${decviceModel.uuid}"),
       ),
     );
   }
