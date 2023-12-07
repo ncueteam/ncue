@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
+import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
 
 class RoomListView extends RouteView {
   const RoomListView({key})
@@ -43,7 +44,12 @@ class _RoomListViewState extends State<RoomListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("房間列表")),
+        appBar: AppBar(
+          title: const Text("房間列表"),
+          actions: [
+          const BlueToothView().getIconButton(context),
+        ],
+        ),
         body: RefreshIndicator(
           onRefresh: () => reload(),
           child: ListView.builder(
