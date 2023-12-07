@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
-import 'package:ncue.aiot_app/src/features/basic/models/device_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/room_unit.dart';
 
 class RoomModel {
@@ -14,7 +13,7 @@ class RoomModel {
   late String description;
   late UserModel owner;
   late List<String> members;
-  late List<DeviceModel> devices;
+  late List<String> devices;
 
   RoomModel({String id = "Error id"}) {
     name = "ErrorName";
@@ -50,7 +49,7 @@ class RoomModel {
       'description': description,
       'imagePath': imagePath,
       'members': members,
-      'devices': devices.map((item) => item.uuid),
+      'devices': devices,
       'owner': owner.uuid,
     };
   }
@@ -75,12 +74,17 @@ class RoomModel {
       }
       /* load device */
       List<dynamic> deviceData = data['devices'];
-      if (deviceData.isNotEmpty) {
-        List<String> temp = deviceData.map((item) => item.toString()).toList();
-        for (String D in temp) {
-          devices.add(await DeviceModel().read(D));
-        }
+      if (memberData.isNotEmpty) {
+        devices = deviceData.map((item) => item.toString()).toList();
       }
+      /* load device */
+      // List<dynamic> deviceData = data['devices'];
+      // if (deviceData.isNotEmpty) {
+      //   List<String> temp = deviceData.map((item) => item.toString()).toList();
+      //   for (String D in temp) {
+      //     devices.add(await DeviceModel().read(D));
+      //   }
+      // }
       /* others */
       name = data['name'];
       description = data['description'];

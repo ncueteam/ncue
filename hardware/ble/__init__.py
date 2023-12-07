@@ -1,14 +1,14 @@
 import ubluetooth
 from file_system import FileSet
 class BLE():
-    def __init__(self) -> None:
-        self.name = "esp32 ncue"
+    def __init__(self,costumName="esp32 ncue") -> None:
+        self.name = costumName
         self.ble = ubluetooth.BLE()
         self.ble.active(False)
         self.ble.active(True)
         self.register()
         self.ble.irq(self.handler)
-        self.fileSet = FileSet(file_name='wifi.json')
+        #self.fileSet = FileSet(file_name='wifi.json')
         self.wifi_added = False
         self.bt_linked = False
     
@@ -18,7 +18,7 @@ class BLE():
         HUM_CHAR_UUID = ubluetooth.UUID(0x9013)
 
         TEM_CHAR = (TEM_CHAR_UUID, ubluetooth.FLAG_READ | ubluetooth.FLAG_WRITE | ubluetooth.FLAG_NOTIFY,)
-        HUM_CHAR = (HUM_CHAR_UUID, ubluetooth.FLAG_READ | ubluetooth.FLAG_NOTIFY,)
+        HUM_CHAR = (HUM_CHAR_UUID, ubluetooth.FLAG_READ | ubluetooth.FLAG_WRITE | ubluetooth.FLAG_NOTIFY,)
 
         ENV_SERVER = (ENV_SERVER_UUID, (TEM_CHAR, HUM_CHAR,),)
         SERVICES = (ENV_SERVER,)
@@ -47,10 +47,19 @@ class BLE():
             onn_handle, char_handle = data
             buffer = self.ble.gatts_read(char_handle)
             ble_msg = buffer.decode('UTF-8').strip()
+            #ble_msg = buffer
             print(ble_msg)
 
             arr = ble_msg.split(',')
             name = arr[0]
             password = arr[1]
-            self.fileSet.update(name, password)
-            self.wifi_added = True
+            if(name == "uid"):
+                self.fileSet = FileSet(file_name='device_data.json')
+                self.fileSet.update(name, password)
+            else:
+                self.fileSet = FileSet(file_name='wifi.json')
+                self.wifi_added = True
+                self.fileSet.update(name, password)
+                
+            
+            

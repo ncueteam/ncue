@@ -89,15 +89,6 @@ class AddRoomViewState extends State<AddRoomView> {
         ],
       ),
       fileService.getUnit(context),
-      SizedBox(
-        child: ElevatedButton(
-          onPressed: () {
-            fileService.displayImageFromFirestore(context, 'server-icon.png');
-            fileService.downloadImage('server-icon.png');
-          },
-          child: const Text('Display Image'),
-        ),
-      ),
       IconButton(
           onPressed: () async {
             RoomModel room = RoomModel();

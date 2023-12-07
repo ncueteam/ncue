@@ -146,8 +146,12 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
 
   @override
   Widget build(BuildContext context) {
+    // if (widget.characteristic.characteristicUuid.toString().toLowerCase() ==
+    //     characteristicuuid.toLowerCase()) {
     if (widget.characteristic.characteristicUuid.toString().toLowerCase() ==
-        characteristicuuid.toLowerCase()) {
+            9012 ||
+        widget.characteristic.characteristicUuid.toString().toLowerCase() ==
+            9013) {
       return ExpansionTile(
         title: ListTile(
           title: const Column(

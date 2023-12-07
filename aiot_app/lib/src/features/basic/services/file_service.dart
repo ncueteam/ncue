@@ -19,11 +19,41 @@ class FileService {
 
   FileService(this.callback);
 
-  Future selectImage() async {
-    final result = await FilePicker.platform.pickFiles();
-    if (result == null) return;
-    pickedFile = result.files.first;
-    callback();
+  Future selectImage(BuildContext context) async {
+    await FilePicker.platform.pickFiles().then((value) {
+      if (value == null) return;
+      pickedFile = value.files.first;
+      callback();
+      if (['jpg', 'jpeg', 'png'].contains(pickedFile!.extension)) {
+        displayImageFromFirestore(context, pickedFile!.name);
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return GestureDetector(
+                  child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          pickedFile!.name,
+                          style: const TextStyle(
+                              color: Colors.white70,
+                              decoration: TextDecoration.none),
+                        )),
+                    ElevatedButton(
+                        onPressed: () {
+                          uploadFile();
+                        },
+                        child: Text(AppLocalizations.of(context)!.uploadFile)),
+                  ],
+                ),
+              ));
+            });
+      }
+    });
   }
 
   Future uploadFile() async {
@@ -52,26 +82,26 @@ class FileService {
     return urlDownload;
   }
 
-  Widget displayImage(String imageUrl) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Image.network(
-        imageUrl,
-        width: double.infinity,
-        fit: BoxFit.contain,
-      ),
-    );
-  }
-
   Future<void> displayImageFromFirestore(context, String imageId) async {
     final imageUrl = await fetchImageUrl(imageId);
     showDialog(
       context: context,
       builder: (context) {
-        return displayImage(imageUrl);
+        return GestureDetector(
+            onTapUp: (details) {
+              Navigator.pop(context);
+            },
+            child: Column(
+              children: [
+                Image.network(
+                  imageUrl,
+                  width: double.infinity,
+                  fit: BoxFit.contain,
+                ),
+              ],
+            ));
       },
     );
-    displayImage(imageUrl);
     callback();
   }
 
@@ -95,22 +125,12 @@ class FileService {
       child: Center(
         child: Column(
           children: [
-            if (pickedFile != null)
-              if (['jpg', 'jpeg', 'png'].contains(pickedFile!.extension))
-                Expanded(
-                    child: Image.file(
-                  File(pickedFile!.path!),
-                  width: double.infinity,
-                  fit: BoxFit.contain,
-                ))
-              else
-                Text(pickedFile!.name),
             ElevatedButton(
-                onPressed: selectImage,
+                onPressed: () => selectImage(context),
                 child: Text(AppLocalizations.of(context)!.selectFile)),
-            ElevatedButton(
-                onPressed: uploadFile,
-                child: Text(AppLocalizations.of(context)!.uploadFile)),
+            // ElevatedButton(
+            //     onPressed: uploadFile,
+            //     child: Text(AppLocalizations.of(context)!.uploadFile)),
           ],
         ),
       ),

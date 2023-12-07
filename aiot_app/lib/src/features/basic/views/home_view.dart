@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/type_tile.dart';
-import 'package:ncue.aiot_app/src/features/basic/views/file_upload_view.dart';
-import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
-import 'package:ncue.aiot_app/src/features/room_system/add_room_view.dart';
 import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
 import '../../auth_system/profile_view.dart';
 import '../../settings/settings_view.dart';
@@ -28,12 +25,8 @@ class _HomeState extends State<Home> {
   Future<List<Widget>> loadUnits() async {
     items.clear();
     items.add(TypeTile(name: "捷徑", children: [
-      // const MqttUnit(uuid: "302"),
-      const AddRoomView().getUnit(context, customName: "註冊房間"),
-      const FileUploadView().getUnit(context, customName: '上傳檔案'),
       const RoomListView().getUnit(context, customName: '房間列表'),
       // const IRDeviceControlPanel().getUnit(context, customName: '紅外線控制器'),
-      // const Dht11Unit(),
     ]));
     return items;
   }
@@ -50,7 +43,7 @@ class _HomeState extends State<Home> {
         title: Text(AppLocalizations.of(context)!.appTitle),
         actions: [
           const SettingsView().getIconButton(context),
-          const BlueToothView().getIconButton(context),
+          //const BlueToothView().getIconButton(context),
         ],
       ),
       drawer: const Drawer(child: ProfileView()),

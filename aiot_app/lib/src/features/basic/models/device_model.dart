@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/local_auth_service.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
@@ -56,7 +57,7 @@ class DeviceModel {
     switch (type) {
       case "wet_degree_sensor":
         return Dht11Unit(
-          uuid: uuid,
+          uuid: roomId,
         );
       case "switch":
         return UnitTile(
@@ -171,7 +172,10 @@ class DeviceModel {
   }
 
   Future<DeviceModel> create() async {
-    await FirebaseFirestore.instance.collection('devices').add(getDocument());
+    DocumentReference documentReference =
+        await database.collection('devices').add(getDocument());
+    uuid = documentReference.id;
+    await database.collection('devices').doc(uuid).update(getDocument());
     return this;
   }
 
@@ -218,6 +222,10 @@ class DeviceModel {
     for (QueryDocumentSnapshot document in querySnapshot.docs) {
       Map<String, dynamic> result = document.data() as Map<String, dynamic>;
       if (result['uuid'] == uuid) {
+        RoomModel room = await RoomModel().read(roomId);
+        room.devices.remove(this);
+        await room.update();
+        room.debugData();
         document.reference.delete();
       }
     }

@@ -34,11 +34,16 @@ class _DeviceScreenState extends State<DeviceScreen> {
   late StreamSubscription<bool> _isConnectingSubscription;
   late StreamSubscription<bool> _isDisconnectingSubscription;
   late StreamSubscription<int> _mtuSubscription;
+  late String roomID;
 
   @override
   void initState() {
+    final arguments = ModalRoute.of(context)?.settings.arguments;
+    if (arguments != null && arguments is Map<String, dynamic>) {
+      roomID = arguments['data'];
+      debugPrint(roomID);
+    }
     super.initState();
-
     _connectionStateSubscription =
         widget.device.connectionState.listen((state) async {
       _connectionState = state;
@@ -184,7 +189,7 @@ class _DeviceScreenState extends State<DeviceScreen> {
   Widget buildRemoteId(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Text('${widget.device.remoteId}'),
+      child: Text('${widget.device.remoteId} / $roomID'),
     );
   }
 

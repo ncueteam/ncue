@@ -12,8 +12,8 @@ import '../widgets/scan_result_tile.dart';
 import '../utils/extra.dart';
 
 class ScanScreen extends StatefulWidget {
-  const ScanScreen({Key? key}) : super(key: key);
-
+  const ScanScreen({Key? key, required this.roomID}) : super(key: key);
+  final String roomID;
   @override
   State<ScanScreen> createState() => _ScanScreenState();
 }
@@ -86,7 +86,8 @@ class _ScanScreenState extends State<ScanScreen> {
     });
     MaterialPageRoute route = MaterialPageRoute(
         builder: (context) => DeviceScreen(device: device),
-        settings: const RouteSettings(name: '/DeviceScreen'));
+        settings: RouteSettings(
+            name: '/DeviceScreen', arguments: {'data': widget.roomID}));
     Navigator.of(context).push(route);
   }
 
