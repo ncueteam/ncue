@@ -25,6 +25,7 @@ class _Dht11UnitState extends State<Dht11Unit> {
     Map<String, dynamic> mqttData = json.decode(mqtt.value);
     type = mqttData["type"].toString();
     uuid = mqttData["uuid"].toString();
+    debugPrint("$uuid vs ${widget.uuid}");
     if (type == "dht11" && uuid == widget.uuid) {
       temperature = mqttData["temperature"].toString();
       humidity = mqttData["humidity"].toString();

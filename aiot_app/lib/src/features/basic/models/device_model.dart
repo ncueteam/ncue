@@ -57,7 +57,7 @@ class DeviceModel {
     switch (type) {
       case "wet_degree_sensor":
         return Dht11Unit(
-          uuid: uuid,
+          uuid: roomId,
         );
       case "switch":
         return UnitTile(
@@ -172,7 +172,10 @@ class DeviceModel {
   }
 
   Future<DeviceModel> create() async {
-    await FirebaseFirestore.instance.collection('devices').add(getDocument());
+    DocumentReference documentReference =
+        await database.collection('devices').add(getDocument());
+    uuid = documentReference.id;
+    await database.collection('devices').doc(uuid).update(getDocument());
     return this;
   }
 
