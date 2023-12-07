@@ -53,6 +53,12 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
     return bytes;
   }
 
+  List<int> _getUuidByte() {
+    var wifiData = 'uid,$roomId';
+    List<int> bytes = utf8.encode(wifiData);
+    return bytes;
+  }
+
   Future onReadPressed() async {
     try {
       await c.read();
@@ -64,6 +70,8 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
 
   Future onWritePressed() async {
     try {
+      await c.write(_getUuidByte(),
+          withoutResponse: c.properties.writeWithoutResponse);
       await c.write(_getRandomBytes(),
           withoutResponse: c.properties.writeWithoutResponse);
       Snackbar.show(ABC.c, "Write: Success", success: true);

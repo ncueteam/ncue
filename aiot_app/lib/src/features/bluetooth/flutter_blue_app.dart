@@ -8,6 +8,7 @@ import 'screens/scan_screen.dart';
 
 TextEditingController wifiNameController = TextEditingController();
 TextEditingController wifiPasswordController = TextEditingController();
+String roomId = "";
 
 class BlueToothView extends RouteView {
   const BlueToothView({Key? key})
@@ -44,6 +45,7 @@ class _FlutterBlueAppState extends State<BlueToothView> {
     RoomModel roomData = RoomModel();
     if (arguments != null && arguments is Map<String, dynamic>) {
       roomData = arguments['data'];
+      roomId = (arguments['data'] as RoomModel).uuid;
     }
     Widget screen = _adapterState == BluetoothAdapterState.on
         ? ScanScreen(
