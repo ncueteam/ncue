@@ -70,9 +70,20 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
 
   Future onWritePressed() async {
     try {
-      await c.write(_getUuidByte(),
-          withoutResponse: c.properties.writeWithoutResponse);
       await c.write(_getRandomBytes(),
+          withoutResponse: c.properties.writeWithoutResponse);
+      Snackbar.show(ABC.c, "Write: Success", success: true);
+      if (c.properties.read) {
+        await c.read();
+      }
+    } catch (e) {
+      Snackbar.show(ABC.c, prettyException("Write Error:", e), success: false);
+    }
+  }
+
+  Future onWritePressed2() async {
+    try {
+      await c.write(_getUuidByte(),
           withoutResponse: c.properties.writeWithoutResponse);
       Snackbar.show(ABC.c, "Write: Success", success: true);
       if (c.properties.read) {
@@ -123,6 +134,7 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
         child: Text(withoutResp ? "WriteNoResp" : "Submit"),
         onPressed: () async {
           await onWritePressed();
+          await onWritePressed2();
           setState(() {});
         });
   }
@@ -154,12 +166,12 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
 
   @override
   Widget build(BuildContext context) {
-    // if (widget.characteristic.characteristicUuid.toString().toLowerCase() ==
-    //     characteristicuuid.toLowerCase()) {
     if (widget.characteristic.characteristicUuid.toString().toLowerCase() ==
-            9012 ||
-        widget.characteristic.characteristicUuid.toString().toLowerCase() ==
-            9013) {
+        characteristicuuid.toLowerCase()) {
+      // if (widget.characteristic.characteristicUuid.toString().toLowerCase() ==
+      //         9012 ||
+      //     widget.characteristic.characteristicUuid.toString().toLowerCase() ==
+      //         9013) {
       return ExpansionTile(
         title: ListTile(
           title: const Column(
