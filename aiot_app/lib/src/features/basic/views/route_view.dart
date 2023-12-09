@@ -51,7 +51,6 @@ abstract class RouteView extends StatefulWidget {
         title: Text("前往頁面 : ${customName == "" ? routeName : customName}"),
         subtitle: Text(routeName),
         leading: Icon(routeIcon),
-        trailing: const Text("U"),
         onTap: () {
           Navigator.pushNamed(context, routeName, arguments: data);
         });
@@ -62,24 +61,14 @@ abstract class RouteView extends StatefulWidget {
   static Future<void> loadRouteViewSettings() async {
     await settingsController.loadSettings();
     await loadAccount();
-    user = await getUser();
   }
 
   static Future<void> loadAccount() async {
-    User? user = FirebaseAuth.instance.currentUser;
+    user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       model = await UserModel().read();
     } else {
       debugPrint("error loading user!");
-    }
-  }
-
-  static Future<User?> getUser() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      return user;
-    } else {
-      return FirebaseAuth.instance.currentUser;
     }
   }
 

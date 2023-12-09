@@ -1,9 +1,11 @@
 {
   "appTitle": "彰師大物聯網系統",
-  "roomChoosePage": "房間選擇頁面",
 
   "settingPageTitle": "設定",
   "roomListPageTitle" : "房間列表",
+  "roomRegisterPageTitle":"房間註冊頁面",
+
+  "roomNameEmptyError":"名稱不得為空!",
 
   "systemTheme":"系統佈景",
   "lightTheme":"淺色佈景",

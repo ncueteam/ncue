@@ -49,6 +49,12 @@ class UserModel {
   }
 
   Future<UserModel> create() async {
+    if (name == "User temp name") {
+      name = RouteView.user!.displayName ??
+          RouteView.user!.email ??
+          RouteView.user?.uid ??
+          name;
+    }
     await database.collection('users').doc(uuid).set(getDocument());
     return this;
   }

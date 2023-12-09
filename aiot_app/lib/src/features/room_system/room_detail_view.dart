@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/device_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/type_tile.dart';
 import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
 import 'package:ncue.aiot_app/src/features/devices/add_device_view.dart';
@@ -51,6 +52,18 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
                 arguments: {'data': room});
           },
           child: const Text("透過藍芽新增wifi帳號密碼")));
+      items.add(ElevatedButton(
+          onPressed: () async {
+            room.owner.rooms.remove(room.uuid);
+            room.owner.memberRooms.remove(room.uuid);
+            room.owner.update();
+            Navigator.pop(context);
+            for (String memberId in room.members) {
+              UserModel member = await UserModel().read(id: memberId);
+              member.memberRooms.remove(room.uuid);
+            }
+          },
+          child: const Text("刪除房間")));
     });
   }
 
@@ -78,9 +91,6 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
               )
             ]),
           ),
-          // actions: [
-          //   const BlueToothView().getIconButton(context),
-          // ],
         ),
         body: RefreshIndicator(
           onRefresh: () {

@@ -54,10 +54,11 @@ class RoomModel {
     };
   }
 
-  Future<void> create() async {
+  Future<RoomModel> create() async {
     DocumentReference documentReference =
         await database.collection('rooms').add(getDocument());
     uuid = documentReference.id;
+    return this;
   }
 
   Future<RoomModel> read(String roomID) async {
@@ -77,15 +78,6 @@ class RoomModel {
       if (memberData.isNotEmpty) {
         devices = deviceData.map((item) => item.toString()).toList();
       }
-      /* load device */
-      // List<dynamic> deviceData = data['devices'];
-      // if (deviceData.isNotEmpty) {
-      //   List<String> temp = deviceData.map((item) => item.toString()).toList();
-      //   for (String D in temp) {
-      //     devices.add(await DeviceModel().read(D));
-      //   }
-      // }
-      /* others */
       name = data['name'];
       description = data['description'];
       imagePath = data['imagePath'];
@@ -95,7 +87,7 @@ class RoomModel {
     return this;
   }
 
-  Future<void> update() async {
+  Future<RoomModel> update() async {
     DocumentReference reference =
         FirebaseFirestore.instance.collection('rooms').doc(uuid);
     DocumentSnapshot snapshot = await reference.get();
@@ -104,6 +96,11 @@ class RoomModel {
     } else {
       create();
     }
+    return this;
+  }
+
+  Future<void> delete() async {
+    FirebaseFirestore.instance.collection('rooms').doc(uuid).delete();
   }
 
   static Future<void> getDocIds() async {
