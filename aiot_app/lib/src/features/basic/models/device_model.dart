@@ -2,14 +2,15 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/app.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/local_auth_service.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
+import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 import 'package:ncue.aiot_app/src/features/devices/device_detail_view.dart';
 import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
 import 'package:uuid/uuid.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeviceModel {
   static FirebaseFirestore database = FirebaseFirestore.instance;
@@ -53,7 +54,8 @@ class DeviceModel {
     debugPrint("=================================================");
   }
 
-  UnitTile getUnit(BuildContext context, VoidCallback callback) {
+  UnitTile getUnit(VoidCallback callback) {
+    BuildContext context = navigatorKey.currentContext!;
     switch (type) {
       case "wet_degree_sensor":
         return Dht11Unit(
@@ -123,7 +125,7 @@ class DeviceModel {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text(AppLocalizations.of(context)!.appTitle),
+                      title: Text(RouteView.language.appTitle),
                       content: const Text("請先通過生物認證!"),
                       actions: <Widget>[
                         TextButton(

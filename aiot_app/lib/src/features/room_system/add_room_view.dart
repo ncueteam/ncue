@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/file_service.dart';
 import '../basic/views/route_view.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddRoomView extends RouteView {
   const AddRoomView({key})
@@ -88,26 +87,35 @@ class AddRoomViewState extends State<AddRoomView> {
           ),
         ],
       ),
-      fileService.getUnit(context),
+      fileService.getUnit(),
       IconButton(
           onPressed: () async {
-            RoomModel room = RoomModel();
-            room.imagePath = imagePath;
-            room.description = roomDiscription.text;
-            room.name = roomName.text;
-            room.members.add(RouteView.user!.uid.toString());
-            await room.create().then((value) => null);
-            // room.debugData();
-            RouteView.model.rooms.add(room.uuid);
-            await RouteView.model
-                .update()
-                .then((value) => Navigator.pop(context, true));
+            if (roomName.text != "") {
+              RoomModel room = RoomModel();
+              room.imagePath = imagePath;
+              room.description = roomDiscription.text;
+              room.name = roomName.text;
+              room.members.add(RouteView.user!.uid.toString());
+              await room.create().then((value) => null);
+              // room.debugData();
+              RouteView.model.rooms.add(room.uuid);
+              await RouteView.model
+                  .update()
+                  .then((value) => Navigator.pop(context, true));
+            } else {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text(RouteView.language.roomNameEmptyError),
+                ),
+              );
+            }
           },
           icon: const Icon(Icons.add)),
     ]);
     return Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.roomChoosePage),
+          title: Text(RouteView.language.roomRegisterPageTitle),
         ),
         body: ListView.builder(
           padding: const EdgeInsets.all(20),

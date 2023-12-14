@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../basic/views/route_view.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsView extends RouteView {
   const SettingsView({key})
@@ -16,7 +14,7 @@ class _SettingsViewState extends State<SettingsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.settingPageTitle),
+        title: Text(RouteView.language.settingPageTitle),
       ),
       body: Column(
         children: [
@@ -30,15 +28,15 @@ class _SettingsViewState extends State<SettingsView> {
             items: [
               DropdownMenuItem(
                 value: ThemeMode.system,
-                child: Text(AppLocalizations.of(context)!.systemTheme),
+                child: Text(RouteView.language.systemTheme),
               ),
               DropdownMenuItem(
                 value: ThemeMode.light,
-                child: Text(AppLocalizations.of(context)!.lightTheme),
+                child: Text(RouteView.language.lightTheme),
               ),
               DropdownMenuItem(
                 value: ThemeMode.dark,
-                child: Text(AppLocalizations.of(context)!.darkTheme),
+                child: Text(RouteView.language.darkTheme),
               )
             ],
           ),
@@ -53,11 +51,11 @@ class _SettingsViewState extends State<SettingsView> {
               items: [
                 DropdownMenuItem(
                   value: "en_US",
-                  child: Text(AppLocalizations.of(context)!.englishUS),
+                  child: Text(RouteView.language.englishUS),
                 ),
                 DropdownMenuItem(
                   value: "zh_TW",
-                  child: Text(AppLocalizations.of(context)!.chineseTW),
+                  child: Text(RouteView.language.chineseTW),
                 ),
               ],
             ),

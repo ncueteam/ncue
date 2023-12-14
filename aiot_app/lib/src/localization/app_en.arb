@@ -1,8 +1,12 @@
 {
-  "appTitle": "ncue_app",
-  "roomChoosePage": "Room Choose Page",
+  "appTitle": "NCUE App",
 
   "settingPageTitle":"Setting Page",
+  "roomListPageTitle":"Room List",
+  "roomRegisterPageTitle":"Room Register",
+
+  "roomNameEmptyError":"Name is empty, please input empty name space!",
+
   "systemTheme":"System Theme",
   "lightTheme":"Light Theme",
   "darkTheme":"Dark Theme",

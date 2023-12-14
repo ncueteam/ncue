@@ -25,7 +25,7 @@ class _SignInViewState extends State<SignInView> {
       subtitleBuilder: (context, action) {
         return Align(
             alignment: Alignment.centerRight,
-            child: const SettingsView().getIconButton(context));
+            child: const SettingsView().getIconButton());
       },
       actions: [
         ForgotPasswordAction((context, email) {

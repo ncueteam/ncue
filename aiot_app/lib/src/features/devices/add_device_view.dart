@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/device_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/mqtt_service.dart';
+import 'package:ncue.aiot_app/src/features/room_system/room_list_view.dart';
 import 'package:uuid/uuid.dart';
-import '../basic/views/home_view.dart';
 import '../basic/views/route_view.dart';
 
 class AddDeviceView extends RouteView {
@@ -231,7 +231,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
           ],
         ),
         const Row(children: [Text('預覽裝置:')]),
-        Container(child: temp.getUnit(context, () {})),
+        Container(child: temp.getUnit(() {})),
       ];
 
       return Scaffold(
@@ -248,7 +248,7 @@ class AddDeviceViewState extends State<AddDeviceView> {
       );
     } else {
       return Container(
-        child: const Home().getIconButton(context),
+        child: const RoomListView().getIconButton(),
       );
     }
   }

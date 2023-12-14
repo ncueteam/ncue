@@ -147,7 +147,7 @@ class _ScanScreenState extends State<ScanScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Find Devices'),
-          actions: [const SettingsView().getIconButton(context)],
+          actions: [const SettingsView().getIconButton()],
         ),
         body: RefreshIndicator(
           onRefresh: onRefresh,
