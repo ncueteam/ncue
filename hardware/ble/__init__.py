@@ -1,8 +1,8 @@
 import ubluetooth
 from file_system import FileSet
 class BLE():
-    def __init__(self,costumName="esp32 ncue") -> None:
-        self.name = costumName
+    def __init__(self) -> None:
+        self.name = "esp32 ncue"
         self.ble = ubluetooth.BLE()
         self.ble.active(False)
         self.ble.active(True)

@@ -134,7 +134,7 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
         child: Text(withoutResp ? "WriteNoResp" : "Submit"),
         onPressed: () async {
           await onWritePressed();
-          await onWritePressed2();
+          Future.delayed(const Duration(seconds: 1),await onWritePressed2());
           setState(() {});
         });
   }
