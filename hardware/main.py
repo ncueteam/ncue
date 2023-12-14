@@ -56,17 +56,17 @@ def sub_cb(topic,msg):
 #                 if(DB.protocol=="NEC16"):
 #                     if ir_data >= 0:
 #                     print(ir_data)
-#         if(DB.type=="register_device"):
-#             if(DB.type_data=="switch"):
-#                 DB.create(DB.uuid,DB.type_data)
-#             elif(DB.type_data=="bio_device"):
-#                 DB.create(DB.uuid,DB.type_datadata)
-#             elif(DB.type_data=="slide_device"):
-#                 DB.create(DB.uuid,DB.type_data)
-#             elif(DB.type_data=="wet_degree_sensor"):
-#                 DB.create(DB.uuid,DB.type_data)
-#             elif(DB.type_data=="ir_controller"):
-#                 DB.create(DB.uuid,DB.type_data)
+        if(DB.type=="register_device"):
+            if(DB.type_data=="switch"):
+                DB.create(DB.uuid,DB.type_data)
+            elif(DB.type_data=="bio_device"):
+                DB.create(DB.uuid,DB.type_datadata)
+            elif(DB.type_data=="slide_device"):
+                DB.create(DB.uuid,DB.type_data)
+            elif(DB.type_data=="wet_degree_sensor"):
+                DB.create(DB.uuid,DB.type_data)
+            elif(DB.type_data=="ir_controller"):
+                DB.create(DB.uuid,DB.type_data)
                         
 def link():
     print("link")
@@ -93,7 +93,7 @@ def main():
     if status == "wifi_connecting":
         if attempt > 2: status = "ble_mode"
         else:
-            print("try "+str(attempt))
+            print("["+str(attempt)+"]connecting")
             if net.isConnected():
                 print("connected "+str(net.getData()))
                 status = "wifi_connected"
@@ -124,7 +124,7 @@ def main():
             dht.wait()
             dht.detect()
     #        mqClient0.routine(ujson.dumps({"type":"dht11","uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
-            mqClient0.publish(b'AIOT_113/Esp32Send', ujson.dumps({"type":"dht11","uuid":DB.read("uuid")[1],"humidity":dht.hum,"temperature":dht.temp}))
+            mqClient0.publish(b'AIOT_113/Esp32Send', ujson.dumps({"type":"dht11","uuid":'',"humidity":dht.hum,"temperature":dht.temp}))
             mqClient0.check_msg()
             
             screen.blank()

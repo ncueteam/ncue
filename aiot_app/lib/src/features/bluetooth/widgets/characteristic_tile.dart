@@ -52,11 +52,39 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
     return bytes;
   }
 
-  List<int> _getUuidByte() {
-    var uuidData = 'uid,$roomId';
+  List<int> _getWifiBytes() {
+    var wifiData = '${wifiNameController.text},${wifiPasswordController.text}';
+    List<int> bytes = utf8.encode(wifiData);
+    return bytes;
+  }
+
+  /*---------------------------------------- custom data --------------------------------------*/
+  List<int> _getWifiSsidBytes() {
+    var wifiData = 'ssid:${wifiNameController.text}';
+    List<int> bytes = utf8.encode(wifiData);
+    return bytes;
+  }
+
+  List<int> _getWifiPswdBytes() {
+    var wifiData = 'pswd:${wifiPasswordController.text}';
+    List<int> bytes = utf8.encode(wifiData);
+    return bytes;
+  }
+
+  List<int> _getUuidByte_1() {
+    var uuidData = 'id_1:${roomId.substring(0, 10)}';
+    debugPrint(uuidData);
     List<int> bytes = utf8.encode(uuidData);
     return bytes;
   }
+
+  List<int> _getUuidByte_2() {
+    var uuidData = 'id_2:${roomId.substring(10)}';
+    debugPrint(uuidData);
+    List<int> bytes = utf8.encode(uuidData);
+    return bytes;
+  }
+  /*---------------------------------------------------------------------------------------*/
 
   Future onReadPressed() async {
     try {
@@ -80,9 +108,48 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
     }
   }
 
-  Future onWritePressed2() async {
+  Future onWritePressedCustom_1() async {
     try {
-      await c.write(_getUuidByte(),
+      await c.write(_getWifiSsidBytes(),
+          withoutResponse: c.properties.writeWithoutResponse);
+      Snackbar.show(ABC.c, "Write: Success", success: true);
+      if (c.properties.read) {
+        await c.read();
+      }
+    } catch (e) {
+      Snackbar.show(ABC.c, prettyException("Write Error:", e), success: false);
+    }
+  }
+
+  Future onWritePressedCustom_2() async {
+    try {
+      await c.write(_getWifiPswdBytes(),
+          withoutResponse: c.properties.writeWithoutResponse);
+      Snackbar.show(ABC.c, "Write: Success", success: true);
+      if (c.properties.read) {
+        await c.read();
+      }
+    } catch (e) {
+      Snackbar.show(ABC.c, prettyException("Write Error:", e), success: false);
+    }
+  }
+
+  Future onWritePressedCustom_3() async {
+    try {
+      await c.write(_getUuidByte_1(),
+          withoutResponse: c.properties.writeWithoutResponse);
+      Snackbar.show(ABC.c, "Write: Success", success: true);
+      if (c.properties.read) {
+        await c.read();
+      }
+    } catch (e) {
+      Snackbar.show(ABC.c, prettyException("Write Error:", e), success: false);
+    }
+  }
+
+  Future onWritePressedCustom_4() async {
+    try {
+      await c.write(_getUuidByte_2(),
           withoutResponse: c.properties.writeWithoutResponse);
       Snackbar.show(ABC.c, "Write: Success", success: true);
       if (c.properties.read) {
@@ -132,21 +199,24 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
     return ElevatedButton(
         child: Text(withoutResp ? "WriteNoResp" : "Submit"),
         onPressed: () async {
-          await onWritePressed();
-          //Future.delayed(const Duration(seconds: 1),await onWritePressed2());
+          // await onWritePressed();
+          await onWritePressedCustom_1();
+          await onWritePressedCustom_2();
+          await onWritePressedCustom_3();
+          await onWritePressedCustom_4();
           setState(() {});
         });
   }
 
-  Widget buildWriteButton2(BuildContext context) {
-    bool withoutResp = widget.characteristic.properties.writeWithoutResponse;
-    return ElevatedButton(
-        child: Text(withoutResp ? "WriteNoResp" : "Submit"),
-        onPressed: () async {
-          await onWritePressed2();
-          setState(() {});
-        });
-  }
+  // Widget buildWriteButton2(BuildContext context) {
+  //   bool withoutResp = widget.characteristic.properties.writeWithoutResponse;
+  //   return ElevatedButton(
+  //       child: Text(withoutResp ? "WriteNoResp" : "uuid send"),
+  //       onPressed: () async {
+  //         await onWritePressed2();
+  //         setState(() {});
+  //       });
+  // }
 
   Widget buildSubscribeButton(BuildContext context) {
     bool isNotifying = widget.characteristic.isNotifying;
@@ -168,7 +238,7 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
       children: [
         //if (read) buildReadButton(context),
         if (write) buildWriteButton(context),
-        buildWriteButton2(context),
+        // buildWriteButton2(context),
         //if (notify || indicate) buildSubscribeButton(context),
       ],
     );
