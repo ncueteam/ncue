@@ -48,6 +48,8 @@ def sub_cb(topic,msg):
 #         if(DB.clientID=="N0UACuslmEQpDjrJCpaakwsWaLB3"):
 
         if(DB.type=="ir_tx"):
+                if(DB.protocol=="NEC8"):
+                    ir_tx.transmit(0x0000, int(DB.data))
                 if(DB.protocol=="NEC16"):
                     ir_tx.transmit(0x0000, int(DB.data))
                     #print("ir_tx:"+DB.data)
@@ -90,7 +92,7 @@ def main():
 #                 time.sleep(5)
 #                 print("try: " + str(try_count))
 #                 try_count+=1
-    if status == "wifi_connecting":
+    elif status == "wifi_connecting":
         if attempt > 2: status = "ble_mode"
         else:
             print("["+str(attempt)+"]connecting")
@@ -101,10 +103,11 @@ def main():
                 time.sleep(5)
                 attempt+=1
         
-    import oled
-    screen = oled.OLED()#OLED顯示器
-    if (status == "wifi_connected"):
+    
+    elif (status == "wifi_connected"):
         print("start!")
+        import oled
+        screen = oled.OLED()#OLED顯示器
         from umqtt.simple import MQTTClient
         import machine
         import ubinascii
@@ -119,25 +122,48 @@ def main():
         screen.blank()
         screen.centerText(4,"NCUE AIOT")
         screen.show()
+        
+        status = "loop"
+#         while True:
+#             dht.wait()
+#             dht.detect()
+#     #        mqClient0.routine(ujson.dumps({"type":"dht11","uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
+#             queue = {"type":"dht11","uuid":'',"humidity":dht.hum,"temperature":dht.temp};
+#             mqClient0.publish(b'AIOT_113/Esp32Send', ujson.dumps(queue))
+#             mqClient0.check_msg()
+#             
+#             screen.blank()
+#             screen.drawSleepPage()
+#             screen.displayTime()
+#     #         screen.text(64, 3, ir.result)
+#             screen.text(64, 5, str(dht.hum)+" "+str(dht.temp))
+#             screen.show()
+#     #         ir.send("0xff")
     
-        while True:
+#         mqClient0.disconnect()
+    elif status == "loop":
+        try:
+            print("1")
             dht.wait()
             dht.detect()
     #        mqClient0.routine(ujson.dumps({"type":"dht11","uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
-            mqClient0.publish(b'AIOT_113/Esp32Send', ujson.dumps({"type":"dht11","uuid":'',"humidity":dht.hum,"temperature":dht.temp}))
+            queue = {"type":"dht11","uuid":'',"humidity":dht.hum,"temperature":dht.temp}
+            print("2")
+            mqClient0.publish(b'AIOT_113/Esp32Send', ujson.dumps(queue))
             mqClient0.check_msg()
-            
+            print("3")
             screen.blank()
             screen.drawSleepPage()
             screen.displayTime()
     #         screen.text(64, 3, ir.result)
             screen.text(64, 5, str(dht.hum)+" "+str(dht.temp))
             screen.show()
-    #         ir.send("0xff")
-    
-        mqClient0.disconnect()
-        
-    if status == "ble_mode":
+            print("4")
+        except:
+            status = "wifi_not_connected"
+#             mqClient0.disconnect()
+
+    elif status == "ble_mode":
         time.sleep(2)
         screen.blank()
         screen.centerText(1, "BLE!")
