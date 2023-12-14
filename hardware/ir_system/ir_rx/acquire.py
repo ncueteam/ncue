@@ -41,7 +41,7 @@ class IR_GET(IR_RX):
             # Attempt to determine protocol
             ok = False  # Protocol not yet found
             if near(burst[0], 9000) and lb == 67:
-                print('NEC')
+                print('NEC start {} {} Burst length {} duration {}'.format(burst[0], burst[1], lb, duration))
                 ok = True
 
             if not ok and near(burst[0], 2400) and near(burst[1], 600):  # Maybe Sony
@@ -77,7 +77,11 @@ class IR_GET(IR_RX):
             if not ok and near(burst[0], 3500) and near(burst[1], 1680):  # Panasonic?
                 print('Unsupported protocol. Panasonic?')
                 ok = True
-
+            
+            if not ok and near(burst[0], 3000) and near(burst[1], 3000) and lb == 91:
+                print('CR 10DXST start {} {} Burst length {} duration {}'.format(burst[0], burst[1], lb, duration))
+                ok=True
+            
             if not ok:
                 print('Unknown protocol start {} {} Burst length {} duration {}'.format(burst[0], burst[1], lb, duration))
 
