@@ -4,9 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
-
+import '../screens/device_screen.dart';
 import "../utils/snackbar.dart";
-
 import "descriptor_tile.dart";
 
 const String characteristicuuid = "9012";
@@ -54,8 +53,8 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
   }
 
   List<int> _getUuidByte() {
-    var wifiData = 'uid,$roomId';
-    List<int> bytes = utf8.encode(wifiData);
+    var uuidData = 'uid,$roomId';
+    List<int> bytes = utf8.encode(uuidData);
     return bytes;
   }
 
@@ -134,7 +133,17 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
         child: Text(withoutResp ? "WriteNoResp" : "Submit"),
         onPressed: () async {
           await onWritePressed();
-          Future.delayed(const Duration(seconds: 1),await onWritePressed2());
+          //Future.delayed(const Duration(seconds: 1),await onWritePressed2());
+          setState(() {});
+        });
+  }
+
+  Widget buildWriteButton2(BuildContext context) {
+    bool withoutResp = widget.characteristic.properties.writeWithoutResponse;
+    return ElevatedButton(
+        child: Text(withoutResp ? "WriteNoResp" : "Submit"),
+        onPressed: () async {
+          await onWritePressed2();
           setState(() {});
         });
   }
@@ -159,6 +168,7 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
       children: [
         //if (read) buildReadButton(context),
         if (write) buildWriteButton(context),
+        buildWriteButton2(context),
         //if (notify || indicate) buildSubscribeButton(context),
       ],
     );

@@ -1,9 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
-
 import '../widgets/service_tile.dart';
 import '../widgets/characteristic_tile.dart';
 import '../widgets/descriptor_tile.dart';
@@ -268,6 +268,11 @@ class _DeviceScreenState extends State<DeviceScreen> {
           child: Column(
             children: <Widget>[
               buildRemoteId(context),
+              // ElevatedButton(
+              //     child: Text('uuid send'),
+              //     onPressed: () async {
+              //       _CharacteristicTileState.onWritePressed();
+              //     }),
               ListTile(
                 leading: buildRssiTile(context),
                 title: Text(
