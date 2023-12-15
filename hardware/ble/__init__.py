@@ -6,6 +6,7 @@ class BLE():
         self.ble = ubluetooth.BLE()
         self.ble.active(False)
         self.ble.active(True)
+        self.ble.config(mtu=128)
         self.register()
         self.ble.irq(self.handler)
 #       self.ble.gatts_set_buffer(self.tem_char, 100, True)
@@ -15,20 +16,21 @@ class BLE():
     
     def register(self):
         ENV_SERVER_UUID = ubluetooth.UUID(0x9011)
+        
         TEM_CHAR_UUID = ubluetooth.UUID(0x9012)
-        HUM_CHAR_UUID = ubluetooth.UUID(0x9013)
-
         TEM_CHAR = (TEM_CHAR_UUID, ubluetooth.FLAG_READ | ubluetooth.FLAG_WRITE | ubluetooth.FLAG_NOTIFY,)
+        
+        HUM_CHAR_UUID = ubluetooth.UUID(0x9013)
         HUM_CHAR = (HUM_CHAR_UUID, ubluetooth.FLAG_READ | ubluetooth.FLAG_WRITE | ubluetooth.FLAG_NOTIFY,)
+        
+        DEVICE_CHAR_UUID = ubluetooth.UUID(0x9020)
+        DEVICE_CHAR = (DEVICE_CHAR_UUID, ubluetooth.FLAG_READ | ubluetooth.FLAG_WRITE | ubluetooth.FLAG_NOTIFY,)
 
-        ENV_SERVER = (ENV_SERVER_UUID, (TEM_CHAR, HUM_CHAR,),)
+        ENV_SERVER = (ENV_SERVER_UUID, (TEM_CHAR, HUM_CHAR,DEVICE_CHAR),)
         SERVICES = (ENV_SERVER,)
 
         
-        ((self.tem_char, self.hum_char,),) = self.ble.gatts_register_services(SERVICES)  # 注册服务到gatts
-#         self.ble.gatts_set_buffer(self.tem_char, 2000, True)
-
-#         self.ble.gatts_set_buffer(self.handler, 2000, True)
+        ((self.tem_char, self.hum_char,self.device_char),) = self.ble.gatts_register_services(SERVICES)
 
 #         self.ble.gatts_write(self.tem_char, b'\x06\x08')
 #         self.ble.gatts_write(self.hum_char, b'\x09\x07')

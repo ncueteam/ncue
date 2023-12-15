@@ -18,7 +18,7 @@ void main() async {
 
   FirebaseUIAuth.configureProviders([
     EmailAuthProvider(),
-    PhoneAuthProvider(),
+    // PhoneAuthProvider(),
     GoogleProvider(clientId: clientID, redirectUri: redirectUri),
     // FacebookProvider(clientId: '5237e52b036ec08a84952e02e921e11f'),
   ]);

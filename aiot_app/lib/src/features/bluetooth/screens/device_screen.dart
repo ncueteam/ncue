@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
@@ -41,7 +39,6 @@ class _DeviceScreenState extends State<DeviceScreen> {
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
       roomID = arguments['data'];
-      debugPrint(roomID);
     }
     super.initState();
     _connectionStateSubscription =

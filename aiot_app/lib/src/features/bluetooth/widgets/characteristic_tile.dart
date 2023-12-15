@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
-import '../screens/device_screen.dart';
 import "../utils/snackbar.dart";
 import "descriptor_tile.dart";
 
@@ -46,11 +45,11 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
 
   BluetoothCharacteristic get c => widget.characteristic;
 
-  List<int> _getRandomBytes() {
-    var wifiData = '${wifiNameController.text},${wifiPasswordController.text}';
-    List<int> bytes = utf8.encode(wifiData);
-    return bytes;
-  }
+  // List<int> _getRandomBytes() {
+  //   var wifiData = '${wifiNameController.text},${wifiPasswordController.text}';
+  //   List<int> bytes = utf8.encode(wifiData);
+  //   return bytes;
+  // }
 
   List<int> _getWifiBytes() {
     var wifiData = '${wifiNameController.text},${wifiPasswordController.text}';
@@ -73,14 +72,12 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
 
   List<int> _getUuidByte_1() {
     var uuidData = 'id_1:${roomId.substring(0, 10)}';
-    debugPrint(uuidData);
     List<int> bytes = utf8.encode(uuidData);
     return bytes;
   }
 
   List<int> _getUuidByte_2() {
     var uuidData = 'id_2:${roomId.substring(10)}';
-    debugPrint(uuidData);
     List<int> bytes = utf8.encode(uuidData);
     return bytes;
   }
@@ -97,7 +94,7 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
 
   Future onWritePressed() async {
     try {
-      await c.write(_getRandomBytes(),
+      await c.write(_getWifiBytes(),
           withoutResponse: c.properties.writeWithoutResponse);
       Snackbar.show(ABC.c, "Write: Success", success: true);
       if (c.properties.read) {
@@ -108,57 +105,70 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
     }
   }
 
-  Future onWritePressedCustom_1() async {
+  Future onWritePressedCustom(List<int> input, String name) async {
     try {
-      await c.write(_getWifiSsidBytes(),
-          withoutResponse: c.properties.writeWithoutResponse);
-      Snackbar.show(ABC.c, "Write: Success", success: true);
+      await c.write(input, withoutResponse: c.properties.writeWithoutResponse);
+      Snackbar.show(ABC.c, "[$name]Write: Success", success: true);
       if (c.properties.read) {
         await c.read();
       }
     } catch (e) {
-      Snackbar.show(ABC.c, prettyException("Write Error:", e), success: false);
+      Snackbar.show(ABC.c, prettyException("[$name]Write Error:", e),
+          success: false);
     }
   }
 
-  Future onWritePressedCustom_2() async {
-    try {
-      await c.write(_getWifiPswdBytes(),
-          withoutResponse: c.properties.writeWithoutResponse);
-      Snackbar.show(ABC.c, "Write: Success", success: true);
-      if (c.properties.read) {
-        await c.read();
-      }
-    } catch (e) {
-      Snackbar.show(ABC.c, prettyException("Write Error:", e), success: false);
-    }
-  }
+  // Future onWritePressedCustom_1() async {
+  //   try {
+  //     await c.write(_getWifiSsidBytes(),
+  //         withoutResponse: c.properties.writeWithoutResponse);
+  //     Snackbar.show(ABC.c, "Write: Success", success: true);
+  //     if (c.properties.read) {
+  //       await c.read();
+  //     }
+  //   } catch (e) {
+  //     Snackbar.show(ABC.c, prettyException("Write Error:", e), success: false);
+  //   }
+  // }
 
-  Future onWritePressedCustom_3() async {
-    try {
-      await c.write(_getUuidByte_1(),
-          withoutResponse: c.properties.writeWithoutResponse);
-      Snackbar.show(ABC.c, "Write: Success", success: true);
-      if (c.properties.read) {
-        await c.read();
-      }
-    } catch (e) {
-      Snackbar.show(ABC.c, prettyException("Write Error:", e), success: false);
-    }
-  }
+  // Future onWritePressedCustom_2() async {
+  //   try {
+  //     await c.write(_getWifiPswdBytes(),
+  //         withoutResponse: c.properties.writeWithoutResponse);
+  //     Snackbar.show(ABC.c, "Write: Success", success: true);
+  //     if (c.properties.read) {
+  //       await c.read();
+  //     }
+  //   } catch (e) {
+  //     Snackbar.show(ABC.c, prettyException("Write Error:", e), success: false);
+  //   }
+  // }
 
-  Future onWritePressedCustom_4() async {
-    try {
-      await c.write(_getUuidByte_2(),
-          withoutResponse: c.properties.writeWithoutResponse);
-      Snackbar.show(ABC.c, "Write: Success", success: true);
-      if (c.properties.read) {
-        await c.read();
-      }
-    } catch (e) {
-      Snackbar.show(ABC.c, prettyException("Write Error:", e), success: false);
-    }
-  }
+  // Future onWritePressedCustom_3() async {
+  //   try {
+  //     await c.write(_getUuidByte_1(),
+  //         withoutResponse: c.properties.writeWithoutResponse);
+  //     Snackbar.show(ABC.c, "Write: Success", success: true);
+  //     if (c.properties.read) {
+  //       await c.read();
+  //     }
+  //   } catch (e) {
+  //     Snackbar.show(ABC.c, prettyException("Write Error:", e), success: false);
+  //   }
+  // }
+
+  // Future onWritePressedCustom_4() async {
+  //   try {
+  //     await c.write(_getUuidByte_2(),
+  //         withoutResponse: c.properties.writeWithoutResponse);
+  //     Snackbar.show(ABC.c, "Write: Success", success: true);
+  //     if (c.properties.read) {
+  //       await c.read();
+  //     }
+  //   } catch (e) {
+  //     Snackbar.show(ABC.c, prettyException("Write Error:", e), success: false);
+  //   }
+  // }
 
   Future onSubscribePressed() async {
     try {
@@ -200,10 +210,10 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
         child: Text(withoutResp ? "WriteNoResp" : "Submit"),
         onPressed: () async {
           // await onWritePressed();
-          await onWritePressedCustom_1();
-          await onWritePressedCustom_2();
-          await onWritePressedCustom_3();
-          await onWritePressedCustom_4();
+          await onWritePressedCustom(_getWifiSsidBytes(), "wifi ssid");
+          await onWritePressedCustom(_getWifiPswdBytes(), "wifi password");
+          await onWritePressedCustom(_getUuidByte_1(), "uuid part 1");
+          await onWritePressedCustom(_getUuidByte_2(), "uuid part 2");
           setState(() {});
         });
   }

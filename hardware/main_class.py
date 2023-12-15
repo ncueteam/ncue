@@ -40,102 +40,104 @@ class core():
                         time.sleep(5)
                         self.attempt+=1
             elif self.status == "wifi_connected":
-                self.pc+=1
-                import machine
+                try:
+                    self.pc+=1
+                    import machine
+                    
+                    from ir_system.ir_tx.nec import NEC
+                    self.ir_tx = NEC(machine.Pin(32, machine.Pin.OUT, value = 0))
+                    print("y-loop[{}]".format(self.pc))
+                    
+                    from ir_system.ir_rx.nec import NEC_16
+                    self.ir_rx = NEC_16(machine.Pin(23, machine.Pin.IN), self.ir_callback)
+                    
+                    import dht11
+                    self.dht = dht11.Sensor()
+                    
+                    from umqtt.simple import MQTTClient
+                    import ubinascii
+                    from file_system import ujson
                 
-                from ir_system.ir_tx.nec import NEC
-                self.ir_tx = NEC(machine.Pin(32, machine.Pin.OUT, value = 0))
-                print("y-loop[{}]".format(self.pc))
+                    self.mqClient0 = MQTTClient(ubinascii.hexlify(machine.unique_id()), 'test.mosquitto.org')
+                    self.mqClient0.connect()
+                    self.mqClient0.set_callback(self.sub_cb)
+                    self.mqClient0.subscribe(b"AIOT_113/AppSend")
                 
-                from ir_system.ir_rx.nec import NEC_16
-                self.ir_rx = NEC_16(machine.Pin(23, machine.Pin.IN), self.ir_callback)
-                
-                import dht11
-                self.dht = dht11.Sensor()
-                
-                from umqtt.simple import MQTTClient
-                import ubinascii
-                from file_system import ujson
-            
-                mqClient0 = MQTTClient(ubinascii.hexlify(machine.unique_id()), 'test.mosquitto.org')
-                mqClient0.connect()
-                mqClient0.set_callback(self.sub_cb)
-                mqClient0.subscribe(b"AIOT_113/AppSend")
-            
-                
-                self.screen.blank()
-                self.screen.centerText(4,"NCUE AIOT")
-                self.screen.show()
-                
-                self.status = "loop"
+                    
+                    self.screen.blank()
+                    self.screen.centerText(4,"NCUE AIOT")
+                    self.screen.show()
+                    
+                    self.status = "loop"
+                except:
+                    print("error on status:wifi_connected")
             elif self.status == "loop":
                 try:
-                    print("1")
                     self.dht.wait()
                     self.dht.detect()
-            #        mqClient0.routine(ujson.dumps({"type":"dht11","uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
                     queue = {"type":"dht11","uuid":'',"humidity":self.dht.hum,"temperature":self.dht.temp}
-                    print("2")
-                    mqClient0.publish(b'AIOT_113/Esp32Send', ujson.dumps(queue))
-                    mqClient0.check_msg()
-                    print("3")
+                    self.mqClient0.publish(b'AIOT_113/Esp32Send', ujson.dumps(queue))
+                    self.mqClient0.check_msg()
                     self.screen.blank()
                     self.screen.drawSleepPage()
                     self.screen.displayTime()
-            #         screen.text(64, 3, ir.result)
+                    self.screen.text(64, 3, ir.result)
                     self.screen.text(64, 5, str(self.dht.hum)+" "+str(self.dht.temp))
                     self.screen.show()
-                    print("4")
                 except:
                     status = "wifi_not_connected"
-        #             mqClient0.disconnect()
+                    self.mqClient0.disconnect()
             elif self.status == "ble_mode":
-                time.sleep(2)
-                self.screen.blank()
-                self.screen.centerText(1, "BLE!")
-                self.screen.centerText(3, "Connect")
-                self.screen.centerText(5, "Mode")
-                self.screen.show()
-                import ble
-                bt = ble.BLE()
-                time.sleep(2)
-                self.screen.blank()
-                self.screen.centerText(2, "BLE name")
-                self.screen.centerText(4, bt.name)
-                self.screen.show()
-                time.sleep(2)
-                ble_try = 10
-                while ble_try:
+                try:
+                    time.sleep(2)
                     self.screen.blank()
-                    self.screen.centerText(2, bt.name)
-                    self.screen.centerText(4, str(11-ble_try)+" / 10")
+                    self.screen.centerText(1, "BLE!")
+                    self.screen.centerText(3, "Connect")
+                    self.screen.centerText(5, "Mode")
+                    self.screen.show()
+                    import ble
+                    bt = ble.BLE()
+                    time.sleep(2)
+                    self.screen.blank()
+                    self.screen.centerText(2, "BLE name")
+                    self.screen.centerText(4, bt.name)
                     self.screen.show()
                     time.sleep(2)
-                    if (bt.wifi_added):
+                    ble_try = 10
+                    while ble_try:
                         self.screen.blank()
-                        self.screen.centerText(4, "wifi added!")
+                        self.screen.centerText(2, bt.name)
+                        self.screen.centerText(4, str(11-ble_try)+" / 10")
                         self.screen.show()
                         time.sleep(2)
-                        global restart_main_task
-                        restart_main_task = True
-                        self.status = "wifi_not_connected"
-                        main()
-                    if (bt.bt_linked):
-                        self.screen.blank()
-                        self.screen.centerText(4, "bt linked!")
-                        self.screen.show()
-                        time.sleep(2)
-                    ble_try-=1
+                        if (bt.wifi_added):
+                            self.screen.blank()
+                            self.screen.centerText(4, "wifi added!")
+                            self.screen.show()
+                            time.sleep(2)
+                            global restart_main_task
+                            restart_main_task = True
+                            self.status = "wifi_not_connected"
+                        if (bt.bt_linked):
+                            self.screen.blank()
+                            self.screen.centerText(4, "bt linked!")
+                            self.screen.show()
+                            time.sleep(2)
+                        ble_try-=1
+                except:
+                    raise Exception("error on status:ble")
         except Exception as e:
+            self.status = "error"
             print(e)
 
     def run(self):
         try:
             while True:
+                if self.status == "error":
+                    raise Exception("Error on run()")
                 self.loop()
-        except:
-            self.setup()
-            self.run()
+        except Exception as e:
+            print(e)
             
     def ir_callback(self,data, addr, ctrl):
         if data > 0:
@@ -180,3 +182,7 @@ class core():
 m = core()
 
 m.run()
+
+
+
+
