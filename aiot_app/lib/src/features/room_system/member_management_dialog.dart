@@ -62,12 +62,7 @@ class _MemberManagementDialogState extends State<MemberManagementDialog> {
                   )),
             ),
             onChanged: (value) {
-              setState(() {
-                debugPrint(searchBar.text);
-                /*for (UserModel user in temp) {
-                  debugPrint(user.name);
-                }*/
-              });
+              setState(() {});
             }),
       ),
       content: SizedBox(
