@@ -94,7 +94,7 @@ class _RoomUnitState extends State<RoomUnit> {
                         onPressed: () {
                           showListDialogMember();
                         },
-                        child: const Text("邀請")),
+                        child: const Text("管理成員")),
                   if (room.owner.uuid == RouteView.model.uuid) const Spacer(),
                   ElevatedButton(
                       onPressed: () {
