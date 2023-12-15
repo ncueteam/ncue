@@ -13,7 +13,7 @@ from ir_system.ir_rx import IR_RX
 
 
 class IR_GET(IR_RX):
-    def __init__(self, pin, nedges=100, twait=100, display=True):
+    def __init__(self, pin, nedges=200, twait=100, display=True):
         self.display = display
         super().__init__(pin, nedges, twait, lambda *_ : None)
         self.data = None
@@ -84,7 +84,23 @@ class IR_GET(IR_RX):
             
             if not ok:
                 print('Unknown protocol start {} {} Burst length {} duration {}'.format(burst[0], burst[1], lb, duration))
-
+            
+            count = 0
+            prev = burst[0]
+            rst = ""
+            for i in burst:
+                if count>1:
+                    if (count-2)%2 == 1:
+                        if i-prev > 900:
+                            rst+="1"
+                        else:
+                            rst+="0"
+                    if (count-2) % 8 == 0:
+                        rst+="_"
+                count+=1
+                prev = i
+            print(rst)
+            
             print()
         self.data = burst
         # Set up for new data burst. Run null callback
@@ -110,3 +126,4 @@ def test():
     irg = IR_GET(pin)
     print('Waiting for IR data...')
     return irg.acquire()
+
