@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/features/basic/models/device_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
@@ -100,6 +101,10 @@ class RoomModel {
   }
 
   Future<void> delete() async {
+    for (String deviceId in devices) {
+      DeviceModel device = await DeviceModel().read(deviceId);
+      await device.delete();
+    }
     FirebaseFirestore.instance.collection('rooms').doc(uuid).delete();
   }
 

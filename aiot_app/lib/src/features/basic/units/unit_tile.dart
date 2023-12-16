@@ -54,18 +54,18 @@ class _UnitTileState extends State<UnitTile> {
         });
         if (widget.onTap != null) {
           widget.onTap!();
+          setState(() {});
         }
       },
     );
     if (widget.removable) {
-      return Dismissible(
+      result = Dismissible(
         key: ValueKey(result),
         direction: DismissDirection.endToStart,
         onDismissed: (direction) async {},
         child: result,
       );
-    } else {
-      return result;
     }
+    return result;
   }
 }

@@ -96,10 +96,6 @@ class AddDeviceViewState extends State<AddDeviceView> {
                   child: Text("開關"),
                 ),
                 DropdownMenuItem(
-                  value: "bio_device",
-                  child: Text("生物鎖裝置"),
-                ),
-                DropdownMenuItem(
                   value: "slide_device",
                   child: Text("調控裝置"),
                 ),

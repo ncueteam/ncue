@@ -1,15 +1,9 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:ncue.aiot_app/src/app.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
-import 'package:ncue.aiot_app/src/features/basic/services/local_auth_service.dart';
+import 'package:ncue.aiot_app/src/features/basic/units/device_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
-import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
-import 'package:ncue.aiot_app/src/features/devices/device_detail_view.dart';
-import 'package:ncue.aiot_app/src/features/devices/ir_device_control_panel.dart';
 import 'package:uuid/uuid.dart';
 
 class DeviceModel {
@@ -33,7 +27,7 @@ class DeviceModel {
   bool powerOn = false;
   double temperature = 28.0;
   String uuid = const Uuid().v1();
-  String roomId = const Uuid().v1();
+  String roomId = "Error Id";
   String type = 'switch';
   String subType = 'fan';
   String iconPath = 'assets/images/flutter_logo.png';
@@ -54,109 +48,21 @@ class DeviceModel {
     debugPrint("=================================================");
   }
 
-  UnitTile getUnit(VoidCallback callback) {
-    BuildContext context = navigatorKey.currentContext!;
+  Widget getUnit(VoidCallback callback) {
+    Widget result = Container();
     switch (type) {
       case "wet_degree_sensor":
-        return Dht11Unit(
+        result = Dht11Unit(
           uuid: roomId,
         );
       case "switch":
-        return UnitTile(
-          title: Text(name),
-          subtitle: const Text("裝置類型:開關"),
-          leading: CircleAvatar(
-            foregroundImage: AssetImage(iconPath),
-            backgroundColor: Colors.white,
-          ),
-          trailing: Transform.rotate(
-              angle: pi / 2,
-              child: Switch(
-                value: powerOn,
-                onChanged: (bool value) async => {
-                  powerOn = !powerOn,
-                  await update().then(
-                    (e) {
-                      callback();
-                    },
-                  )
-                },
-              )),
-          onTap: () {
-            Navigator.pushNamed(context, const DeviceDetailsView().routeName,
-                arguments: {'data': this});
-          },
-        );
-      case "bio_device":
-        return UnitTile(
-          title: Text(name),
-          subtitle: const Text("裝置類型: 生物解鎖裝置"),
-          leading: CircleAvatar(
-            foregroundImage: AssetImage(iconPath),
-            backgroundColor: Colors.white,
-          ),
-          trailing: !authenticated
-              ? IconButton(
-                  onPressed: () async {
-                    final authenticate = await LocalAuth.authenticate();
-                    authenticated = authenticate;
-                    callback();
-                  },
-                  icon: const Icon(Icons.fingerprint))
-              : Transform.rotate(
-                  angle: pi / 2,
-                  child: Switch(
-                    value: powerOn,
-                    onChanged: (bool value) => {
-                      powerOn = value,
-                      update().then(
-                        (value) {
-                          callback();
-                        },
-                      )
-                    },
-                  )),
-          onTap: () {
-            if (authenticated) {
-              Navigator.pushNamed(context, const DeviceDetailsView().routeName,
-                  arguments: {'data': this});
-            } else {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text(RouteView.language.appTitle),
-                      content: const Text("請先通過生物認證!"),
-                      actions: <Widget>[
-                        TextButton(
-                          child: const Text('關閉'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  });
-            }
-          },
-        );
+        result = DeviceUnit(deviceModel: this, callback: callback);
       case "ir_controller":
-        return UnitTile(
-          title: Text(name),
-          subtitle: const Text("裝置類型:遙控器"),
-          leading: CircleAvatar(
-            foregroundImage: AssetImage(iconPath),
-            backgroundColor: Colors.white,
-          ),
-          onTap: () {
-            Navigator.pushNamed(context, const IRDeviceControlPanel().routeName,
-                arguments: {'data': this});
-          },
-        );
+        result = DeviceUnit(deviceModel: this, callback: callback);
       default:
-        debugPrint("type:$type");
-        return const UnitTile();
+        result = const UnitTile();
     }
+    return result;
   }
 
   Map<String, dynamic> getDocument() {
@@ -225,7 +131,7 @@ class DeviceModel {
       Map<String, dynamic> result = document.data() as Map<String, dynamic>;
       if (result['uuid'] == uuid) {
         RoomModel room = await RoomModel().read(roomId);
-        room.devices.remove(this);
+        room.devices.remove(uuid);
         await room.update();
         room.debugData();
         document.reference.delete();

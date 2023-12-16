@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/device_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/user_model.dart';
-import 'package:ncue.aiot_app/src/features/basic/units/type_tile.dart';
 import 'package:ncue.aiot_app/src/features/bluetooth/flutter_blue_app.dart';
 import 'package:ncue.aiot_app/src/features/devices/add_device_view.dart';
 
@@ -34,36 +34,40 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
     await RoomModel().read(arguments['data'] as String).then((room) async {
       items.add(Text(room.name));
       items.add(Text(room.uuid));
-      List<DeviceModel> devices = [];
       items.add(const AddDeviceView()
           .getUnit(context, data: {'data': room}, customName: "註冊裝置"));
+      List<DeviceModel> devices = [];
       for (String s in room.devices) {
-        devices.add(await DeviceModel().read(s));
+        devices.addOrUpdate(await DeviceModel().read(s));
       }
-      items.add(TypeTile(
-          name: "房間內裝置",
-          children: (devices.map((e) => e.getUnit(() {
-                setState(() {});
-                room.update();
-              }))).toList()));
-      items.add(ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, const BlueToothView().routeName,
-                arguments: {'data': room});
-          },
-          child: const Text("透過藍芽新增wifi帳號密碼")));
-      items.add(ElevatedButton(
-          onPressed: () async {
-            room.owner.rooms.remove(room.uuid);
-            room.owner.memberRooms.remove(room.uuid);
-            room.owner.update();
-            Navigator.pop(context);
-            for (String memberId in room.members) {
-              UserModel member = await UserModel().read(id: memberId);
-              member.memberRooms.remove(room.uuid);
-            }
-          },
-          child: const Text("刪除房間")));
+      items.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, const BlueToothView().routeName,
+                    arguments: {'data': room});
+              },
+              child: const Text("透過藍芽新增wifi帳號密碼")),
+          ElevatedButton(
+              onPressed: () async {
+                room.owner.rooms.remove(room.uuid);
+                room.owner.memberRooms.remove(room.uuid);
+                room.owner.update();
+                Navigator.pop(context);
+                for (String memberId in room.members) {
+                  UserModel member = await UserModel().read(id: memberId);
+                  member.memberRooms.remove(room.uuid);
+                }
+              },
+              child: const Text("刪除房間"))
+        ],
+      ));
+
+      items.addAll((devices.map((e) => e.getUnit(() {
+            setState(() {});
+            room.update();
+          }))).toList());
     });
   }
 
