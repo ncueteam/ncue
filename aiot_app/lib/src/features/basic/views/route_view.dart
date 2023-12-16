@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/app.dart';
@@ -25,6 +26,7 @@ import '../../settings/settings_view.dart';
 abstract class RouteView extends StatefulWidget {
   final String routeName;
   final IconData routeIcon;
+  static FirebaseFirestore database = FirebaseFirestore.instance;
   static UserModel model = RouteView.model;
   static User? user = FirebaseAuth.instance.currentUser;
   static AppLocalizations language =

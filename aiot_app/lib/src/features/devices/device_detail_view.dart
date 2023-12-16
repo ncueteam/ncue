@@ -19,6 +19,50 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
       final DeviceModel item = arguments['data'];
+      List<Widget> items = [];
+      items.add(Text(
+        "裝置uuid: ${item.uuid}",
+        style: const TextStyle(fontSize: 20),
+      ));
+      items.add(Text(
+        "裝置類型: ${item.type}",
+        style: const TextStyle(fontSize: 20),
+      ));
+      switch (item.type) {
+        case "switch":
+          {
+            items.add(Switch(
+              value: item.powerOn,
+              onChanged: (bool value) => {
+                setState(
+                  () {
+                    item.powerOn = value;
+                    item.update();
+                  },
+                )
+              },
+            ));
+          }
+        case "slide_device":
+          {
+            items.add(Slider(
+                value: item.temperature,
+                min: 16.0,
+                max: 30.0,
+                onChanged: (value) {
+                  setState(() {
+                    item.temperature = value;
+                    item.update();
+                  });
+                }));
+          }
+      }
+      items.add(ElevatedButton(
+          onPressed: () {
+            item.delete();
+            Navigator.pop(context);
+          },
+          child: const Text("刪除裝置")));
       return Scaffold(
         appBar: AppBar(
           title: FittedBox(
@@ -41,47 +85,7 @@ class _DeviceDetailsViewState extends State<DeviceDetailsView> {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "裝置狀態: ${item.powerOn ? "開啟" : "關閉"}",
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    "裝置uuid: ${item.uuid}",
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    "裝置類型: ${item.type == "device" ? "一般裝置" : "生物解鎖裝置"}",
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        item.delete();
-                        Navigator.pop(context);
-                      },
-                      child: const Text("刪除裝置")),
-                  Slider(
-                      value: item.temperature,
-                      min: 16.0,
-                      max: 30.0,
-                      onChanged: (value) {
-                        setState(() {
-                          item.temperature = value;
-                          item.update();
-                        });
-                      }),
-                  Switch(
-                    value: item.powerOn,
-                    onChanged: (bool value) => {
-                      setState(
-                        () {
-                          item.powerOn = value;
-                          item.update();
-                        },
-                      )
-                    },
-                  )
-                ],
+                children: items,
               ),
             )),
       );

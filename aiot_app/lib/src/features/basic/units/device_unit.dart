@@ -36,7 +36,7 @@ class _DeviceUnitState extends State<DeviceUnit> {
             backgroundColor: Colors.white,
           ),
           title: Text(device.name),
-          subtitle: Text(device.subType),
+          subtitle: Text("裝置類型:${device.type}"),
           trailing: IconButton(
               onPressed: () async {
                 final authenticate = await LocalAuth.authenticate();
@@ -91,6 +91,34 @@ class _DeviceUnitState extends State<DeviceUnit> {
             onTap: () {
               Navigator.pushNamed(
                   context, const IRDeviceControlPanel().routeName,
+                  arguments: {'data': device});
+            },
+          );
+        }
+      case "slide_device":
+        {
+          result = UnitTile(
+            title: Text(device.name),
+            subtitle: Text("裝置類型:${device.type}"),
+            leading: CircleAvatar(
+              foregroundImage: AssetImage(device.iconPath),
+              backgroundColor: Colors.white,
+            ),
+            trailing: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Slider(
+                  value: device.temperature,
+                  min: 16.0,
+                  max: 30.0,
+                  onChanged: (value) async {
+                    device.temperature = value;
+                    device.update();
+                    setState(() {});
+                    widget.callback();
+                  }),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, const DeviceDetailsView().routeName,
                   arguments: {'data': device});
             },
           );

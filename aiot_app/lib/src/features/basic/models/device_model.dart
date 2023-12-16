@@ -4,11 +4,9 @@ import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/device_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/dht11_unit.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
-import 'package:uuid/uuid.dart';
+import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
 
 class DeviceModel {
-  static FirebaseFirestore database = FirebaseFirestore.instance;
-
   DeviceModel(
       {this.name = "Unnamed",
       this.powerOn = false,
@@ -26,7 +24,7 @@ class DeviceModel {
   String name = "error";
   bool powerOn = false;
   double temperature = 28.0;
-  String uuid = const Uuid().v1();
+  String uuid = "error id";
   String roomId = "Error Id";
   String type = 'switch';
   String subType = 'fan';
@@ -55,8 +53,8 @@ class DeviceModel {
         result = Dht11Unit(
           uuid: roomId,
         );
+      case "slide_device":
       case "switch":
-        result = DeviceUnit(deviceModel: this, callback: callback);
       case "ir_controller":
         result = DeviceUnit(deviceModel: this, callback: callback);
       default:
@@ -67,7 +65,6 @@ class DeviceModel {
 
   Map<String, dynamic> getDocument() {
     return {
-      'uuid': uuid,
       'device_name': name,
       'roomId': roomId,
       'iconPath': iconPath,
@@ -81,76 +78,66 @@ class DeviceModel {
 
   Future<DeviceModel> create() async {
     DocumentReference documentReference =
-        await database.collection('devices').add(getDocument());
+        await RouteView.database.collection('devices').add(getDocument());
     uuid = documentReference.id;
-    await database.collection('devices').doc(uuid).update(getDocument());
+    await RouteView.database
+        .collection('devices')
+        .doc(uuid)
+        .update(getDocument());
     return this;
   }
 
   Future<DeviceModel> read(String uuidQuery) async {
-    CollectionReference devices =
-        FirebaseFirestore.instance.collection('devices');
-    QuerySnapshot querySnapshot = await devices.get();
-    for (QueryDocumentSnapshot document in querySnapshot.docs) {
-      Map<String, dynamic> result = document.data() as Map<String, dynamic>;
-      if (result['uuid'] == uuidQuery) {
-        name = result['device_name'];
-        powerOn = result['powerOn'];
-        uuid = result['uuid'];
-        roomId = result['roomId'] ?? "error";
-        iconPath = result['iconPath'];
-        type = result['type'] ?? "device";
-        temperature = result['temperature'] ?? 28;
-        bioLocked = result['bioLocked'] ?? false;
-        subType = result['subType'] ?? "fan";
-      }
+    DocumentReference reference =
+        RouteView.database.collection('devices').doc(uuidQuery);
+    DocumentSnapshot snapshot = await reference.get();
+
+    if (snapshot.exists) {
+      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+      name = data['device_name'];
+      powerOn = data['powerOn'];
+      uuid = uuidQuery;
+      roomId = data['roomId'] ?? "error";
+      iconPath = data['iconPath'];
+      type = data['type'] ?? "device";
+      temperature = data['temperature'] ?? 28;
+      bioLocked = data['bioLocked'] ?? false;
+      subType = data['subType'] ?? "fan";
     }
     return this;
   }
 
-  Future<void> update() async {
-    CollectionReference devices =
-        FirebaseFirestore.instance.collection('devices');
-    QuerySnapshot querySnapshot =
-        await devices.where('uuid', isEqualTo: uuid).get();
-
-    if (querySnapshot.size > 0) {
-      DocumentSnapshot documentSnapshot = querySnapshot.docs[0];
-      DocumentReference documentReference = devices.doc(documentSnapshot.id);
-      await documentReference.update(getDocument());
+  Future<DeviceModel> update() async {
+    DocumentReference reference =
+        FirebaseFirestore.instance.collection('devices').doc(uuid);
+    DocumentSnapshot snapshot = await reference.get();
+    if (snapshot.exists) {
+      snapshot.reference.update(getDocument());
     } else {
       create();
     }
+    return this;
   }
 
   Future<void> delete() async {
-    CollectionReference devices =
-        FirebaseFirestore.instance.collection('devices');
-    QuerySnapshot querySnapshot = await devices.get();
-    for (QueryDocumentSnapshot document in querySnapshot.docs) {
-      Map<String, dynamic> result = document.data() as Map<String, dynamic>;
-      if (result['uuid'] == uuid) {
-        RoomModel room = await RoomModel().read(roomId);
-        room.devices.remove(uuid);
-        await room.update();
-        room.debugData();
-        document.reference.delete();
-      }
-    }
+    RoomModel room = await RoomModel().read(roomId);
+    room.devices.remove(uuid);
+    await room.update();
+    await RouteView.database.collection('devices').doc(uuid).delete();
   }
 
-  Future<List<DeviceModel>> queryAll() async {
-    List<DeviceModel> data = [];
+  static Future<List<DeviceModel>> queryAll() async {
     CollectionReference devices =
         FirebaseFirestore.instance.collection('devices');
-    QuerySnapshot querySnapshot = await devices.get();
+    QuerySnapshot snapshot = await devices.get();
+    List<DeviceModel> data = [];
 
-    for (QueryDocumentSnapshot document in querySnapshot.docs) {
+    for (QueryDocumentSnapshot document in snapshot.docs) {
       Map<String, dynamic> result = document.data() as Map<String, dynamic>;
       DeviceModel temp = DeviceModel();
+      temp.uuid = document.reference.id;
       temp.name = result['device_name'];
       temp.powerOn = result['powerOn'];
-      temp.uuid = result['uuid'];
       temp.iconPath = result['iconPath'];
       temp.roomId = result['roomId'] ?? "error";
       temp.type = result['type'];

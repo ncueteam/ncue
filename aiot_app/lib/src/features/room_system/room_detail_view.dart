@@ -34,12 +34,6 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
     await RoomModel().read(arguments['data'] as String).then((room) async {
       items.add(Text(room.name));
       items.add(Text(room.uuid));
-      items.add(const AddDeviceView()
-          .getUnit(context, data: {'data': room}, customName: "註冊裝置"));
-      List<DeviceModel> devices = [];
-      for (String s in room.devices) {
-        devices.addOrUpdate(await DeviceModel().read(s));
-      }
       items.add(Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -58,12 +52,19 @@ class _DeviceDetailsViewState extends State<RoomDetailsView> {
                 for (String memberId in room.members) {
                   UserModel member = await UserModel().read(id: memberId);
                   member.memberRooms.remove(room.uuid);
+                  await member.update();
                 }
+                await room.delete();
               },
               child: const Text("刪除房間"))
         ],
       ));
-
+      items.add(const AddDeviceView()
+          .getUnit(context, data: {'data': room}, customName: "註冊裝置"));
+      List<DeviceModel> devices = [];
+      for (String s in room.devices) {
+        devices.addOrUpdate(await DeviceModel().read(s));
+      }
       items.addAll((devices.map((e) => e.getUnit(() {
             setState(() {});
             room.update();

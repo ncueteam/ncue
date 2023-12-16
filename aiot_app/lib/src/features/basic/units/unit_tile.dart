@@ -46,12 +46,10 @@ class _UnitTileState extends State<UnitTile> {
       trailing: widget.trailing,
       selected: _selected,
       isThreeLine: widget.isThreeLine,
-      // tileColor: Color.fromRGBO(Random().nextInt(255), Random().nextInt(255),
-      //     Random().nextInt(255), Random().nextDouble()),
+      selectedColor: Colors.blueAccent,
       onTap: () {
-        setState(() {
-          // _selected = !_selected;
-        });
+        // _selected = !_selected;
+        setState(() {});
         if (widget.onTap != null) {
           widget.onTap!();
           setState(() {});

@@ -105,7 +105,7 @@ class RoomModel {
       DeviceModel device = await DeviceModel().read(deviceId);
       await device.delete();
     }
-    FirebaseFirestore.instance.collection('rooms').doc(uuid).delete();
+    await FirebaseFirestore.instance.collection('rooms').doc(uuid).delete();
   }
 
   static Future<void> getDocIds() async {
