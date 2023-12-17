@@ -45,12 +45,12 @@ def test():
     async def main():
         count = 0
         while True: 
-            await temp.wait()
-            await screen.blank()
+            temp.wait()
+            screen.blank()
             count=(count+1)%8
-            await screen.centerText(count,"#")
-            await screen.centerText(3,temp.result)
-            await screen.show()
+            screen.centerText(count,"#")
+            screen.centerText(3,temp.result)
+            screen.show()
             await temp.send("0x02")
             await uasyncio.sleep_ms(100)
     try:

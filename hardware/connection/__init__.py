@@ -18,9 +18,6 @@ class Network():
     
     def isConnected(self):
         return sta_if.isconnected()
-    
-    def addDefaultWifi(self):
-        await self.DB.create("Yunitrish", "0937565253")
 
     def setUp(self):
         if self.isConnected():
