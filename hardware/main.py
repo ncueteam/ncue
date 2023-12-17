@@ -67,6 +67,8 @@ def sub_cb(topic,msg):
 #         if(DB.clientID=="N0UACuslmEQpDjrJCpaakwsWaLB3"):
 
         if(DB.type=="ir_tx"):
+                if(DB.protocol=="NEC8"):
+                    ir_tx.transmit(0x0000, int(DB.data))
                 if(DB.protocol=="NEC16"):
                     ir_tx.transmit(0x0000, int(DB.data))
                     #print("ir_tx:"+DB.data)
@@ -75,17 +77,17 @@ def sub_cb(topic,msg):
 #                 if(DB.protocol=="NEC16"):
 #                     if ir_data >= 0:
 #                     print(ir_data)
-#         if(DB.type=="register_device"):
-#             if(DB.type_data=="switch"):
-#                 DB.create(DB.uuid,DB.type_data)
-#             elif(DB.type_data=="bio_device"):
-#                 DB.create(DB.uuid,DB.type_datadata)
-#             elif(DB.type_data=="slide_device"):
-#                 DB.create(DB.uuid,DB.type_data)
-#             elif(DB.type_data=="wet_degree_sensor"):
-#                 DB.create(DB.uuid,DB.type_data)
-#             elif(DB.type_data=="ir_controller"):
-#                 DB.create(DB.uuid,DB.type_data)
+        if(DB.type=="register_device"):
+            if(DB.type_data=="switch"):
+                DB.create(DB.uuid,DB.type_data)
+            elif(DB.type_data=="bio_device"):
+                DB.create(DB.uuid,DB.type_datadata)
+            elif(DB.type_data=="slide_device"):
+                DB.create(DB.uuid,DB.type_data)
+            elif(DB.type_data=="wet_degree_sensor"):
+                DB.create(DB.uuid,DB.type_data)
+            elif(DB.type_data=="ir_controller"):
+                DB.create(DB.uuid,DB.type_data)
                         
 def link():
     print("link")
@@ -100,10 +102,10 @@ def main():
         net.setUp()
         status = "wifi_connecting"
         attempt = 0
-    if status == "wifi_connecting":
+    elif status == "wifi_connecting":
         if attempt > 2: status = "ble_mode"
         else:
-            print("try "+str(attempt))
+            print("["+str(attempt)+"]connecting")
             if net.isConnected():
                 print("connected "+str(net.getData()))
                 status = "wifi_connected"
@@ -111,9 +113,9 @@ def main():
                 time.sleep(5)
                 attempt+=1
         
-    import oled
-    screen = oled.OLED()#OLED顯示器
-    if (status == "wifi_connected"):
+    elif (status == "wifi_connected"):
+        import oled
+        screen = oled.OLED()#OLED顯示器
         print("start!")
         from umqtt.simple import MQTTClient
         import machine
@@ -129,7 +131,29 @@ def main():
         screen.blank()
         screen.centerText(4,"NCUE AIOT")
         screen.show()
+        
+        status = "loop"
+#         while True:
+#             dht.wait()
+#             dht.detect()
+#     #        mqClient0.routine(ujson.dumps({"type":"dht11","uuid":uuid,"humidity":dht.hum,"temperature":dht.temp}))
+#             queue = {"type":"dht11","uuid":'',"humidity":dht.hum,"temperature":dht.temp};
+#             mqClient0.publish(b'AIOT_113/Esp32Send', ujson.dumps(queue))
+#             mqClient0.check_msg()
+#             
+#             screen.blank()
+#             screen.drawSleepPage()
+#             screen.displayTime()
+#     #         screen.text(64, 3, ir.result)
+#             screen.text(64, 5, str(dht.hum)+" "+str(dht.temp))
+#             screen.show()
+#     #         ir.send("0xff")
     
+#         mqClient0.disconnect()
+    elif status == "loop":
+        try:
+            print("1")
+            
         while True:
             count += 1
             if(count == 100):
@@ -151,11 +175,11 @@ def main():
     #         screen.text(64, 3, ir.result)
             screen.text(64, 5, str(dht.hum)+" "+str(dht.temp))
             screen.show()
-    #         ir.send("0xff")
-    
-        mqClient0.disconnect()
-        
-    if status == "ble_mode":
+    except:
+            status = "wifi_not_connected"
+#             mqClient0.disconnect()
+
+    elif status == "ble_mode":
         time.sleep(2)
         screen.blank()
         screen.centerText(1, "BLE!")
