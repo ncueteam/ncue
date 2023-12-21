@@ -91,7 +91,7 @@ class IR_GET(IR_RX):
             for i in burst:
                 if count>1:
                     if (count-2)%2 == 1:
-                        if i-prev > 900:
+                        if i-prev > 800:
                             rst+="1"
                         else:
                             rst+="0"
