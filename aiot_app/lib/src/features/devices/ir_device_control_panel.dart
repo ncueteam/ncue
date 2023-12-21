@@ -61,12 +61,7 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
 
   String protoco = "NEC16";
 
-  List<String> protocos = [
-    "NEC8",
-    "NEC16",
-    "sony",
-    "Philip",
-  ];
+  List<String> protocos = ["NEC8", "NEC16", "sony", "Philip", "Tatung"];
 
   @override
   Widget build(BuildContext context) {
@@ -117,8 +112,16 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                     padding: const EdgeInsets.all(20.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        mqttService.send(
-                            '{"type":"ir_tx","data":"${(buttonSet[device.type])![keys[index]]!}","protocol":"$protoco","uuid":"$uuid"}');
+                        if (protoco == "Tatung") {
+                          debugPrint("DD:${keys[index]}");
+                          mqttService.send(
+                              '{"type":"ir_tx","data":"${keys[index]}","protocol":"$protoco","uuid":"$uuid"}');
+                        } else {
+                          debugPrint(
+                              "DD:${(buttonSet[device.type])![keys[index]]!}");
+                          mqttService.send(
+                              '{"type":"ir_tx","data":"${(buttonSet[device.type])![keys[index]]!}","protocol":"$protoco","uuid":"$uuid"}');
+                        }
                       },
                       child: FittedBox(
                         fit: BoxFit.fitHeight,

@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/units/unit_tile.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
@@ -21,15 +22,21 @@ class _RoomUnitState extends State<RoomUnit> {
   late RoomModel room;
   late List<UserModel> userModels;
   final TextEditingController searchBar = TextEditingController();
+  String link =
+      "https://firebasestorage.googleapis.com/v0/b/ncueapp.appspot.com/o/files%2Froom1.jpg?alt=media&token=2d3f04ef-d833-4fd9-b7b6-e1f070fe5109";
 
   void getUsers() async {
+    room = widget.roomData;
     userModels = await UserModel().loadAll();
+    link = await FirebaseStorage.instance
+        .ref()
+        .child('files/${room.imagePath}')
+        .getDownloadURL();
   }
 
   @override
   void initState() {
     getUsers();
-    room = widget.roomData;
     super.initState();
     setState(() {});
   }
@@ -67,7 +74,8 @@ class _RoomUnitState extends State<RoomUnit> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Image.asset(room.imagePath),
+              child: Image.network(
+                  "https://firebasestorage.googleapis.com/v0/b/ncueapp.appspot.com/o/files%2Froom1.jpg?alt=media&token=2d3f04ef-d833-4fd9-b7b6-e1f070fe5109"),
             ),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20 / 4),
