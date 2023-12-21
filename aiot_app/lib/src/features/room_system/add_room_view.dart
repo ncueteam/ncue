@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/services/file_service.dart';
@@ -13,13 +14,38 @@ class AddRoomView extends RouteView {
   State<AddRoomView> createState() => AddRoomViewState();
 }
 
+Future<List<DropdownMenuItem<String>>> listAllFiles() async {
+  List<DropdownMenuItem<String>> fileNames = [];
+
+  final ListResult result =
+      await FirebaseStorage.instance.ref().child('files').listAll();
+
+  for (Reference r in result.items) {
+    fileNames.add(DropdownMenuItem(
+      value: r.name,
+      child: Text(r.name),
+    ));
+  }
+
+  return fileNames;
+}
+
 class AddRoomViewState extends State<AddRoomView> {
   TextEditingController roomName = TextEditingController();
   TextEditingController roomDiscription = TextEditingController();
   TextEditingController roomUUID = TextEditingController();
-  String imagePath = "assets/room/room1.jpg";
+  String imagePath = "room1.jpg";
+  String link =
+      "https://firebasestorage.googleapis.com/v0/b/ncueapp.appspot.com/o/files%2Froom1.jpg?alt=media&token=2d3f04ef-d833-4fd9-b7b6-e1f070fe5109";
   List<Widget> items = [];
   late FileService fileService;
+
+  List<DropdownMenuItem<String>> pictureDrops = [
+    const DropdownMenuItem(value: "room1.jpg", child: Text("room1.jpg")),
+    const DropdownMenuItem(value: "room2.jpg", child: Text("room2.jpg")),
+    const DropdownMenuItem(value: "room3.jpg", child: Text("room3.jpg")),
+    const DropdownMenuItem(value: "room4.jpg", child: Text("room4.jpg")),
+  ];
 
   @override
   void initState() {
@@ -34,18 +60,18 @@ class AddRoomViewState extends State<AddRoomView> {
   Widget build(BuildContext context) {
     items.clear();
     items.addAll([
-      Row(
-        children: [
-          const Text(
-            "房間ID  ",
-            style: TextStyle(fontSize: 16),
-          ),
-          Text(
-            roomUUID.text,
-            style: const TextStyle(fontSize: 15),
-          ),
-        ],
-      ),
+      // Row(
+      //   children: [
+      //     const Text(
+      //       "房間ID  ",
+      //       style: TextStyle(fontSize: 16),
+      //     ),
+      //     Text(
+      //       roomUUID.text,
+      //       style: const TextStyle(fontSize: 15),
+      //     ),
+      //   ],
+      // ),
       TextField(
         controller: roomName,
         decoration: const InputDecoration(
@@ -60,32 +86,40 @@ class AddRoomViewState extends State<AddRoomView> {
           hintText: '房間敘述',
         ),
       ),
-      Image.asset(imagePath),
+      // Image.asset(imagePath),
+      Image.network(link),
       DropdownButton<String>(
-        onChanged: (value) {
+        onChanged: (value) async {
+          link = await FirebaseStorage.instance
+              .ref()
+              .child('files/$imagePath')
+              .getDownloadURL();
+          pictureDrops.clear();
+          pictureDrops.addAll(await listAllFiles());
           setState(() {
             imagePath = value!;
           });
         },
         value: imagePath,
-        items: const [
-          DropdownMenuItem(
-            value: "assets/room/room1.jpg",
-            child: Text("圖片一"),
-          ),
-          DropdownMenuItem(
-            value: "assets/room/room2.jpg",
-            child: Text("圖片二"),
-          ),
-          DropdownMenuItem(
-            value: "assets/room/room3.jpg",
-            child: Text("圖片三"),
-          ),
-          DropdownMenuItem(
-            value: "assets/room/room4.jpg",
-            child: Text("圖片四"),
-          ),
-        ],
+        items: pictureDrops,
+        // const [
+        //   DropdownMenuItem(
+        //     value: "room1.jpg",
+        //     child: Text("圖片一"),
+        //   ),
+        //   DropdownMenuItem(
+        //     value: "room2.jpg",
+        //     child: Text("圖片二"),
+        //   ),
+        //   DropdownMenuItem(
+        //     value: "room3.jpg",
+        //     child: Text("圖片三"),
+        //   ),
+        //   DropdownMenuItem(
+        //     value: "room4.jpg",
+        //     child: Text("圖片四"),
+        //   ),
+        // ],
       ),
       fileService.getUnit(),
       IconButton(
