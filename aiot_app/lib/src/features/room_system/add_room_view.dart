@@ -36,19 +36,21 @@ class AddRoomViewState extends State<AddRoomView> {
   TextEditingController roomUUID = TextEditingController();
   String imagePath = "room1.jpg";
   String link =
-      "https://firebasestorage.googleapis.com/v0/b/ncueapp.appspot.com/o/files%2Froom1.jpg?alt=media&token=2d3f04ef-d833-4fd9-b7b6-e1f070fe5109";
+      "https://media.vogue.com.tw/photos/5f2015ac9743347976d7796a/master/pass/2020728_200728_49.jpg";
   List<Widget> items = [];
   late FileService fileService;
 
-  List<DropdownMenuItem<String>> pictureDrops = [
-    const DropdownMenuItem(value: "room1.jpg", child: Text("room1.jpg")),
-    const DropdownMenuItem(value: "room2.jpg", child: Text("room2.jpg")),
-    const DropdownMenuItem(value: "room3.jpg", child: Text("room3.jpg")),
-    const DropdownMenuItem(value: "room4.jpg", child: Text("room4.jpg")),
-  ];
+  List<DropdownMenuItem<String>> pictureDrops = [];
+
+  Future reload() async {
+    pictureDrops.clear();
+    pictureDrops.addAll(await listAllFiles());
+    setState(() {});
+  }
 
   @override
   void initState() {
+    reload();
     fileService = FileService(() {
       setState(() {});
     });
@@ -60,18 +62,6 @@ class AddRoomViewState extends State<AddRoomView> {
   Widget build(BuildContext context) {
     items.clear();
     items.addAll([
-      // Row(
-      //   children: [
-      //     const Text(
-      //       "房間ID  ",
-      //       style: TextStyle(fontSize: 16),
-      //     ),
-      //     Text(
-      //       roomUUID.text,
-      //       style: const TextStyle(fontSize: 15),
-      //     ),
-      //   ],
-      // ),
       TextField(
         controller: roomName,
         decoration: const InputDecoration(
@@ -86,43 +76,26 @@ class AddRoomViewState extends State<AddRoomView> {
           hintText: '房間敘述',
         ),
       ),
-      // Image.asset(imagePath),
       Image.network(link),
-      DropdownButton<String>(
-        onChanged: (value) async {
-          link = await FirebaseStorage.instance
-              .ref()
-              .child('files/$imagePath')
-              .getDownloadURL();
-          pictureDrops.clear();
-          pictureDrops.addAll(await listAllFiles());
-          setState(() {
+      FittedBox(
+        fit: BoxFit.scaleDown,
+        child: DropdownButton<String>(
+          onChanged: (value) async {
+            link = await FirebaseStorage.instance
+                .ref()
+                .child('files/$value')
+                .getDownloadURL();
+            pictureDrops.clear();
+            pictureDrops.addAll(await listAllFiles());
             imagePath = value!;
-          });
-        },
-        value: imagePath,
-        items: pictureDrops,
-        // const [
-        //   DropdownMenuItem(
-        //     value: "room1.jpg",
-        //     child: Text("圖片一"),
-        //   ),
-        //   DropdownMenuItem(
-        //     value: "room2.jpg",
-        //     child: Text("圖片二"),
-        //   ),
-        //   DropdownMenuItem(
-        //     value: "room3.jpg",
-        //     child: Text("圖片三"),
-        //   ),
-        //   DropdownMenuItem(
-        //     value: "room4.jpg",
-        //     child: Text("圖片四"),
-        //   ),
-        // ],
+            setState(() {});
+          },
+          value: imagePath,
+          items: pictureDrops,
+        ),
       ),
       fileService.getUnit(),
-      IconButton(
+      ElevatedButton(
           onPressed: () async {
             if (roomName.text != "") {
               RoomModel room = RoomModel();
@@ -145,7 +118,9 @@ class AddRoomViewState extends State<AddRoomView> {
               );
             }
           },
-          icon: const Icon(Icons.add)),
+          child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [Icon(Icons.add), Text("註冊房間")])),
     ]);
     return Scaffold(
         appBar: AppBar(
