@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +20,40 @@ class FileService {
   FileService(this.callback);
 
   Future selectImage() async {
-    await FilePicker.platform.pickFiles().then((value) {
+    await FilePicker.platform.pickFiles().then((value) async {
       if (value == null) return;
       pickedFile = value.files.first;
       callback();
       if (['jpg', 'jpeg', 'png'].contains(pickedFile!.extension)) {
-        displayImageFromFirestore(pickedFile!.name);
+        if (pickedFile != null) {
+          String? path = pickedFile!.path;
+          if (path != null) {
+            debugPrint(path);
+            showDialog(
+                context: navigatorKey.currentContext!,
+                builder: (context) {
+                  return GestureDetector(
+                      onTapUp: (details) {
+                        Navigator.pop(context);
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.file(
+                            File(path),
+                            width: double.infinity,
+                            fit: BoxFit.contain,
+                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                uploadFile();
+                              },
+                              child: Text(RouteView.language.uploadFile)),
+                        ],
+                      ));
+                });
+          }
+        }
       } else {
         showDialog(
             context: navigatorKey.currentContext!,
