@@ -1,5 +1,9 @@
 import connection
 import time
+from ir_system.ir_tx import Player
+import ujson
+from machine import Pin
+
 class core():
     def __init__(self,oled=False):
         self.net = connection.Network(oled)
@@ -50,10 +54,16 @@ class core():
             elif self.status == "wifi_connected":
                 try:
                     import machine
-                    
-                    from ir_system.ir_tx.nec import NEC
-                    self.ir_tx = NEC(machine.Pin(32, machine.Pin.OUT, value = 0))
-                    
+                    #
+                    import file_system
+                    from ir_system.ir_tx import Player
+                    from machine import Pin
+                    self.RDB = file_system.FileSet('remote_data.json')
+                    self.ir = Player(Pin(32, Pin.OUT, value = 0))
+                    #
+#                     from ir_system.ir_tx.nec import NEC
+#                     self.ir_tx = NEC(machine.Pin(32, machine.Pin.OUT, value = 0))
+                    #
                     from ir_system.ir_rx.nec import NEC_16
                     def ir_callback(data, addr, ctrl):
                         if data >= 0:
@@ -174,18 +184,23 @@ class core():
     def sub_cb(self,topic,msg):
         print(str(topic,"UTF-8")+","+str(msg,"UTF-8"))
         self.DB.handle_json(msg)
-#         print(DB.type)
-#         print(DB.clientID)
-#         print(DB.protocol)
-#         print(DB.data)
-#         if(DB.clientID=="N0UACuslmEQpDjrJCpaakwsWaLB3"):
+        print("????")
+        print(self.DB.type)
+        print(self.DB.uuid)
+        print(self.DB.protocol)
+        print(self.DB.data)
+        #if(DB.clientID=="N0UACuslmEQpDjrJCpaakwsWaLB3"):
 
         if(self.DB.type=="ir_tx"):
-                if(self.DB.protocol=="NEC8"):
-                    self.ir_tx.transmit(0x0000, int(DB.data))
-                if(self.DB.protocol=="NEC16"):
-                    self.ir_tx.transmit(0x0000, int(DB.data))
-                    #print("ir_tx:"+DB.data)
+            if(self.DB.protocol=="NEC8"):
+                self.ir_tx.transmit(0x0000, int(self.DB.data))
+            if(self.DB.protocol=="NEC16"):
+                self.ir_tx.transmit(0x0000, int(self.DB.data))
+            if(self.DB.protocol=="TATUNG"):
+                try:
+                    self.ir.play(self.RDB.read(self.DB.data)[1])
+                except (e):
+                    raise Exception(e)
 #         else if(DB.type=="ir_rx"):
 #                 global ir_data
 #                 if(DB.protocol=="NEC16"):

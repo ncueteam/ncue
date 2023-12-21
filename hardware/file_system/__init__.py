@@ -12,6 +12,7 @@ class FileSet:
         self.initialize()
         self.database = self.load()
         self.save()
+        self.temp = ""
 
     def initialize(self):
         try:
@@ -60,32 +61,33 @@ class FileSet:
         return uuid
     
     def handle_json(self,message):
+        print("??")
         try:
-            temp = ujson.loads(message)
+            self.temp = ujson.loads(message)
         except:
             pass
         try:
-            self.type = temp['type']
+            self.type = self.temp['type']
         except:
             self.type = "error"
         try:
-            self.data = temp['data']
+            self.data = self.temp['data']
         except:
             self.data = "error"
         try:
-            self.protocol = temp['protocol']
+            self.protocol = self.temp['protocol']
         except:
             self.protocol = "error"
         try:
-            self.clientID = temp['clientID']
+            self.clientID = self.temp['clientID']
         except:
             self.clientID = "error"
         try:
-            self.uuid = temp['uuid']
+            self.uuid = self.temp['uuid']
         except:
             self.uuid = "error"
         try:
-            self.type_data = temp['type_data']
+            self.type_data = self.temp['type_data']
         except:
             self.type_data = "error"
         
