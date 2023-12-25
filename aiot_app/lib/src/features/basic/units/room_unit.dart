@@ -32,13 +32,13 @@ class _RoomUnitState extends State<RoomUnit> {
         .ref()
         .child('files/${room.imagePath}')
         .getDownloadURL();
+    setState(() {});
   }
 
   @override
   void initState() {
     getUsers();
     super.initState();
-    setState(() {});
   }
 
   Future<void> showListDialogMember() async {
