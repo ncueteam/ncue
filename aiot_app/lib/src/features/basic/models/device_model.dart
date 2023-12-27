@@ -22,27 +22,31 @@ class DeviceModel {
   }
 
   String name = "error";
-  bool powerOn = false;
-  double temperature = 28.0;
   String uuid = "error id";
   String roomId = "Error Id";
   String type = 'switch';
-  String subType = 'fan';
   String iconPath = 'assets/images/flutter_logo.png';
   bool authenticated = false;
   bool bioLocked = false;
 
+  bool powerOn = false;
+  String subType = 'fan';
+  double temperature = 28.0;
+  int timer = 0;
+
   void debugData() {
     debugPrint("=================================================");
     debugPrint("name: $name");
-    debugPrint("powerOn: $powerOn");
     debugPrint("type: $type");
-    debugPrint("subType: $subType");
     debugPrint("uuid: $uuid");
     debugPrint("roomId: $roomId");
     debugPrint("iconPath: $iconPath");
     debugPrint("bioLocked: $bioLocked");
+
     debugPrint("temperature: ${temperature.toString()}");
+    debugPrint("powerOn: $powerOn");
+    debugPrint("subType: $subType");
+    debugPrint("timer: $timer");
     debugPrint("=================================================");
   }
 
@@ -73,6 +77,7 @@ class DeviceModel {
       'temperature': temperature,
       'bioLocked': bioLocked,
       'subType': subType,
+      'timer': timer,
     };
   }
 
@@ -103,6 +108,7 @@ class DeviceModel {
       temperature = data['temperature'] ?? 28;
       bioLocked = data['bioLocked'] ?? false;
       subType = data['subType'] ?? "fan";
+      timer = data['timer'] ?? 0;
     }
     return this;
   }
@@ -144,6 +150,7 @@ class DeviceModel {
       temp.temperature = result['temperature'] ?? 28;
       temp.bioLocked = result['bioLocked'] ?? false;
       temp.subType = result['subType'] ?? "fan";
+      temp.timer = result['timer'] ?? 0;
       data.add(temp);
     }
     return data;

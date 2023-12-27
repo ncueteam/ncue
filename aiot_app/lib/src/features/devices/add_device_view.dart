@@ -140,6 +140,10 @@ class AddDeviceViewState extends State<AddDeviceView> {
                     value: "tv",
                     child: Text("電視"),
                   ),
+                  DropdownMenuItem(
+                    value: "AC",
+                    child: Text("冷氣"),
+                  ),
                 ],
               ),
             ],

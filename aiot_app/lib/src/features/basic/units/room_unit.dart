@@ -23,7 +23,7 @@ class _RoomUnitState extends State<RoomUnit> {
   late List<UserModel> userModels;
   final TextEditingController searchBar = TextEditingController();
   String link =
-      "https://firebasestorage.googleapis.com/v0/b/ncueapp.appspot.com/o/files%2Froom1.jpg?alt=media&token=2d3f04ef-d833-4fd9-b7b6-e1f070fe5109";
+      "https://media.vogue.com.tw/photos/5f2015ac9743347976d7796a/master/pass/2020728_200728_49.jpg";
 
   void getUsers() async {
     room = widget.roomData;
@@ -32,13 +32,13 @@ class _RoomUnitState extends State<RoomUnit> {
         .ref()
         .child('files/${room.imagePath}')
         .getDownloadURL();
+    setState(() {});
   }
 
   @override
   void initState() {
     getUsers();
     super.initState();
-    setState(() {});
   }
 
   Future<void> showListDialogMember() async {
@@ -74,8 +74,7 @@ class _RoomUnitState extends State<RoomUnit> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Image.network(
-                  "https://firebasestorage.googleapis.com/v0/b/ncueapp.appspot.com/o/files%2Froom1.jpg?alt=media&token=2d3f04ef-d833-4fd9-b7b6-e1f070fe5109"),
+              child: Image.network(link),
             ),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20 / 4),

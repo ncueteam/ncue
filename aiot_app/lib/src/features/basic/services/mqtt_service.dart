@@ -16,11 +16,13 @@ class MQTTService {
     port.logging(on: false);
     port.autoReconnect = true;
     port.onConnected = () {
-      debugPrint("topic:$topic");
+      // debugPrint("topic:$topic");
       port.subscribe(topic, MqttQos.exactlyOnce);
       port.subscribe('receive_topic', MqttQos.exactlyOnce);
     };
-    port.onDisconnected = () {};
+    port.onDisconnected = () {
+      port.connect();
+    };
     port.onSubscribed = (topic) =>
         port.updates?.listen((List<MqttReceivedMessage<MqttMessage>> messages) {
           for (var message in messages) {

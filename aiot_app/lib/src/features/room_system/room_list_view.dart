@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:ncue.aiot_app/src/app.dart';
 import 'package:ncue.aiot_app/src/features/auth_system/profile_view.dart';
 import 'package:ncue.aiot_app/src/features/basic/models/room_model.dart';
 import 'package:ncue.aiot_app/src/features/basic/views/route_view.dart';
@@ -39,12 +40,13 @@ class _RoomListViewState extends State<RoomListView> {
   Future<void> reload() async {
     await RouteView.loadAccount();
     items = await loadUnits();
+    items.add(const AddRoomView()
+        .getUnit(navigatorKey.currentContext!, customName: "註冊房間"));
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    items.add(const AddRoomView().getUnit(context, customName: "註冊房間"));
     return Scaffold(
         appBar: AppBar(
           title: Text(RouteView.language.roomListPageTitle),
