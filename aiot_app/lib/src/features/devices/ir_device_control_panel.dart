@@ -22,7 +22,15 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
 
   late List<String> keys = [];
 
+  /*--------------------------遙控器內容------------------------------*/
+
   TextEditingController temperatureDisplay = TextEditingController();
+
+  String timer = "";
+
+  TextEditingController timerDisplay = TextEditingController();
+
+  /*-----------------------------------------------------------------*/
 
   @override
   void initState() {
@@ -39,6 +47,12 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
     // device.type = "fan";
     mqttService = MQTTService('AppSend');
     temperatureDisplay.text = "${device.temperature}°C";
+    device.timer > 0
+        ? timer = "定時關"
+        : device.timer == 0
+            ? timer = "定時"
+            : timer = "定時開";
+    timerDisplay.text = "${device.timer.abs()} hr";
     setState(() {});
   }
 
@@ -111,46 +125,172 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
         child: Padding(
           padding: const EdgeInsets.all(6.0),
           child: device.subType == "AC"
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                              onPressed: () {
-                                device.temperature += 1;
-                                device.update();
-                                temperatureDisplay.text =
-                                    "${device.temperature.round()}°C";
-                                setState(() {});
-                              },
-                              child: const Icon(Icons.add)),
-                          SizedBox(
-                            width: 50.0,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              maxLines: 1,
-                              controller: temperatureDisplay,
-                              readOnly: true,
+              ? Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {}, child: const Text("風向")),
+                            ElevatedButton(
+                                onPressed: () {}, child: const Text("風量")),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      device.temperature += 1;
+                                      device.update();
+                                      temperatureDisplay.text =
+                                          "${device.temperature.round()}°C";
+                                      setState(() {});
+                                    },
+                                    child: const Icon(Icons.add)),
+                                SizedBox(
+                                  width: 50.0,
+                                  child: TextField(
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    controller: temperatureDisplay,
+                                    readOnly: true,
+                                  ),
+                                ),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      device.temperature -= 1;
+                                      device.update();
+                                      temperatureDisplay.text =
+                                          "${device.temperature.round()}°C";
+                                      setState(() {});
+                                    },
+                                    child: const Icon(Icons.remove)),
+                              ],
                             ),
-                          ),
-                          ElevatedButton(
-                              onPressed: () {
-                                device.temperature -= 1;
-                                device.update();
-                                temperatureDisplay.text =
-                                    "${device.temperature.round()}°C";
-                                setState(() {});
-                              },
-                              child: const Icon(Icons.remove)),
-                        ],
-                      ),
-                      ElevatedButton(
-                          onPressed: () {},
-                          child: const Icon(Icons.power_settings_new))
-                    ])
+                          ],
+                        ),
+                        ElevatedButton(
+                            onPressed: () {},
+                            child: const Icon(Icons.power_settings_new)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {}, child: const Text("除溼")),
+                            ElevatedButton(
+                                onPressed: () {}, child: const Text("暖氣")),
+                            ElevatedButton(
+                                onPressed: () {}, child: const Text("冷氣")),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  device.timer *= -1;
+                                  device.update();
+                                  setState(() {});
+                                },
+                                child: Text(timer)),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                    onPressed: () {
+                                      timer == "定時開"
+                                          ? device.timer -= 1
+                                          : device.timer += 1;
+                                      device.update();
+                                      timerDisplay.text = "${device.timer} hr";
+                                      setState(() {});
+                                    },
+                                    child: const Icon(Icons.add)),
+                                SizedBox(
+                                  width: 50.0,
+                                  child: TextField(
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    controller: timerDisplay,
+                                    readOnly: true,
+                                  ),
+                                ),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      timer == "定時開"
+                                          ? device.timer += 1
+                                          : device.timer -= 1;
+                                      device.update();
+                                      timerDisplay.text = "${device.timer} hr";
+                                      setState(() {});
+                                    },
+                                    child: const Icon(Icons.remove)),
+                              ],
+                            ),
+                          ],
+                        ),
+                        // ElevatedButton(
+                        // onPressed: () {
+                        //   RemoteModel remoteModel = RemoteModel();
+                        //   remoteModel.data.putIfAbsent(
+                        //       "on",
+                        //       () => [
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             1,
+                        //             0,
+                        //             1,
+                        //             1,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0,
+                        //             0
+                        //           ]);
+                        //   remoteModel.launch = 2900;
+                        //   remoteModel.low = 500;
+                        //   remoteModel.high = 1550;
+                        //   remoteModel.protocol = "room";
+                        //   remoteModel.create();
+                        // },
+                        // child: const Text("test")),
+                      ]),
+                )
               : GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,

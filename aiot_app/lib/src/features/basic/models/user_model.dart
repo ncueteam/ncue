@@ -69,20 +69,7 @@ class UserModel {
       type = data['type'];
       language = data['language'];
       rooms = dynamicToStringList(data['rooms']);
-      // List<dynamic> roomsData = data['rooms'];
-      // if (roomsData.isNotEmpty) {
-      //   for (String temp in roomsData) {
-      //     rooms.add(await RoomModel().read(temp.toString()));
-      //   }
-      // }
       memberRooms = dynamicToStringList(data['memberRooms']);
-
-      // List<dynamic> memberRoomsData = data['memberRooms'];
-      // if (memberRoomsData.isNotEmpty) {
-      //   for (String temp in memberRoomsData) {
-      //     memberRooms.add(await RoomModel().read(temp.toString()));
-      //   }
-      // }
     } catch (e) {
       create();
     }
