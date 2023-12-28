@@ -1,18 +1,19 @@
 import ubluetooth
 from file_system import FileSet
 class BLE():
-    def __init__(self) -> None:
+    def __init__(self,mode="console") -> None:
+        import oled
+        self.screen = oled.OLED(mode=mode)
         self.name = "esp32 ncue"
         self.ble = ubluetooth.BLE()
         self.ble.active(False)
         self.ble.active(True)
-        self.ble.config(mtu=128)
+        self.ble.config(mtu=512)
         self.register()
         self.ble.irq(self.handler)
-#       self.ble.gatts_set_buffer(self.tem_char, 100, True)
-        #self.fileSet = FileSet(file_name='wifi.json')
         self.wifi_added = False
         self.bt_linked = False
+        self.screen.display(["bluetooth","setting up.."])
     
     def register(self):
         ENV_SERVER_UUID = ubluetooth.UUID(0x9011)
@@ -31,23 +32,18 @@ class BLE():
 
         
         ((self.tem_char, self.hum_char,self.device_char),) = self.ble.gatts_register_services(SERVICES)
-
-#         self.ble.gatts_write(self.tem_char, b'\x06\x08')
-#         self.ble.gatts_write(self.hum_char, b'\x09\x07')
-
-        # self.name = bytes("NCUE", 'UTF-8')
-        print("藍芽開始廣播")
+        self.screen.display(["bluetooth","broadcasting.."])
         advertise_data0 = bytearray([2,1,6,2,10,16])
         advertise_data1 = bytearray((len(self.name) + 1, 0x09))
         advertise_data2 = bytearray(self.name, 'utf-8')
         self.ble.gap_advertise(100, adv_data= advertise_data0 + advertise_data1 + advertise_data2)
     def handler(self,event,data):
         if event == 1:
-            print("BLE 連接成功")
+            self.screen.display(["bluetooth","connected!"])
             self.bt_linked = True
 
         elif event == 2:
-            print("BLE 斷開連結")
+            self.screen.display(["bluetooth","disconnected!"])
             self.ble.gap_advertise(100, adv_data=bytearray([2,1,6,2,10,8]) + bytearray(
                 (len(self.name) + 1, 0x09)) + self.name)
             self.bt_linked = False
@@ -56,7 +52,9 @@ class BLE():
             onn_handle, char_handle = data
             buffer = self.ble.gatts_read(char_handle)
             ble_msg = buffer.decode('UTF-8').strip()
-            print(ble_msg)
+            self.screen.display([ble_msg])
+
+#             print(ble_msg)
 
             arr = ble_msg.split(':')
             key, value = arr[0], arr[1]
@@ -74,13 +72,7 @@ class BLE():
                 self.fileSet = FileSet(file_name='wifi.json')
                 self.fileSet.update(self.ssid,self.pswd)
                 self.wifi_added = True
-#             if(key == "uid"):
-#                 self.fileSet = FileSet(file_name='device_data.json')
-#                 self.fileSet.update(name, password)
-#             else:
-#                 self.fileSet = FileSet(file_name='wifi.json')
-#                 self.wifi_added = True
-#                 self.fileSet.update(name, password)
+            return
                 
             
             

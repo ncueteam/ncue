@@ -1,20 +1,17 @@
 import network
-import uasyncio
 import time
 from file_system import FileSet
 
 sta_if = network.WLAN(network.STA_IF)    
 
 class Network():
-    def __init__(self,oled=False):
+    def __init__(self,screenMode="console"):
         self.DB =  FileSet("wifi.json")
-        self.oled = oled
-        if(oled):
-            import oled
-            self.screen = oled.OLED()
+        import oled
+        self.screen = oled.OLED(mode=screenMode)
     
     def getData(self):
-        return sta_if.ifconfig()
+        return sta_if.config('essid')
     
     def isConnected(self):
         return sta_if.isconnected()
@@ -23,32 +20,12 @@ class Network():
         if self.isConnected():
             sta_if.disconnect()
         for key,value in self.DB.database.items():
-            if (self.oled):
-                self.screen.blank()
-                self.screen.centerText(2,"connecting")
-                self.screen.centerText(4,"from")
-                self.screen.centerText(6,"Database!")
-                self.screen.show()
-            else:
-                print("connecting.. "+key)
+            self.screen.display(["connecting","from","database"])
             time.sleep(1)
             if self.connector(key,value):
-                if(self.oled):
-                    self.screen.blank()
-                    self.screen.centerText(2,key)
-                    self.screen.centerText(4,"connected!")
-                    self.screen.show()
-                else:
-                    print(key+" connected!")
                 return True
         if not sta_if.isconnected():
-            if(self.oled):
-                self.screen.blank()
-                self.screen.centerText(2,"connect")
-                self.screen.centerText(4,"error!")
-                self.screen.show()
-            else:
-                print("connection error")
+            self.screen.display(["connect","error!"])
             return False
     
     def connector(self,key,value):
@@ -57,51 +34,34 @@ class Network():
         sta_if.active(False)
         sta_if.active(True)
         sta_if.connect(key,value)
-        if(self.oled):
-            self.screen.blank()
-            self.screen.centerText(2,"connecting")
-            self.screen.centerText(4,key)
-            self.screen.show()
+        self.screen.display(["connecting",key])
         while not sta_if.isconnected():
-            uasyncio.sleep_ms(2000)
+            time.sleep(2)
             TRY += 1
-            if(self.oled):
-                self.screen.blank()
-                self.screen.centerText(2,"connecting")
-                self.screen.centerText(4,key)
-                self.screen.centerText(6,str(TRY)+" / "+str(MAX_TRY))
-                self.screen.show()
+            self.screen.display(["connecting",key,str(TRY)+" / "+str(MAX_TRY)])
             if  TRY > MAX_TRY:
                 TRY = 0
                 break
             pass
         if not sta_if.isconnected():
-            if(self.oled):
-                self.screen.blank()
-                self.screen.centerText(2,"connecting ")
-                self.screen.centerText(4,key)
-                self.screen.centerText(6," failed....")
-                self.screen.show()
-            uasyncio.sleep_ms(2000)
+            self.screen.display(["connecting",key,"failed...."])
+            time.sleep(2)
             return False
         else:
-            if(self.oled):
-                self.screen.blank()
-                self.screen.centerText(4,key + " connected!")
-                self.screen.show()
-            uasyncio.sleep_ms(1000)
+            self.screen.display([key,"connected!"])
+            time.sleep(1)
             return True
-def bootLink():
-    net = Network()
-    loop = uasyncio.get_event_loop()
-    async def main_task():
-        await net.setUp()
-    try:
-        task = loop.create_task(main_task())
-        loop.run_forever()
-    except KeyboardInterrupt:
-        print("Ctrl+C pressed stopping.....")
-    finally:
-        task.cancel()
-        loop.run_until_complete(task)
-        loop.close()
+# def bootLink():
+#     net = Network()
+#     loop = uasyncio.get_event_loop()
+#     async def main_task():
+#         await net.setUp()
+#     try:
+#         task = loop.create_task(main_task())
+#         loop.run_forever()
+#     except KeyboardInterrupt:
+#         print("Ctrl+C pressed stopping.....")
+#     finally:
+#         task.cancel()
+#         loop.run_until_complete(task)
+#         loop.close()

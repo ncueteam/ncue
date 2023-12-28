@@ -8,7 +8,7 @@ SH1106 = oled.sh1106.SH1106_I2C(128, 64, I2C)
 
 class OLED():
     
-    def __init__(self) -> None:
+    def __init__(self,mode="oled") -> None:
         self.screen = SH1106
         self.x = 0
         self.y = 0
@@ -18,6 +18,29 @@ class OLED():
         self.s = 0
         self.accumulation = 0
         self.sleep_page = [0,0,64.64]
+        self.mode = mode
+
+    def display(self,data:[str]):
+        if self.mode=="oled":
+            self.blank()
+            if len(data) == 1:
+                self.centerText(3,data[0])
+            elif len(data)==2:
+                self.centerText(2,data[0])
+                self.centerText(4,data[1])
+            elif len(data)==3:
+                self.centerText(1,data[0])
+                self.centerText(3,data[1])
+                self.centerText(5,data[2])
+            elif len(data)==4:
+                self.centerText(0,data[0])
+                self.centerText(2,data[1])
+                self.centerText(4,data[2])
+                self.centerText(6,data[2])
+            self.show()
+        elif self.mode=="console":
+            for item in data:
+                print(item)
 
     def blank(self):
         self.screen.sleep(False)
@@ -32,18 +55,6 @@ class OLED():
         temp = self.accumulation
         self.accumulation = 0
         return temp
-
-    # async def sleepPositons(self, pos:str) -> list[int]:
-    #     if pos == "end":
-    #         return [self.sleep_page[2],self.sleep_page[3]]
-    #     elif pos == "start":
-    #         return [self.sleep_page[0], self.sleep_page[1]]
-    #     elif pos == "center":
-    #         return [(self.sleep_page[0]+self.sleep_page[2])/2, (self.sleep_page[0]+self.sleep_page[1])/2 ]
-    #     else:
-    #         return [0, 0]
-        
-
 
     def displayTime(self):
         self.screen.text(str(self.accumulation),64-8*len(str(self.accumulation)),0,0)

@@ -58,6 +58,13 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
   }
 
   /*---------------------------------------- custom data --------------------------------------*/
+
+  // List<int> _getAllDataBytes() {
+  //   List<int> bytes = utf8.encode(
+  //       "ssid:${wifiNameController.text},pswd:${wifiPasswordController.text},uuid:$roomId");
+  //   return bytes;
+  // }
+
   List<int> _getWifiSsidBytes() {
     var wifiData = 'ssid:${wifiNameController.text}';
     List<int> bytes = utf8.encode(wifiData);
@@ -107,7 +114,11 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
 
   Future onWritePressedCustom(List<int> input, String name) async {
     try {
-      await c.write(input, withoutResponse: c.properties.writeWithoutResponse);
+      await c.write(
+        input,
+        withoutResponse: c.properties.writeWithoutResponse,
+        allowLongWrite: true,
+      );
       Snackbar.show(ABC.c, "[$name]Write: Success", success: true);
       if (c.properties.read) {
         await c.read();
@@ -210,6 +221,7 @@ class _CharacteristicTileState extends State<CharacteristicTile> {
         child: Text(withoutResp ? "WriteNoResp" : "Submit"),
         onPressed: () async {
           // await onWritePressed();
+          // await onWritePressedCustom(_getAllDataBytes(), "data");
           await onWritePressedCustom(_getWifiSsidBytes(), "wifi ssid");
           await onWritePressedCustom(_getWifiPswdBytes(), "wifi password");
           await onWritePressedCustom(_getUuidByte_1(), "uuid part 1");
