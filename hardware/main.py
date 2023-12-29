@@ -29,21 +29,6 @@ class core():
             self.status = "wifi_connected"
         else:
             self.status = "ble_mode"
-    def ir_dht_setup(self):
-        import machine
-        import file_system
-        from ir_system.ir_tx import Player
-        self.RDB = file_system.FileSet('remote_data.json')
-        self.ir = Player(machine.Pin(32, machine.Pin.OUT, value = 0))
-#         from ir_system.ir_tx.nec import NEC
-#         self.ir_tx = NEC(machine.Pin(32, machine.Pin.OUT, value = 0))
-        from ir_system.ir_rx.nec import NEC_16
-        def ir_callback(data, addr, ctrl):
-            if data >= 0:
-                self.ir_data = data
-                self.ir_addr = addr
-                print('Data {:02x} Addr {:04x}'.format(data, addr))
-        self.ir_rx = NEC_16(machine.Pin(23, machine.Pin.IN), ir_callback)
     
     def ble_setup(self):
         if self.ble_try==0:
@@ -75,18 +60,20 @@ class core():
             self.status = "wifi_not_connected"
     
     def wifi_connected(self):
+        import ir_system
+        self.cir = ir_system.IR(mode="oled")
         import machine
         import file_system
-        from ir_system.ir_tx import Player
+#         from ir_system.ir_tx import Player
         self.RDB = file_system.FileSet('remote_data.json')
-        self.ir = Player(machine.Pin(32, machine.Pin.OUT, value = 0))
-        from ir_system.ir_rx.nec import NEC_16
-        def ir_callback(data, addr, ctrl):
-            if data >= 0:
-                self.ir_data = data
-                self.ir_addr = addr
-                print('Data {:02x} Addr {:04x}'.format(data, addr))
-        self.ir_rx = NEC_16(machine.Pin(23, machine.Pin.IN), ir_callback)
+#         self.ir = Player(machine.Pin(32, machine.Pin.OUT, value = 0))
+#         from ir_system.ir_rx.nec import NEC_16
+#         def ir_callback(data, addr, ctrl):
+#             if data >= 0:
+#                 self.ir_data = data
+#                 self.ir_addr = addr
+#                 print('Data {:02x} Addr {:04x}'.format(data, addr))
+#         self.ir_rx = NEC_16(machine.Pin(23, machine.Pin.IN), ir_callback)
         
         from umqtt.simple import MQTTClient
         import ubinascii
@@ -99,19 +86,18 @@ class core():
                 if self.DB.type=="ir_tx":
                     self.screen.display([self.DB.type,self.DB.protocol,self.DB.data])
                     time.sleep(3)
+                    self.cir.receive()
 #                     if self.DB.protocol=="NEC8":
 #                         self.ir_tx.transmit(0x0000, int(self.DB.data))
 #                     elif self.DB.protocol=="NEC16":
 #                         self.ir_tx.transmit(0x0000, int(self.DB.data))
                 elif self.DB.type=="ir_rx":
-                    from ir_system.ir_rx.acquire import test
-                    lst = test()
-                    print(lst)
+                    self.screen.display([self.DB.type,self.DB.protocol,self.DB.data])
+                    time.sleep(3)
+                    self.cir.receive()
                     print("ir_data")
                 elif(self.DB.type=="register_device"):
                     if self.DB.type_data=="switch":
-                        self.DB.create(self.DB.uuid,self.DB.type_data)
-                    elif self.DB.type_data=="bio_device":
                         self.DB.create(self.DB.uuid,self.DB.type_data)
                     elif self.DB.type_data=="slide_device":
                         self.DB.create(self.DB.uuid,self.DB.type_data)
@@ -127,11 +113,14 @@ class core():
         self.status = "loop"
     
     def loop(self):
+        if self.cir.receiver != []:
+#             print(self.cir.receiver)
+            self.cir.receiver = []
         self.dht.routine()
         from file_system import ujson
-        self.mqttc.publish(b'AIOT_113/Esp32Send', ujson.dumps({"type":"dht11","uuid":'',"humidity":self.dht.hum,"temperature":self.dht.temp}))
+        self.mqttc.publish(b'AIOT_113/Esp32Send', ujson.dumps({"type":"dht11","uuid":self.DB.read("uid")[1],"humidity":self.dht.hum,"temperature":self.dht.temp}))
         self.mqttc.check_msg()
-        self.screen.display(["IR: "+str(self.ir_data),"Hum: "+str(self.dht.hum),"Temp: "+str(self.dht.temp)])
+        self.screen.display(["Hum: "+str(self.dht.hum),"Temp: "+str(self.dht.temp)])
 #         self.screen.drawSleepPage()
     
     def switch(self):
