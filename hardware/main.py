@@ -7,6 +7,8 @@ class core():
         self.ir_data = -1
         self.ir_addr = -1
         self.ble_try = 0
+        import file_system
+        self.DB = file_system.FileSet('device_data.json')
         import oled
         if screenOn:
             self.screen = oled.OLED(mode="oled")
@@ -19,6 +21,8 @@ class core():
         self.screen.display(["setting up..."])
         time.sleep(2)
         self.screen.display(["trying to","connect wifi ..."])
+        import dht11
+        self.dht = dht11.Sensor(mode="oled")
     
     def connecting(self):
         if self.net.isConnected():
@@ -40,9 +44,6 @@ class core():
                 self.ir_addr = addr
                 print('Data {:02x} Addr {:04x}'.format(data, addr))
         self.ir_rx = NEC_16(machine.Pin(23, machine.Pin.IN), ir_callback)
-        
-        import dht11
-        self.dht = dht11.Sensor()
     
     def ble_setup(self):
         if self.ble_try==0:
@@ -73,9 +74,60 @@ class core():
             self.ble = ""
             self.status = "wifi_not_connected"
     
+    def wifi_connected(self):
+        import machine
+        import file_system
+        from ir_system.ir_tx import Player
+        self.RDB = file_system.FileSet('remote_data.json')
+        self.ir = Player(machine.Pin(32, machine.Pin.OUT, value = 0))
+        from ir_system.ir_rx.nec import NEC_16
+        def ir_callback(data, addr, ctrl):
+            if data >= 0:
+                self.ir_data = data
+                self.ir_addr = addr
+                print('Data {:02x} Addr {:04x}'.format(data, addr))
+        self.ir_rx = NEC_16(machine.Pin(23, machine.Pin.IN), ir_callback)
+        
+        from umqtt.simple import MQTTClient
+        import ubinascii
+        self.mqttc = MQTTClient(ubinascii.hexlify(machine.unique_id()), 'test.mosquitto.org')
+        self.mqttc.connect()
+        def sub_cb(topic,msg):
+#             print(str(topic,"UTF-8")+","+str(msg,"UTF-8"))
+            self.DB.handle_json(msg)
+            if(self.DB.uuid==self.DB.read("uid")[1]):
+                if self.DB.type=="ir_tx":
+                    self.screen.display([self.DB.type,self.DB.protocol,self.DB.data])
+                    time.sleep(3)
+#                     if self.DB.protocol=="NEC8":
+#                         self.ir_tx.transmit(0x0000, int(self.DB.data))
+#                     elif self.DB.protocol=="NEC16":
+#                         self.ir_tx.transmit(0x0000, int(self.DB.data))
+                elif self.DB.type=="ir_rx":
+                    from ir_system.ir_rx.acquire import test
+                    lst = test()
+                    print(lst)
+                    print("ir_data")
+                elif(self.DB.type=="register_device"):
+                    if self.DB.type_data=="switch":
+                        self.DB.create(self.DB.uuid,self.DB.type_data)
+                    elif self.DB.type_data=="bio_device":
+                        self.DB.create(self.DB.uuid,self.DB.type_data)
+                    elif self.DB.type_data=="slide_device":
+                        self.DB.create(self.DB.uuid,self.DB.type_data)
+                    elif self.DB.type_data=="wet_degree_sensor":
+                        self.DB.create(self.DB.uuid,self.DB.type_data)
+                    elif self.DB.type_data=="ir_controller":
+                        self.DB.create(self.DB.uuid,self.DB.type_data)
+        
+        self.mqttc.set_callback(sub_cb)
+        self.mqttc.subscribe(b"AIOT_113/AppSend")
+        self.screen.display(["NCUE AIOT"])
+        time.sleep(1)
+        self.status = "loop"
+    
     def loop(self):
-        self.dht.wait()
-        self.dht.detect()
+        self.dht.routine()
         from file_system import ujson
         self.mqttc.publish(b'AIOT_113/Esp32Send', ujson.dumps({"type":"dht11","uuid":'',"humidity":self.dht.hum,"temperature":self.dht.temp}))
         self.mqttc.check_msg()
@@ -90,75 +142,14 @@ class core():
                 self.connecting()
             elif self.status == "wifi_connected":
                 try:
-                    import machine
-                    
-                    import file_system
-                    from ir_system.ir_tx import Player
-                    self.RDB = file_system.FileSet('remote_data.json')
-                    self.ir = Player(machine.Pin(32, machine.Pin.OUT, value = 0))
-                    
-#                     from ir_system.ir_tx.nec import NEC
-#                     self.ir_tx = NEC(machine.Pin(32, machine.Pin.OUT, value = 0))
-                    
-                    from ir_system.ir_rx.nec import NEC_16
-                    def ir_callback(data, addr, ctrl):
-                        if data >= 0:
-                            self.ir_data = data
-                            self.ir_addr = addr
-                            print('Data {:02x} Addr {:04x}'.format(data, addr))
-                    self.ir_rx = NEC_16(machine.Pin(23, machine.Pin.IN), ir_callback)
-                    
-                    import dht11
-                    self.dht = dht11.Sensor()
-                except:
-                    raise Exception("error on status:wifi_connected - setting up ir & dht")
-                try:      
-                    from umqtt.simple import MQTTClient
-                    import ubinascii
-                    self.mqttc = MQTTClient(ubinascii.hexlify(machine.unique_id()), 'test.mosquitto.org')
-                    self.mqttc.connect()
-                    def sub_cb(topic,msg):
-                        print(str(topic,"UTF-8")+","+str(msg,"UTF-8"))
-                        self.DB.handle_json(msg)
-                        print(self.DB.type)
-                        print(self.DB.clientID)
-                        print(self.DB.protocol)
-                        print(self.DB.data)
-                        if(self.DB.clientID=="N0UACuslmEQpDjrJCpaakwsWaLB3"):
-                            if self.DB.type=="ir_tx":
-                                if self.DB.protocol=="NEC8":
-                                    self.ir_tx.transmit(0x0000, int(self.DB.data))
-                                elif self.DB.protocol=="NEC16":
-                                    self.ir_tx.transmit(0x0000, int(self.DB.data))
-                            elif self.DB.type=="ir_rx":
-                                print("ir_data")
-                            elif(self.DB.type=="register_device"):
-                                if self.DB.type_data=="switch":
-                                    self.DB.create(self.DB.uuid,self.DB.type_data)
-                                elif self.DB.type_data=="bio_device":
-                                    self.DB.create(self.DB.uuid,self.DB.type_data)
-                                elif self.DB.type_data=="slide_device":
-                                    self.DB.create(self.DB.uuid,self.DB.type_data)
-                                elif self.DB.type_data=="wet_degree_sensor":
-                                    self.DB.create(self.DB.uuid,self.DB.type_data)
-                                elif self.DB.type_data=="ir_controller":
-                                    self.DB.create(self.DB.uuid,self.DB.type_data)
-                    
-                    self.mqttc.set_callback(sub_cb)
-                    self.mqttc.subscribe(b"AIOT_113/AppSend")
-                    self.screen.display(["NCUE AIOT"])
-                    time.sleep(1)
-                    self.status = "loop"
-                except:
-                    raise Exception("error on status:wifi_connected - setting mqtt")
+                    self.wifi_connected()
+                except Exception as e:
+                    raise Exception("wifi_connected: "+str(e))
             elif self.status == "loop":
                 try:
                    self.loop()
-                except (e):
-#                     print(e)
-                    status = "wifi_not_connected"
-#                     self.mqttc.disconnect()
-                    raise Exception("error on loop")
+                except Exception as e:
+                    raise Exception("error on loop"+str(e))
             elif self.status == "ble_mode":
                 try:
                     self.ble_setup()
@@ -166,15 +157,16 @@ class core():
                     raise Exception("error on status:ble")
         except Exception as e:
             self.status = "error"
-            print(e)
+            raise Exception("switch: "+str(e))
 
     def run(self):
         try:
             while True:
                 if self.status == "error":
-                    raise Exception("Error on run()")
+                    break
                 self.switch()
         except Exception as e:
+            self.status = "wifi_not_connected"
             print(e)
     
 m = core(screenOn = True)

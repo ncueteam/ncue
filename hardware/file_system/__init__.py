@@ -13,6 +13,7 @@ class FileSet:
         self.database = self.load()
         self.save()
         self.temp = ""
+        self.uuid = "error"
 
     def initialize(self):
         try:
@@ -61,7 +62,6 @@ class FileSet:
         return uuid
     
     def handle_json(self,message):
-        print("??")
         try:
             self.temp = ujson.loads(message)
         except:

@@ -304,16 +304,17 @@ class _IRDeviceControlPanelState extends State<IRDeviceControlPanel> {
                         padding: const EdgeInsets.all(20.0),
                         child: ElevatedButton(
                           onPressed: () {
+                            String rst = "";
                             if (protoco == "Tatung") {
-                              debugPrint("DD:${keys[index]}");
+                              rst = keys[index];
                               mqttService.send(
-                                  '{"type":"ir_tx","data":"${keys[index]}","protocol":"$protoco","uuid":"$uuid"}');
+                                  '{"type":"ir_tx","data":"${keys[index]}","protocol":"$protoco","uuid":"${device.roomId}"}');
                             } else {
-                              debugPrint(
-                                  "DD:${(buttonSet[device.type])![keys[index]]!}");
+                              rst = (buttonSet[device.subType])![keys[index]]!;
                               mqttService.send(
-                                  '{"type":"ir_tx","data":"${(buttonSet[device.type])![keys[index]]!}","protocol":"$protoco","uuid":"$uuid"}');
+                                  '{"type":"ir_tx","data":"${(buttonSet[device.subType])![keys[index]]!}","protocol":"$protoco","uuid":"${device.roomId}"}');
                             }
+                            debugPrint("${device.roomId}:$rst");
                           },
                           child: FittedBox(
                             fit: BoxFit.fitHeight,
