@@ -23,9 +23,10 @@ class _Dht11UnitState extends State<Dht11Unit> {
 
   void setReceivedText() {
     Map<String, dynamic> mqttData = json.decode(mqtt.value);
+    // debugPrint(mqttData.toString());
     type = mqttData["type"].toString();
     uuid = mqttData["uuid"].toString();
-    debugPrint("$uuid vs ${widget.uuid}");
+    // debugPrint("$uuid vs ${widget.uuid}");
     if (type == "dht11" && uuid == widget.uuid) {
       temperature = mqttData["temperature"].toString();
       humidity = mqttData["humidity"].toString();
@@ -86,7 +87,7 @@ class _Dht11UnitState extends State<Dht11Unit> {
     return ListTile(
       // title: Text(uuid.split('-').toString()),
       subtitle: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           sensorWidget(
               'assets/lottie/LightRain.json', 'humidity', "$humidity%"),

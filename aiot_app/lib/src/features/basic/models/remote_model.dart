@@ -8,6 +8,15 @@ class RemoteModel {
   late int high;
   Map<String, List<int>> data = {};
 
+  RemoteModel(int iLaunch, String iProtocol, int iLow, int iHigh,
+      Map<String, List<int>> iData) {
+    launch = iLaunch;
+    protocol = iProtocol;
+    low = iLow;
+    high = iHigh;
+    data = iData;
+  }
+
   Map<String, dynamic> getDocument() {
     return {"launch": launch, "low": low, "high": high, "data": data};
   }
@@ -18,6 +27,15 @@ class RemoteModel {
     data[key]?.forEach((element) {
       temp.add(element == 0 ? low : high);
     });
+    return temp;
+  }
+
+  List<int> getCodeFromData(List<int> iData) {
+    List<int> temp = [];
+    temp.addAll([launch, launch]);
+    for (int i = 0; i < iData.length; i++) {
+      temp.add(iData[i] == 0 ? low : high);
+    }
     return temp;
   }
 

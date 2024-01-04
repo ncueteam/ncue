@@ -15,12 +15,16 @@ class Sensor():
         
     def routine(self):
         self.cycle += 1
-        if (self.cycle >= MAX_CYCLE - 1):
-            self.screen.display(["getting","dht data"])
-            self.sensor.measure()
-            self.hum = self.sensor.humidity()
-            self.temp = self.sensor.temperature()
-            self.cycle = 0
+        try:
+            if (self.cycle > MAX_CYCLE):
+                self.screen.display(["getting","dht data"])
+                self.sensor.measure()
+                self.hum = self.sensor.humidity()
+                self.temp = self.sensor.temperature()
+                self.cycle = 0
+        except Exception as e:
+            print(str(e))
+            pass
 
     def getJson(self):
         return {"humidity":self.hum,"temperature":self.temp}

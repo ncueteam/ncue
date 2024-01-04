@@ -27,7 +27,10 @@ class FileSet:
         self.save()
         
     def read(self, key: str) -> tuple[str, str]:
-        return key, self.database[key]
+        try:
+            return key, self.database[key]
+        except:
+            return key, "error"
 
     def update(self, key: str, value: str):
         self.database[key] = value
@@ -86,6 +89,10 @@ class FileSet:
             self.uuid = self.temp['uuid']
         except:
             self.uuid = "error"
+        try:
+            self.uid = self.temp['uid']
+        except:
+            self.uid = "error"
         try:
             self.type_data = self.temp['type_data']
         except:

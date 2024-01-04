@@ -117,6 +117,10 @@ class AddDeviceViewState extends State<AddDeviceView> {
             labelText: '裝置名稱',
             hintText: '裝置名稱',
           ),
+          onChanged: (value) {
+            temp.name = value;
+            setState(() {});
+          },
         ),
         if (temp.type == "ir_controller")
           Row(
