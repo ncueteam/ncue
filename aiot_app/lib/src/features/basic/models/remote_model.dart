@@ -8,8 +8,12 @@ class RemoteModel {
   late int high;
   Map<String, List<int>> data = {};
 
-  RemoteModel(int iLaunch, String iProtocol, int iLow, int iHigh,
-      Map<String, List<int>> iData) {
+  RemoteModel(
+      {int iLaunch = 0,
+      String iProtocol = "None",
+      int iLow = 0,
+      int iHigh = 0,
+      Map<String, List<int>> iData = const {}}) {
     launch = iLaunch;
     protocol = iProtocol;
     low = iLow;
@@ -81,5 +85,36 @@ class RemoteModel {
         .collection('remote')
         .doc(protocol)
         .delete();
+  }
+
+  static Future<List<String>> idList() async {
+    CollectionReference reference =
+        FirebaseFirestore.instance.collection('remote');
+    QuerySnapshot snapshot = await reference.get();
+
+    List<String> documentIds = [];
+    for (DocumentSnapshot document in snapshot.docs) {
+      documentIds.add(document.id);
+    }
+    return documentIds;
+  }
+
+  static Future<RemoteModel> get(String protocolName) async {
+    RemoteModel item = RemoteModel();
+    try {
+      Map<String, dynamic> data = (await RouteView.database
+              .collection('remote')
+              .doc(protocolName)
+              .get())
+          .data() as Map<String, dynamic>;
+      item.launch = data["launch"];
+      item.low = data["low"];
+      item.high = data["high"];
+      data = data["data"];
+    } catch (e) {
+      item.create();
+    }
+
+    return item;
   }
 }

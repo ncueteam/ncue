@@ -51,17 +51,3 @@ class Network():
             self.screen.display([key,"connected!"])
             time.sleep(1)
             return True
-# def bootLink():
-#     net = Network()
-#     loop = uasyncio.get_event_loop()
-#     async def main_task():
-#         await net.setUp()
-#     try:
-#         task = loop.create_task(main_task())
-#         loop.run_forever()
-#     except KeyboardInterrupt:
-#         print("Ctrl+C pressed stopping.....")
-#     finally:
-#         task.cancel()
-#         loop.run_until_complete(task)
-#         loop.close()

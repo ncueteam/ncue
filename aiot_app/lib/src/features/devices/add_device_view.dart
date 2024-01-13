@@ -137,6 +137,10 @@ class AddDeviceViewState extends State<AddDeviceView> {
                 value: temp.subType,
                 items: const [
                   DropdownMenuItem(
+                    value: "humidifier",
+                    child: Text("加濕器"),
+                  ),
+                  DropdownMenuItem(
                     value: "fan",
                     child: Text("風扇"),
                   ),
@@ -216,19 +220,8 @@ class AddDeviceViewState extends State<AddDeviceView> {
                   } else {
                     showDialog(
                         context: context,
-                        builder: (context) => Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                color: const Color.fromRGBO(200, 200, 200, 0.2),
-                                padding: const EdgeInsets.all(20.0),
-                                child: const FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      "請輸入裝置名稱",
-                                      style: TextStyle(color: Colors.white),
-                                    )),
-                              ),
-                            ));
+                        builder: (context) =>
+                            const AlertDialog(content: Text("請輸入裝置名稱")));
                   }
                 },
                 child: const Row(children: [Text("註冊裝置"), Icon(Icons.add)])),

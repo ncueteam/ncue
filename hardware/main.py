@@ -62,46 +62,8 @@ class core():
     def wifi_connected(self):
         import ir_system
         self.cir = ir_system.IR(mode="oled")
-        import machine
-        import file_system
-        self.RDB = file_system.FileSet('remote_data.json')
-        
-        self.screen.display(["setting up","MQTT!"])
-        from umqtt.simple import MQTTClient
-        import ubinascii
-        self.mqttc = MQTTClient(ubinascii.hexlify(machine.unique_id()), 'test.mosquitto.org', port=1883)
-        self.screen.display(["MQTT","connecting......"])
-        self.mqttc.connect()
-        def sub_cb(topic,msg):
-#             print(str(topic,"UTF-8")+","+str(msg,"UTF-8"))
-            self.DB.handle_json(msg)
-            if(self.DB.uuid==self.DB.read("uid")[1]):
-                if self.DB.type=="ir_tx":
-                    self.screen.display([self.DB.type,self.DB.protocol,self.DB.data])
-#                     dddd = [2891, 2985, 498, 458, 535, 467, 536, 467, 536, 484, 521, 483, 516, 489, 518, 483, 495, 506, 521, 466, 533, 486, 523, 481, 519, 1490, 518, 465, 537, 1488, 519, 1488, 517, 481, 522, 482, 520, 483, 520, 483, 521, 467, 537, 463, 538, 465, 538, 1489, 518, 481, 519, 486, 519, 466, 536, 466, 537, 467, 536, 465, 537, 483, 496, 508, 496, 538, 497, 458, 537, 466, 535, 467, 536, 483, 497, 509, 492, 512, 517, 484, 496, 506, 525, 462, 537, 482, 495, 509, 492, 513, 491]
-#                     room2 = [3557, 2389, 588, 1802, 585, 1806, 582, 1808, 582, 1807, 584, 618, 617, 582, 613, 584, 615, 583, 616, 584, 613, 585, 613, 1773, 581, 1810, 579, 1811, 580, 621, 617, 581, 640, 559, 612, 1774, 580, 621, 614, 584, 636, 564, 612, 1774, 580, 1811, 580, 620, 614, 1773, 607, 596, 590, 608, 588, 610, 612, 1900, 432, 644, 612, 1749, 612, 1760, 611, 8638, 3640, 2375, 645, 1745, 644, 1746, 643, 1745, 619, 1774, 617, 581, 606, 592, 642, 556, 645, 554, 582, 614, 611, 588, 638, 1753, 639, 1752, 643, 1798, 590, 558]
-#                     room3 = [3562, 2374, 718, 1672, 582, 1807, 581, 1811, 580, 1809, 581, 609, 625, 583, 615, 539, 661, 551, 647, 555, 643, 555, 643, 1772, 581, 1810, 584, 1806, 582, 588, 695, 533, 616, 584, 614, 1774, 581, 591, 642, 555, 644, 584, 615, 1773, 581, 1808, 581, 620, 614, 1774, 581, 589, 647, 582, 615, 555, 643, 1774, 580, 619, 616, 1772, 582, 1790, 581, 8635, 3650, 2397, 581, 1810, 585, 1805, 581, 1808, 585, 1807, 585, 614, 615, 585, 614, 583, 617, 582, 616, 583, 615, 591, 606, 1773, 611, 1781, 580, 1808, 614, 588]
-                    candle_1 = [9185, 4525, 549, 624, 556, 659, 513, 603, 574, 598, 575, 602, 573, 605, 571, 600, 575, 600, 600, 1658, 573, 1683, 600, 1655, 574, 1683, 575, 1682, 573, 1683, 575, 1680, 599, 1660, 600, 573, 577, 596, 603, 572, 601, 573, 603, 571, 604, 569, 602, 574, 577, 597, 642, 1614, 600, 1655, 579, 1677, 601, 1655, 577, 1680, 577, 1678, 599, 1657, 578, 1677, 602]
-                    net_data = [int(x) for x in self.DB.data[1:-1].split(',')]
-                    self.cir.sender.play(net_data)
-                    time.sleep(1)
-                elif self.DB.type=="ir_rx":
-                    self.screen.display([self.DB.type,self.DB.protocol,self.DB.data])
-                    time.sleep(3)
-                    self.cir.receive()
-                    print("ir_data")
-                elif(self.DB.type=="register_device"):
-                    if self.DB.type_data=="switch":
-                        self.DB.create(self.DB.uuid,self.DB.type_data)
-                    elif self.DB.type_data=="slide_device":
-                        self.DB.create(self.DB.uuid,self.DB.type_data)
-                    elif self.DB.type_data=="wet_degree_sensor":
-                        self.DB.create(self.DB.uuid,self.DB.type_data)
-                    elif self.DB.type_data=="ir_controller":
-                        self.DB.create(self.DB.uuid,self.DB.type_data)
-        
-        self.mqttc.set_callback(sub_cb)
-        self.mqttc.subscribe(b"AIOT_113/AppSend")
+        import comute
+        self.com = comute.Comute(mode="oled",cir=self.cir)
         self.screen.display(["NCUE AIOT"])
         time.sleep(1)
         self.status = "loop"
@@ -110,9 +72,7 @@ class core():
         if self.cir.receiver != []:
             self.cir.receiver = []
         self.dht.routine()
-        import ujson
-        self.mqttc.publish(b'AIOT_113/Esp32Send', ujson.dumps({"type":"dht11","uuid":self.DB.read("uid")[1],"humidity":self.dht.hum,"temperature":self.dht.temp}))
-        self.mqttc.check_msg()
+        self.com.routine(self.dht)
         self.screen.display(["Hum: "+str(self.dht.hum),"Temp: "+str(self.dht.temp)])
 #         self.screen.drawSleepPage()
     
